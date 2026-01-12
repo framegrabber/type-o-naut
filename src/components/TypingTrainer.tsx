@@ -5,7 +5,7 @@ import { TextDisplay } from './TextDisplay';
 import { KeyboardDisplay } from './KeyboardDisplay';
 import { ConfigPanel } from './ConfigPanel';
 import type { KeyboardLayout, ParsedKeymap, TextContent, KeyPosition } from '../types';
-import { getTextToType } from '../utils/textLoader';
+import { getTextToType, getNextQuoteIndex, DEFAULT_MINIMAL_QUOTES } from '../utils/textLoader';
 import { getQueryParam, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
 import { parseKeyboardLayout, validateKeyboardLayout } from '../utils/layoutValidator';
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
@@ -34,6 +34,7 @@ export const TypingTrainer: React.FC = () => {
   const [showKeyboard, setShowKeyboard] = useState(true);
   const [showConfig, setShowConfig] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [quoteIndex, setQuoteIndex] = useState(0); // Track current quote for quote sessions
 
   const [typing, setTyping] = useState<TypingState>({
     text: '',
@@ -67,11 +68,26 @@ export const TypingTrainer: React.FC = () => {
         }
 
         // Load text content
-        const textResponse = await fetch(DEFAULT_TEXT_PATH);
-        const textData = await textResponse.json();
-        if (validateTextContent(textData).valid) {
-          const parsed = parseTextContent(textData);
-          if (parsed) setTextContent(parsed);
+        let textData;
+        try {
+          const textResponse = await fetch(DEFAULT_TEXT_PATH);
+          textData = await textResponse.json();
+          if (validateTextContent(textData).valid) {
+            const parsed = parseTextContent(textData);
+            if (parsed) setTextContent(parsed);
+          }
+        } catch (err) {
+          // Fallback to minimal quotes if default file not found
+          console.log('Using default minimal quotes');
+          const minimalContent: TextContent = {
+            type: 'quotes',
+            data: {
+              language: 'English',
+              groups: [],
+              quotes: DEFAULT_MINIMAL_QUOTES,
+            },
+          };
+          setTextContent(minimalContent);
         }
       } catch (err) {
         console.error('Failed to load defaults:', err);
@@ -135,7 +151,7 @@ export const TypingTrainer: React.FC = () => {
   // Update text when content changes
   useEffect(() => {
     if (textContent) {
-      const newText = getTextToType(textContent);
+      const newText = getTextToType(textContent, quoteIndex);
       setTyping(prev => ({
         ...prev,
         text: newText,
@@ -148,7 +164,7 @@ export const TypingTrainer: React.FC = () => {
         finished: false,
       }));
     }
-  }, [textContent]);
+  }, [textContent, quoteIndex]);
 
   // Focus input on mount
   useEffect(() => {
@@ -217,9 +233,26 @@ export const TypingTrainer: React.FC = () => {
     if (inputRef.current) inputRef.current.focus();
   };
 
+  const redoText = () => {
+    reset();
+  };
+
+  const nextQuote = () => {
+    if (textContent && textContent.type === 'quotes' && 'quotes' in textContent.data) {
+      const nextIdx = getNextQuoteIndex(quoteIndex, textContent.data.quotes.length);
+      setQuoteIndex(nextIdx);
+    } else {
+      // For word lists, just reset
+      reset();
+    }
+  };
+
   const newText = () => {
-    if (textContent) {
-      const newTextStr = getTextToType(textContent);
+    if (textContent && textContent.type === 'quotes') {
+      nextQuote();
+    } else if (textContent && textContent.type === 'words') {
+      // Generate new random words for word lists
+      const newTextStr = getTextToType(textContent, 0);
       setTyping(prev => ({
         ...prev,
         text: newTextStr,
@@ -231,8 +264,10 @@ export const TypingTrainer: React.FC = () => {
         accuracy: 100,
         finished: false,
       }));
+      if (inputRef.current) inputRef.current.focus();
+    } else {
+      reset();
     }
-    if (inputRef.current) inputRef.current.focus();
   };
 
   const getKeyLabels = (): string[] => {
@@ -376,12 +411,22 @@ export const TypingTrainer: React.FC = () => {
                   Errors: <span className="text-red-400 font-bold">{typing.errors}</span>
                 </p>
               </div>
-              <button
-                onClick={reset}
-                className="w-full px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
-              >
-                Try Again
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={redoText}
+                  className="flex-1 px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
+                >
+                  Try Again
+                </button>
+                {textContent?.type === 'quotes' && (
+                  <button
+                    onClick={nextQuote}
+                    className="flex-1 px-6 py-3 bg-gray-700 text-gray-100 rounded-lg hover:bg-gray-600 transition-colors font-semibold"
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}

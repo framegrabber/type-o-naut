@@ -1,5 +1,13 @@
 import type { TextContent, WordList, QuoteList } from '../types';
 
+// Default minimal quotes inspired by MonkeyType
+export const DEFAULT_MINIMAL_QUOTES = [
+  { text: 'the quick brown fox jumps over the lazy dog', source: 'Classic', length: 44, id: 1 },
+  { text: 'pack my box with five dozen liquor jugs', source: 'Pangram', length: 40, id: 2 },
+  { text: 'how vexingly quick daft zebras jump', source: 'Pangram', length: 35, id: 3 },
+  { text: 'the five boxing wizards jump quickly', source: 'Pangram', length: 36, id: 4 },
+];
+
 export function isWordList(data: unknown): data is WordList {
   if (!data || typeof data !== 'object') return false;
   const obj = data as Record<string, unknown>;
@@ -96,20 +104,63 @@ export function validateTextContent(data: unknown): { valid: boolean; errors: st
   return { valid: false, errors };
 }
 
-export function getTextToType(content: TextContent): string {
+/**
+ * Get a random selection of words, repeated multiple times
+ * @param words - Array of all available words
+ * @param wordCount - Number of unique words to select (default: 15)
+ * @param repeatCount - How many times to repeat the selected words (default: 5)
+ */
+export function getRandomWords(
+  words: string[],
+  wordCount: number = 15,
+  repeatCount: number = 5
+): string {
+  if (words.length === 0) return '';
+
+  // Adjust wordCount if more words requested than available
+  const actualWordCount = Math.min(wordCount, words.length);
+
+  // Fisher-Yates shuffle to randomly select words
+  const shuffled = [...words].sort(() => Math.random() - 0.5);
+  const selectedWords = shuffled.slice(0, actualWordCount);
+
+  // Repeat the selected words
+  const repeatedWords: string[] = [];
+  for (let i = 0; i < repeatCount; i++) {
+    repeatedWords.push(...selectedWords);
+  }
+
+  return repeatedWords.join(' ');
+}
+
+/**
+ * Get text to type for a session. For quotes, returns a single quote.
+ * For words, returns 15 random words repeated 5 times (can be customized).
+ * Use getNextQuote() to get the next quote after finishing one.
+ */
+export function getTextToType(content: TextContent, quoteIndex: number = 0): string {
   if (content.type === 'words' && 'words' in content.data) {
-    return content.data.words.join(' ');
+    return getRandomWords(content.data.words, 15, 5);
   }
 
   if (content.type === 'quotes' && 'quotes' in content.data) {
     const quotes = content.data.quotes;
     if (quotes.length === 0) return '';
-    // Pick a random quote
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    // Return single quote at specified index, cycling if necessary
+    const index = quoteIndex % quotes.length;
+    const quote = quotes[index];
     return `${quote.text}\n— ${quote.source}`;
   }
 
   return '';
+}
+
+/**
+ * Get the next quote index for MonkeyType-style sessions
+ */
+export function getNextQuoteIndex(currentIndex: number, totalQuotes: number): number {
+  if (totalQuotes === 0) return 0;
+  return (currentIndex + 1) % totalQuotes;
 }
 
 export function saveCustomText(name: string, text: string, type: 'words' | 'quotes'): void {

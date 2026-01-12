@@ -1,8 +1,30 @@
 {
-  "name": "english_minimal",
-  "words": [
-    "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog",
-    "pack", "my", "box", "with", "five", "dozen", "liquor", "jugs",
-    "how", "vexingly", "daft", "zebras", "jump", "wizard", "is", "that"
+  "language": "English",
+  "groups": [],
+  "quotes": [
+    {
+      "text": "the quick brown fox jumps over the lazy dog",
+      "source": "Classic",
+      "length": 44,
+      "id": 1
+    },
+    {
+      "text": "pack my box with five dozen liquor jugs",
+      "source": "Pangram",
+      "length": 40,
+      "id": 2
+    },
+    {
+      "text": "how vexingly quick daft zebras jump",
+      "source": "Pangram",
+      "length": 35,
+      "id": 3
+    },
+    {
+      "text": "the five boxing wizards jump quickly",
+      "source": "Pangram",
+      "length": 36,
+      "id": 4
+    }
   ]
 }
