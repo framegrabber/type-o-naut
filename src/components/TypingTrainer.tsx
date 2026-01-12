@@ -391,7 +391,6 @@ export const TypingTrainer: React.FC = () => {
           <ConfigPanel
             layout={layout}
             keymap={keymap}
-            selectedLayer={selectedLayer}
             textContent={textContent}
             onLayoutChange={setLayout}
             onKeymapChange={setKeymap}

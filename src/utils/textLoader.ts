@@ -97,11 +97,11 @@ export function validateTextContent(data: unknown): { valid: boolean; errors: st
 }
 
 export function getTextToType(content: TextContent): string {
-  if (content.type === 'words') {
+  if (content.type === 'words' && 'words' in content.data) {
     return content.data.words.join(' ');
   }
 
-  if (content.type === 'quotes') {
+  if (content.type === 'quotes' && 'quotes' in content.data) {
     const quotes = content.data.quotes;
     if (quotes.length === 0) return '';
     // Pick a random quote

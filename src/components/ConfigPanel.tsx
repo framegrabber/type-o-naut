@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, AlertCircle, XCircle } from 'lucide-react';
+import { Upload, XCircle } from 'lucide-react';
 import type { KeyboardLayout, ParsedKeymap, TextContent } from '../types';
 import { loadFileAsJson, loadFileAsText, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
 import { validateKeyboardLayout } from '../utils/layoutValidator';
@@ -9,7 +9,6 @@ import { parseTextContent, validateTextContent } from '../utils/textLoader';
 interface ConfigPanelProps {
   layout: KeyboardLayout | null;
   keymap: ParsedKeymap | null;
-  selectedLayer: number;
   textContent: TextContent | null;
   onLayoutChange: (layout: KeyboardLayout | null) => void;
   onKeymapChange: (keymap: ParsedKeymap | null) => void;
@@ -27,7 +26,6 @@ interface ErrorState {
 export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   layout,
   keymap,
-  selectedLayer,
   textContent,
   onLayoutChange,
   onKeymapChange,
@@ -280,7 +278,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
           <h3 className="text-lg font-semibold text-white mb-3">Text Content</h3>
           {textContent && (
             <div className="text-sm text-green-400 mb-2">
-              ✓ Loaded: {textContent.type === 'words' ? `Word list (${textContent.data.words.length} words)` : `Quotes (${textContent.data.quotes.length} quotes)`}
+              ✓ Loaded: {textContent.type === 'words' ? `Word list (${'words' in textContent.data ? textContent.data.words.length : 0} words)` : `Quotes (${'quotes' in textContent.data ? textContent.data.quotes.length : 0} quotes)`}
             </div>
           )}
           <div className="flex gap-2 mb-3">
