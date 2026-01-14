@@ -149,7 +149,7 @@ export function getTextToType(content: TextContent, quoteIndex: number = 0): str
     // Return single quote at specified index, cycling if necessary
     const index = quoteIndex % quotes.length;
     const quote = quotes[index];
-    return `${quote.text}\n— ${quote.source}`;
+    return quote.text;
   }
 
   return '';
