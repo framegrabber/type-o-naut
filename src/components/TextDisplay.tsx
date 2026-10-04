@@ -10,23 +10,48 @@ interface TextDisplayProps {
   onActivate: () => void;
 }
 
-/** Split into words that keep their trailing space, so lines break between words. */
-function toWords(text: string): { start: number; chars: string[] }[] {
-  const words: { start: number; chars: string[] }[] = [];
+interface Chunk {
+  start: number;
+  chars: string[];
+}
+
+/**
+ * Split a line into chunks that must not be broken across rows: a run of
+ * leading indentation, then one chunk per word including its trailing space.
+ */
+function toChunks(line: string, lineStart: number): Chunk[] {
+  const chunks: Chunk[] = [];
   let current: string[] = [];
+  let start = lineStart;
+
+  const flush = () => {
+    if (current.length > 0) {
+      chunks.push({ start, chars: current });
+      start += current.length;
+      current = [];
+    }
+  };
+
+  for (const char of line) {
+    current.push(char);
+    if (char === ' ') flush();
+  }
+  flush();
+
+  return chunks;
+}
+
+/** Lines, with the index of each line's first character in the full text. */
+function toLines(text: string): { start: number; line: string }[] {
+  const lines: { start: number; line: string }[] = [];
   let start = 0;
 
-  for (let i = 0; i < text.length; i++) {
-    current.push(text[i]);
-    if (text[i] === ' ') {
-      words.push({ start, chars: current });
-      current = [];
-      start = i + 1;
-    }
+  for (const line of text.split('\n')) {
+    lines.push({ start, line });
+    start += line.length + 1; // + the newline itself
   }
-  if (current.length > 0) words.push({ start, chars: current });
 
-  return words;
+  return lines;
 }
 
 export const TextDisplay: React.FC<TextDisplayProps> = ({
@@ -36,36 +61,54 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({
   prompt,
   onActivate,
 }) => {
+  const charClass = (i: number, char: string) => {
+    if (i >= input.length) return 'text-gray-600';
+    return input[i] === char ? 'text-gray-100' : 'text-red-400 bg-red-900/30 rounded-sm';
+  };
+  const caretClass = (i: number) =>
+    caret && i === input.length ? 'border-l-2 border-yellow-400 -ml-[2px] animate-pulse' : '';
+
+  const lines = toLines(text);
+
   return (
     <div className="relative mb-6 cursor-text" onClick={onActivate}>
       <div
         className={`font-mono text-2xl leading-relaxed transition-[filter] duration-150 ${
           prompt ? 'blur-[2px]' : ''
         }`}
+        style={{ tabSize: 2 }}
       >
-        {toWords(text).map(word => (
-          <span key={word.start} className="inline-block whitespace-pre">
-            {word.chars.map((char, offset) => {
-              const i = word.start + offset;
-              let className = 'text-gray-600';
-              if (i < input.length) {
-                className =
-                  input[i] === char ? 'text-gray-100' : 'text-red-400 bg-red-900/30 rounded-sm';
-              }
-              const hasCaret = caret && i === input.length;
-              return (
-                <span
-                  key={i}
-                  className={`${className} ${
-                    hasCaret ? 'border-l-2 border-yellow-400 -ml-[2px] animate-pulse' : ''
-                  }`}
-                >
-                  {char}
+        {lines.map(({ start, line }, lineIndex) => {
+          // Index of the newline that ends this line, if there is one.
+          const newlineIndex = lineIndex < lines.length - 1 ? start + line.length : -1;
+          return (
+            <div key={start} className="min-h-[1em]">
+              {toChunks(line, start).map(chunk => (
+                <span key={chunk.start} className="inline-block whitespace-pre">
+                  {chunk.chars.map((char, offset) => {
+                    const i = chunk.start + offset;
+                    return (
+                      <span key={i} className={`${charClass(i, char)} ${caretClass(i)}`}>
+                        {char}
+                      </span>
+                    );
+                  })}
                 </span>
-              );
-            })}
-          </span>
-        ))}
+              ))}
+              {newlineIndex !== -1 && (
+                <span
+                  className={`${
+                    newlineIndex < input.length && input[newlineIndex] !== '\n'
+                      ? 'text-red-400 bg-red-900/30 rounded-sm'
+                      : 'text-gray-700'
+                  } ${caretClass(newlineIndex)}`}
+                >
+                  ↵
+                </span>
+              )}
+            </div>
+          );
+        })}
         {caret && input.length >= text.length && text.length > 0 && (
           <span className="border-l-2 border-yellow-400 animate-pulse" />
         )}

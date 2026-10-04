@@ -125,6 +125,8 @@ You type onto the text itself: there is no visible input box, the caret sits in 
 
 The end-of-run card is keyboard-only friendly: focus lands on **Try again**, `Tab` and the arrow keys cycle the actions, `Enter` or `Space` activates, `Escape` retries, and each action has a single-key shortcut (`r`, `n`).
 
+Multi-line sources work, including MonkeyType's `code_*.json` quote files. Line structure and indentation are preserved, line ends are marked with a dim `↵`, `Enter` types the newline and `Tab` types a tab. A correct newline also consumes the next line's indentation the way a code editor would, so one keystroke takes you to the first real character of the line. Sources are normalised to LF with trailing whitespace stripped. On single-line text, `Tab` still moves focus and `Enter` does nothing.
+
 ## Tests
 
 ```bash

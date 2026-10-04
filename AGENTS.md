@@ -56,7 +56,8 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 10. **Bindings are structured, not strings.** `Binding.label` is display only; `tap`/`hold`/`activates` are what `keyIndex` resolves against. Adding a keycode means adding it to `ZMK_KEYCODE_MAP` (keycap text) *and* `KEYCODE_CHARS` (emitted characters) — the two tables answer different questions.
 11. **Shift comes from the target layer when that layer has one.** Holding a layer key puts the base layer's home-row mods out of reach; `resolveHint` falls back to the base layer only when the target layer has no shift binding.
 12. **`hold` indices are physical key positions,** valid regardless of which layer's labels are drawn. Do not try to remap them onto the displayed layer.
-13. **The typing surface is a real but invisible `<input>`.** `TextDisplay` only renders; keystrokes still go through the controlled input (`opacity-0`, off-flow) so IME, composition and mobile keyboards keep working. Never reimplement typing on raw `keydown`.
+13. **The typing surface is a real but invisible `<textarea>`.** `TextDisplay` only renders; keystrokes still go through the controlled field (`opacity-0`, off-flow) so IME, composition and mobile keyboards keep working. Never reimplement typing on raw `keydown`.
+14. **Enter is always `preventDefault`ed.** A textarea would otherwise insert a line break the text never asked for and score it as an error. `Enter` and `Tab` are applied through `typeWhitespace`, which counts one keystroke and, for a correct newline, consumes the next line's indentation for free. `Tab` is only swallowed when the text actually contains one, so focus navigation survives on prose.
 
 ## Conventions
 

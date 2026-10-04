@@ -73,7 +73,7 @@ export const TypingTrainer: React.FC = () => {
 
   const [typing, setTyping] = useState<TypingState>({ text: '', ...EMPTY_SESSION });
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Load defaults on mount. Each resource is loaded independently so that one
   // missing file cannot leave the trainer without text to type.
@@ -208,7 +208,7 @@ export const TypingTrainer: React.FC = () => {
     return () => clearInterval(interval);
   }, [typing.startTime, typing.finished]);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.currentTarget.value;
 
     setTyping(prev => {
@@ -234,6 +234,40 @@ export const TypingTrainer: React.FC = () => {
         input: value,
         keystrokes,
         errors,
+        startTime,
+        finished,
+        wpm: finished ? netWpm(value, prev.text, startTime, now) : prev.wpm,
+      };
+    });
+  };
+
+  /**
+   * Enter and Tab never reach onChange usefully, so they are applied here.
+   * A correct newline also consumes the next line's indentation, the way code
+   * editors do; those characters are free rather than counted as keystrokes.
+   */
+  const typeWhitespace = (char: '\n' | '\t') => {
+    setTyping(prev => {
+      if (prev.finished) return { ...prev };
+      const position = prev.input.length;
+      if (position >= prev.text.length) return { ...prev };
+
+      const now = Date.now();
+      const startTime = prev.startTime ?? now;
+      const correct = prev.text[position] === char;
+
+      let addition: string = char;
+      if (correct && char === '\n') {
+        addition += /^[ \t]*/.exec(prev.text.slice(position + 1))![0];
+      }
+
+      const value = prev.input + addition;
+      const finished = value.length === prev.text.length;
+      return {
+        ...prev,
+        input: value,
+        keystrokes: prev.keystrokes + 1,
+        errors: prev.errors + (correct ? 0 : 1),
         startTime,
         finished,
         wpm: finished ? netWpm(value, prev.text, startTime, now) : prev.wpm,
@@ -341,11 +375,24 @@ export const TypingTrainer: React.FC = () => {
           onActivate={() => inputRef.current?.focus()}
         />
 
-        <input
+        <textarea
           ref={inputRef}
-          type="text"
+          rows={1}
           value={typing.input}
           onChange={handleInput}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              // A textarea would otherwise insert a line break that the text
+              // never asked for and score it as an error.
+              e.preventDefault();
+              if (typing.text.includes('\n')) typeWhitespace('\n');
+            } else if (e.key === 'Tab' && !e.shiftKey && typing.text.includes('\t')) {
+              // Only swallow Tab when the text needs one, so it still moves
+              // focus on ordinary prose.
+              e.preventDefault();
+              typeWhitespace('\t');
+            }
+          }}
           onPaste={e => e.preventDefault()}
           onDrop={e => e.preventDefault()}
           onFocus={() => setInputFocused(true)}
@@ -356,7 +403,7 @@ export const TypingTrainer: React.FC = () => {
           autoCapitalize="off"
           spellCheck={false}
           aria-label="Typing input"
-          className="absolute opacity-0 w-px h-px -z-10"
+          className="absolute opacity-0 w-px h-px -z-10 resize-none"
         />
 
         {/* Controls */}
