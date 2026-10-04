@@ -139,8 +139,10 @@ Unit tests cover the keymap parser and the character resolution against the bund
 
 ## Known limitations
 
-- `&trans` is resolved against the base layer rather than ZMK's "next active layer" semantics.
+- The result card shows wpm, accuracy and errors only — no chart, raw speed or consistency, because no per-second series is recorded.
 - Results are not persisted between sessions.
+- Characters the keymap cannot produce plainly or with shift never highlight; accented text (`ö`, `ä`, `ß`) needs compose/`RA(...)` support.
+- `&trans` is resolved against the base layer rather than ZMK's "next active layer" semantics.
 - Combos and macros are not parsed.
 
 ## Deployment

@@ -79,6 +79,8 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 
 ## Known gaps
 
+- No results screen beyond wpm/acc/err. Nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are all blocked on sampling `{second, netWpm, rawWpm, errors}` into a ref during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
+- No persistence of results: no personal best, no session total, no history.
+- Characters outside the keymap's plain and shifted bindings never resolve, so accented text (`ö`, `ä`, `ß` in the German quote file) shows the "not on this keymap" notice. Teaching `keyIndex` about `RA(...)` and compose sequences is the fix.
 - `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
-- No persistence of results.
-- Combos and macros are not parsed from `.keymap` files. The line-oriented scanner in `parseZmkKeymap` only enters the `keymap` node; adding sibling nodes is the point at which it should be replaced by a small DTS tokenizer rather than extended again.
+- Combos and macros are not parsed from `.keymap` files. The line-oriented scanner in `parseZmkKeymap` only enters the `keymap` node; adding sibling nodes is the point at which it should be replaced by a small DTS tokenizer rather than extended again. The same scanner also requires each layer's opening brace to end its line.
