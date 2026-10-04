@@ -111,6 +111,37 @@ describe('parseZmkKeymap', () => {
     ]);
   });
 
+  it('accepts layers written on one line', () => {
+    const parsed = parseZmkKeymap(`
+      / { keymap {
+        compatible = "zmk,keymap";
+        layer_0 { bindings = <&kp A &kp B>; };
+        layer_1 { display-name = "SECOND"; bindings = <&kp C &kp D>; };
+      }; };
+    `);
+    expect(parsed.layers.map(l => l.name)).toEqual(['layer_0', 'SECOND']);
+    expect(parsed.layers[1].bindings.map(b => b.label)).toEqual(['C', 'D']);
+  });
+
+  it('ignores nodes that are not layers, wherever they sit', () => {
+    const parsed = parseZmkKeymap(`
+      / {
+        behaviors { hm: homerow_mods { bindings = <&kp>, <&kp>; }; };
+        combos { compatible = "zmk,combos"; esc { bindings = <&kp ESC>; }; };
+        keymap {
+          compatible = "zmk,keymap";
+          base { bindings = <&kp Q>; };
+        };
+      };
+    `);
+    expect(parsed.layers).toHaveLength(1);
+    expect(parsed.layers[0].name).toBe('base');
+  });
+
+  it('reports no layers when there is no keymap node', () => {
+    expect(parseZmkKeymap('/ { behaviors { x: x { a = <1>; }; }; };').layers).toEqual([]);
+    expect(validateParsedKeymap({ layers: [] })).toEqual(['No layers found in keymap']);
+  });
   it('accepts digits in layer names', () => {
     const parsed = parseZmkKeymap(`
       keymap {

@@ -1,4 +1,5 @@
 import type { Binding, Keycode, KeymapLayer, Modifier, ParsedKeymap } from '../types';
+import { findCompatible, findNodes, parseDts } from './dts';
 
 const ZMK_KEYCODE_MAP: Record<string, string> = {
   // Letters
@@ -265,120 +266,22 @@ function parseKeyBinding(binding: string): Binding {
   return { label: behavior.replace(/^&/, '').slice(0, 8) };
 }
 
+/**
+ * Layers are the children of the `zmk,keymap` node, in order, and each one
+ * carries its bindings as a single property. Their position in that node is
+ * the layer number every &mo/&lt/&tog refers to.
+ */
 export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
-  const layers: KeymapLayer[] = [];
-  let currentLayerName: string | null = null;
-  let bindings: Binding[] = [];
-  let inKeymap = false;
-  let inBindings = false;
-  let bindingsBuffer: string[] = [];
-  let keymapDepth = 0;
+  const root = parseDts(keymapContent);
+  const keymapNode = findCompatible(root, 'zmk,keymap') ?? findNodes(root, 'keymap')[0];
+  if (!keymapNode) return { layers: [] };
 
-  const lines = keymapContent.split('\n');
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-
-    // Skip comments and empty lines
-    if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('#')) continue;
-
-    // Track when we enter/exit keymap block
-    if (!inKeymap && trimmed.includes('keymap') && trimmed.includes('{')) {
-      inKeymap = true;
-      keymapDepth = 1;
-      continue;
-    }
-
-    if (!inKeymap) continue;
-
-    // Count braces to track depth
-    for (const char of trimmed) {
-      if (char === '{') keymapDepth++;
-      if (char === '}') keymapDepth--;
-    }
-
-    // Exit when keymap block closes
-    if (trimmed === '};' && keymapDepth === 0) {
-      // Save last layer
-      if (currentLayerName && bindings.length > 0) {
-        layers.push({ name: currentLayerName, bindings });
-      }
-      inKeymap = false;
-      break;
-    }
-
-    // Layer definition: layer_name {
-    const layerMatch = trimmed.match(/^([A-Za-z_][A-Za-z0-9_]*)\s*{$/);
-    if (layerMatch) {
-      // Save previous layer if exists
-      if (currentLayerName && bindings.length > 0) {
-        layers.push({ name: currentLayerName, bindings });
-        bindings = [];
-        inBindings = false;
-        bindingsBuffer = [];
-      }
-      currentLayerName = layerMatch[1];
-      continue;
-    }
-
-    // Extract display-name: display-name = "LAYER_NAME";
-    const displayNameMatch = trimmed.match(/display-name\s*=\s*"([^"]+)"/i);
-    if (displayNameMatch && currentLayerName) {
-      currentLayerName = displayNameMatch[1];
-    }
-
-    // Start of bindings block: bindings = <
-    if (trimmed.startsWith('bindings') && trimmed.includes('<')) {
-      inBindings = true;
-      bindingsBuffer = [];
-      
-      // Extract everything after <
-      const startIdx = trimmed.indexOf('<');
-      const endIdx = trimmed.indexOf('>');
-      
-      if (endIdx !== -1) {
-        // All bindings on one line
-        const content = trimmed.substring(startIdx + 1, endIdx).trim();
-        if (content) {
-          bindingsBuffer.push(content);
-        }
-        inBindings = false;
-        // Process immediately
-        bindings.push(...processBindings(bindingsBuffer));
-        bindingsBuffer = [];
-      } else {
-        // Bindings span multiple lines
-        const content = trimmed.substring(startIdx + 1).trim();
-        if (content) {
-          bindingsBuffer.push(content);
-        }
-      }
-      continue;
-    }
-
-    // Accumulate bindings until we hit >
-    if (inBindings) {
-      if (trimmed.includes('>')) {
-        // End of bindings
-        const endIdx = trimmed.indexOf('>');
-        const content = trimmed.substring(0, endIdx).trim();
-        if (content) {
-          bindingsBuffer.push(content);
-        }
-        inBindings = false;
-        
-        // Process all accumulated bindings
-        bindings.push(...processBindings(bindingsBuffer));
-        bindingsBuffer = [];
-      } else {
-        // Continue accumulating
-        if (trimmed) {
-          bindingsBuffer.push(trimmed);
-        }
-      }
-    }
-  }
+  const layers: KeymapLayer[] = keymapNode.children
+    .filter(child => child.props.bindings !== undefined)
+    .map(child => ({
+      name: child.props['display-name'] || child.name,
+      bindings: processBindings([child.props.bindings]),
+    }));
 
   return { layers };
 }
