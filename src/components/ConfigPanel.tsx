@@ -14,6 +14,9 @@ interface ConfigPanelProps {
   onKeymapChange: (keymap: ParsedKeymap | null) => void;
   onLayerReset: () => void;
   onTextChange: (text: TextContent | null) => void;
+  /** How many finished runs are stored, so the clear action can show its weight. */
+  historyRuns: number;
+  onClearHistory: () => void;
   onClose: () => void;
 }
 
@@ -31,6 +34,8 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   onKeymapChange,
   onLayerReset,
   onTextChange,
+  historyRuns,
+  onClearHistory,
   onClose,
 }) => {
   const [errors, setErrors] = useState<ErrorState>({});
@@ -314,6 +319,25 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        {/* Results history */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-white mb-3">Results</h3>
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-sm text-gray-400">
+              {historyRuns === 0
+                ? 'No runs recorded yet'
+                : `${historyRuns} run${historyRuns === 1 ? '' : 's'} stored in this browser`}
+            </span>
+            <button
+              onClick={onClearHistory}
+              disabled={historyRuns === 0}
+              className="px-4 py-2 text-sm bg-gray-700 text-gray-200 rounded hover:bg-red-900/60 hover:text-red-200 disabled:opacity-40 disabled:hover:bg-gray-700 disabled:hover:text-gray-200 transition-colors"
+            >
+              Clear history
+            </button>
+          </div>
         </div>
 
         <button

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import type { HistorySummary } from '../utils/history';
 
 export interface ResultAction {
   label: string;
@@ -12,6 +13,8 @@ interface ResultCardProps {
   wpm: number;
   accuracy: number;
   errors: number;
+  /** Personal best and recent average across stored runs. */
+  summary: HistorySummary;
   actions: ResultAction[];
 }
 
@@ -21,8 +24,16 @@ interface ResultCardProps {
  * Space activates, Escape takes the primary action, and each action has a
  * single-key shortcut.
  */
-export const ResultCard: React.FC<ResultCardProps> = ({ wpm, accuracy, errors, actions }) => {
+export const ResultCard: React.FC<ResultCardProps> = ({
+  wpm,
+  accuracy,
+  errors,
+  summary,
+  actions,
+}) => {
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  // The run has already been recorded, so a tie with the best is this run.
+  const isPersonalBest = summary.runs > 1 && wpm >= summary.best;
   const primaryIndex = Math.max(
     0,
     actions.findIndex(a => a.primary)
@@ -81,7 +92,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ wpm, accuracy, errors, a
           test complete
         </h2>
 
-        <div className="flex items-baseline gap-8 mb-6 font-mono">
+        <div className="flex items-baseline gap-8 mb-2 font-mono">
           <div>
             <div className="text-xs text-gray-500">wpm</div>
             <div className="text-5xl font-bold text-yellow-400">{wpm}</div>
@@ -95,6 +106,23 @@ export const ResultCard: React.FC<ResultCardProps> = ({ wpm, accuracy, errors, a
             <div className="text-5xl font-bold text-red-400">{errors}</div>
           </div>
         </div>
+
+        <p className="mb-6 font-mono text-xs text-gray-500">
+          {isPersonalBest ? (
+            <span className="text-yellow-400">new best</span>
+          ) : (
+            <>
+              best <span className="text-gray-300">{summary.best}</span>
+            </>
+          )}
+          {summary.recentAverage !== null && (
+            <>
+              {' · '}recent avg <span className="text-gray-300">{summary.recentAverage}</span>
+            </>
+          )}
+          {' · '}
+          {summary.runs} run{summary.runs === 1 ? '' : 's'}
+        </p>
 
         <div className="flex gap-3">
           {actions.map((action, i) => (

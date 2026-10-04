@@ -130,6 +130,8 @@ Multi-line sources work, including MonkeyType's `code_*.json` quote files. Line 
 
 The ⛶ button puts the page into fullscreen, hiding the browser's own chrome along with the app's header and buttons — just stats, text and keyboard. Leave with the corner button, `Esc` or `F11`; the app follows whichever you use. iOS Safari has no element fullscreen, so the button reports the refusal and nothing changes.
 
+Finished runs are kept in `localStorage` (the most recent 200), so the result card can show your best and the average of the last ten. Nothing but numbers is stored — never the text you typed — and **Settings → Results → Clear history** removes it. A browser that refuses storage simply gets no history.
+
 Each passage is credited underneath: a quote's own `source` field (`— Albert Einstein`, `— Dark Web: Thriller, Veit Etzold`), or the word list's `name` for a word session. Blank sources are omitted rather than rendered as an empty dash.
 
 ## Tests
@@ -143,7 +145,6 @@ Unit tests cover the keymap parser and the character resolution against the bund
 ## Known limitations
 
 - The result card shows wpm, accuracy and errors only — no chart, raw speed or consistency, because no per-second series is recorded.
-- Results are not persisted between sessions.
 - Characters the keymap cannot produce plainly or with shift never highlight; accented text (`ö`, `ä`, `ß`) needs compose/`RA(...)` support.
 - `&trans` is resolved against the base layer rather than ZMK's "next active layer" semantics.
 - Combos and macros are not parsed.

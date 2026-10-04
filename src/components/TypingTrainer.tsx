@@ -22,6 +22,8 @@ import {
   resolveHint,
 } from '../utils/keyIndex';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
+import type { RunResult } from '../utils/history';
+import { appendRun, clearHistory, loadHistory, summarise } from '../utils/history';
 
 const DEFAULT_LAYOUT_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.json`;
 const DEFAULT_KEYMAP_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.keymap`;
@@ -80,10 +82,12 @@ export const TypingTrainer: React.FC = () => {
   const [sessionNonce, setSessionNonce] = useState(0); // Bumped to re-roll a word session
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
+  const [history, setHistory] = useState<RunResult[]>(() => loadHistory());
 
   const [typing, setTyping] = useState<TypingState>({ text: '', ...EMPTY_SESSION });
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const recordedRunRef = useRef<number | null>(null);
 
   // Load defaults on mount. Each resource is loaded independently so that one
   // missing file cannot leave the trainer without text to type.
@@ -215,6 +219,27 @@ export const TypingTrainer: React.FC = () => {
     document.addEventListener('fullscreenchange', onChange);
     return () => document.removeEventListener('fullscreenchange', onChange);
   }, []);
+
+  // Record each finished run exactly once. StrictMode runs effects twice in
+  // development, and a re-render after the run ends must not log it again, so
+  // the session's start time is used as its identity.
+  useEffect(() => {
+    if (!typing.finished || typing.startTime === null) return;
+    if (recordedRunRef.current === typing.startTime) return;
+    recordedRunRef.current = typing.startTime;
+    setHistory(
+      appendRun({
+        ts: Date.now(),
+        wpm: typing.wpm,
+        accuracy,
+        errors: typing.errors,
+        keystrokes: typing.keystrokes,
+        chars: typing.text.length,
+        durationMs: Date.now() - typing.startTime,
+        source: textContent?.type ?? 'quotes',
+      })
+    );
+  }, [typing.finished, typing.startTime]);
 
   // Live WPM while a run is in progress. Depends only on run start/stop so the
   // interval is not torn down and recreated on every keystroke.
@@ -507,6 +532,7 @@ export const TypingTrainer: React.FC = () => {
             wpm={typing.wpm}
             accuracy={accuracy}
             errors={typing.errors}
+            summary={summarise(history)}
             actions={[
               { label: 'Try again', shortcut: 'r', onSelect: reset, primary: true },
               ...(textContent?.type === 'quotes'
@@ -526,6 +552,11 @@ export const TypingTrainer: React.FC = () => {
             onKeymapChange={setKeymap}
             onLayerReset={() => setBaseLayer(0)}
             onTextChange={setTextContent}
+            historyRuns={history.length}
+            onClearHistory={() => {
+              clearHistory();
+              setHistory([]);
+            }}
             onClose={() => setShowConfig(false)}
           />
         )}

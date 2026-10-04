@@ -59,6 +59,7 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 13. **A latched layer is a resting layout, not a destination.** `findBaseLayers` lists the root plus every layer a `&to`/`&tog` latches; the user picks which one the keyboard is toggled to, and `buildLayerAccess`/`resolveHint` measure from there. While an alternative alphabet is the base, its characters must need no access keys — showing the way back to it is the bug this replaced.
 14. **The typing surface is a real but invisible `<textarea>`.** `TextDisplay` only renders; keystrokes still go through the controlled field (`opacity-0`, off-flow) so IME, composition and mobile keyboards keep working. Never reimplement typing on raw `keydown`.
 15. **Enter is always `preventDefault`ed.** A textarea would otherwise insert a line break the text never asked for and score it as an error. `Enter` and `Tab` are applied through `typeWhitespace`, which counts one keystroke and, for a correct newline, consumes the next line's indentation for free. `Tab` is only swallowed when the text actually contains one, so focus navigation survives on prose.
+16. **A run is recorded once, keyed by its start time.** StrictMode double-invokes effects and any re-render after the run ends would log it again; `recordedRunRef` holds the finished session's `startTime`. Storage failures are swallowed — history is a nicety and must never break typing.
 
 ## Conventions
 
@@ -81,7 +82,6 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 ## Known gaps
 
 - No results screen beyond wpm/acc/err. Nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are all blocked on sampling `{second, netWpm, rawWpm, errors}` into a ref during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
-- No persistence of results: no personal best, no session total, no history.
 - Characters outside the keymap's plain and shifted bindings never resolve, so accented text (`ö`, `ä`, `ß` in the German quote file) shows the "not on this keymap" notice. Teaching `keyIndex` about `RA(...)` and compose sequences is the fix.
 - `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
 - Combos and macros are not parsed from `.keymap` files. The line-oriented scanner in `parseZmkKeymap` only enters the `keymap` node; adding sibling nodes is the point at which it should be replaced by a small DTS tokenizer rather than extended again. The same scanner also requires each layer's opening brace to end its line.
