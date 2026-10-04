@@ -1,4 +1,4 @@
-import type { TextContent, WordList, QuoteList } from '../types';
+import type { Quote, QuoteList, TextContent, WordList } from '../types';
 
 // Default minimal quotes inspired by MonkeyType
 export const DEFAULT_MINIMAL_QUOTES = [
@@ -154,18 +154,32 @@ export function getTextToType(content: TextContent, quoteIndex: number = 0): str
     return getRandomWords(content.data.words, 15, 5);
   }
 
-  if (content.type === 'quotes' && 'quotes' in content.data) {
-    const quotes = content.data.quotes;
-    if (quotes.length === 0) return '';
-    // Return single quote at specified index, cycling if necessary
-    const index = quoteIndex % quotes.length;
-    return quotes[index].text
-      .replace(/\r\n?/g, '\n')
-      .replace(/[ \t]+$/gm, '')
-      .trimEnd();
-  }
+  const quote = getQuoteAt(content, quoteIndex);
+  if (!quote) return '';
 
-  return '';
+  return quote.text
+    .replace(/\r\n?/g, '\n')
+    .replace(/[ \t]+$/gm, '')
+    .trimEnd();
+}
+
+/** The quote a session is currently on, cycling by index, or null for word lists. */
+export function getQuoteAt(content: TextContent, quoteIndex: number): Quote | null {
+  if (content.type !== 'quotes' || !('quotes' in content.data)) return null;
+  const quotes = content.data.quotes;
+  if (quotes.length === 0) return null;
+  return quotes[quoteIndex % quotes.length];
+}
+
+/**
+ * What the current text should be credited to: a quote's own source, or the
+ * name of the word list it was drawn from.
+ */
+export function getAttribution(content: TextContent, quoteIndex: number): string | null {
+  const quote = getQuoteAt(content, quoteIndex);
+  if (quote) return quote.source.trim() || null;
+  if (content.type === 'words' && 'words' in content.data) return content.data.name.trim() || null;
+  return null;
 }
 
 /**

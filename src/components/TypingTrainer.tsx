@@ -7,7 +7,12 @@ import type { LayerMode } from './KeyboardDisplay';
 import { ResultCard } from './ResultCard';
 import { ConfigPanel } from './ConfigPanel';
 import type { KeyboardLayout, ParsedKeymap, TextContent, KeyPosition } from '../types';
-import { getTextToType, getNextQuoteIndex, DEFAULT_MINIMAL_QUOTES } from '../utils/textLoader';
+import {
+  getTextToType,
+  getNextQuoteIndex,
+  getAttribution,
+  DEFAULT_MINIMAL_QUOTES,
+} from '../utils/textLoader';
 import { getQueryParam, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
 import { parseKeyboardLayout, validateKeyboardLayout } from '../utils/layoutValidator';
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
@@ -299,6 +304,8 @@ export const TypingTrainer: React.FC = () => {
     }
   };
 
+  const attribution = textContent ? getAttribution(textContent, quoteIndex) : null;
+
   const keyPositions: KeyPosition[] = layout
     ? Object.values(layout.layouts)[0]?.layout ?? []
     : [];
@@ -374,6 +381,10 @@ export const TypingTrainer: React.FC = () => {
           prompt={!inputFocused && !typing.finished && !showConfig}
           onActivate={() => inputRef.current?.focus()}
         />
+
+        {attribution && (
+          <p className="-mt-4 mb-6 font-mono text-sm text-gray-500">— {attribution}</p>
+        )}
 
         <textarea
           ref={inputRef}

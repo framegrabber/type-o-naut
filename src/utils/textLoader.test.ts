@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { TextContent } from '../types';
-import { getRandomWords, getTextToType, parseTextContent, validateTextContent } from './textLoader';
+import {
+  getAttribution,
+  getQuoteAt,
+  getRandomWords,
+  getTextToType,
+  parseTextContent,
+  validateTextContent,
+} from './textLoader';
 
 const quotes = (text: string): TextContent => ({
   type: 'quotes',
@@ -31,6 +38,45 @@ describe('getTextToType', () => {
 
   it('never requests more unique words than the list holds', () => {
     expect(getRandomWords(['a', 'b'], 10, 1).split(' ')).toHaveLength(2);
+  });
+});
+
+describe('attribution', () => {
+  const german: TextContent = {
+    type: 'quotes',
+    data: {
+      language: 'german',
+      groups: [],
+      quotes: [
+        { text: 'Das Schönste, was wir erleben können, ist das Geheimnisvolle.', source: 'Albert Einstein', id: 3, length: 61 },
+        { text: 'Ist das Leben nicht hundert Mal zu kurz?', source: 'Friedrich Nietzsche', id: 4, length: 40 },
+      ],
+    },
+  };
+
+  it('credits the quote that is currently being typed', () => {
+    expect(getAttribution(german, 0)).toBe('Albert Einstein');
+    expect(getAttribution(german, 1)).toBe('Friedrich Nietzsche');
+  });
+
+  it('cycles with the quote index', () => {
+    expect(getQuoteAt(german, 2)?.id).toBe(3);
+    expect(getAttribution(german, 3)).toBe('Friedrich Nietzsche');
+  });
+
+  it('falls back to the list name for word sessions', () => {
+    const words: TextContent = { type: 'words', data: { name: 'english_1k', words: ['a'] } };
+    expect(getQuoteAt(words, 0)).toBeNull();
+    expect(getAttribution(words, 0)).toBe('english_1k');
+  });
+
+  it('reports nothing when the source is blank', () => {
+    expect(getAttribution(quotes('hi'), 0)).toBe('x');
+    const blank: TextContent = {
+      type: 'quotes',
+      data: { language: 'x', groups: [], quotes: [{ text: 'hi', source: '  ', id: 1, length: 2 }] },
+    };
+    expect(getAttribution(blank, 0)).toBeNull();
   });
 });
 
