@@ -2,18 +2,19 @@ import React from 'react';
 import type { KeyPosition, ParsedKeymap } from '../types';
 import type { KeyHint } from '../utils/keyIndex';
 
-export type LayerMode = 'auto' | number;
-
 interface KeyboardDisplayProps {
   keyPositions: KeyPosition[];
   keyLabels: string[];
   /** Where the next character lives, or null if the keymap cannot type it. */
   hint: KeyHint | null;
-  /** Layer currently drawn, already resolved from the layer mode. */
+  /** Layer currently drawn: the hint's layer, or the base when there is none. */
   displayedLayer: number;
   keymap?: ParsedKeymap | null;
-  layerMode?: LayerMode;
-  onLayerModeChange?: (mode: LayerMode) => void;
+  /** The layout the hands rest on; access chains are measured from here. */
+  baseLayer?: number;
+  /** Layers that can serve as a base: the root plus anything &to/&tog latches. */
+  baseLayers?: number[];
+  onBaseLayerChange?: (layer: number) => void;
   scale?: number;
   keySize?: number;
 }
@@ -24,8 +25,9 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
   hint,
   displayedLayer,
   keymap,
-  layerMode = 'auto',
-  onLayerModeChange,
+  baseLayer = 0,
+  baseLayers = [],
+  onBaseLayerChange,
   scale = 50,
   keySize = 0.9,
 }) => {
@@ -34,12 +36,18 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
   const steps = hint && hint.layer === displayedLayer ? hint.steps : [];
   const targetKey = hint && hint.layer === displayedLayer ? hint.target : -1;
   const holdCount = hint?.steps.filter(s => s.engage === 'hold').length ?? 0;
-  const tapCount = hint?.steps.filter(s => s.engage === 'tap').length ?? 0;
+  const tapCount = hint?.steps.filter(s => s.engage !== 'hold').length ?? 0;
+  const onBase = hint !== null && hint.layer === baseLayer;
 
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg">
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-sm font-semibold text-gray-400">Keyboard</h2>
+        <h2 className="text-sm font-semibold text-gray-400">
+          Keyboard
+          {keymap && !onBase && hint && (
+            <span className="ml-2 font-normal text-gray-500">{hint.layerName}</span>
+          )}
+        </h2>
         <div className="flex items-center gap-3">
           {hint && hint.steps.length > 0 && (
             <span className="text-xs text-gray-400">
@@ -54,26 +62,31 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
                   tap <span className="text-sky-400">{tapCount}</span>
                 </>
               )}{' '}
-              for <span className="text-yellow-400">{hint.layerName}</span>
+              {/* On the resting layout the only extra key is a modifier. */}
+              {onBase ? (
+                'for shift'
+              ) : (
+                <>
+                  for <span className="text-yellow-400">{hint.layerName}</span>
+                </>
+              )}
             </span>
           )}
-          {keymap && keymap.layers.length > 0 && onLayerModeChange && (
-            <select
-              value={layerMode === 'auto' ? 'auto' : String(layerMode)}
-              onChange={e =>
-                onLayerModeChange(e.target.value === 'auto' ? 'auto' : Number(e.target.value))
-              }
-              className="px-3 py-1 bg-gray-700 text-white rounded border border-gray-600 focus:border-yellow-400 outline-none text-sm"
-            >
-              <option value="auto">
-                Auto{layerMode === 'auto' ? ` — ${keymap.layers[displayedLayer]?.name ?? ''}` : ''}
-              </option>
-              {keymap.layers.map((layer, i) => (
-                <option key={i} value={i}>
-                  {layer.name}
-                </option>
-              ))}
-            </select>
+          {keymap && baseLayers.length > 1 && onBaseLayerChange && (
+            <label className="flex items-center gap-2 text-xs text-gray-500">
+              layout
+              <select
+                value={baseLayer}
+                onChange={e => onBaseLayerChange(Number(e.target.value))}
+                className="px-3 py-1 bg-gray-700 text-white rounded border border-gray-600 focus:border-yellow-400 outline-none text-sm"
+              >
+                {baseLayers.map(i => (
+                  <option key={i} value={i}>
+                    {keymap.layers[i]?.name ?? `Layer ${i}`}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
         </div>
       </div>
@@ -114,7 +127,7 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
           } else if (step?.engage === 'hold') {
             keyClass = 'bg-yellow-400/20 border-yellow-400 border-dashed';
             textClass = 'text-yellow-200 text-center text-xs';
-          } else if (step?.engage === 'tap') {
+          } else if (step) {
             keyClass = 'bg-sky-400/20 border-sky-400 border-dotted';
             textClass = 'text-sky-200 text-center text-xs';
           }

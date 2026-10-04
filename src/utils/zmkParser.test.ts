@@ -106,8 +106,8 @@ describe('parseZmkKeymap', () => {
         };
       };
     `).layers[0].bindings).toEqual([
-      { label: '⏱L2', engages: { layer: 2 }, engage: 'tap' },
-      { label: '⏱Shift', engages: { mod: 'shift' }, engage: 'tap' },
+      { label: '⏱L2', engages: { layer: 2 }, engage: 'sticky' },
+      { label: '⏱Shift', engages: { mod: 'shift' }, engage: 'sticky' },
     ]);
   });
 

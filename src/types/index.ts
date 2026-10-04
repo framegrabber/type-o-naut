@@ -27,8 +27,11 @@ export interface Keycode {
   mods: Modifier[];
 }
 
-/** How a key's secondary action is engaged. */
-export type Engage = 'hold' | 'tap';
+/**
+ * How a key's secondary action is engaged: held down, tapped to latch, or
+ * tapped to apply to the next key only.
+ */
+export type Engage = 'hold' | 'tap' | 'sticky';
 
 export interface Binding {
   /** Text drawn on the keycap. */

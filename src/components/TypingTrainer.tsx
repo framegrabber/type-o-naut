@@ -3,7 +3,6 @@ import { RotateCcw, Settings, Keyboard } from 'lucide-react';
 import { StatsDisplay } from './StatsDisplay';
 import { TextDisplay } from './TextDisplay';
 import { KeyboardDisplay } from './KeyboardDisplay';
-import type { LayerMode } from './KeyboardDisplay';
 import { ResultCard } from './ResultCard';
 import { ConfigPanel } from './ConfigPanel';
 import type { KeyboardLayout, ParsedKeymap, TextContent, KeyPosition } from '../types';
@@ -16,7 +15,12 @@ import {
 import { getQueryParam, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
 import { parseKeyboardLayout, validateKeyboardLayout } from '../utils/layoutValidator';
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
-import { buildCharIndex, buildLayerAccess, resolveHint } from '../utils/keyIndex';
+import {
+  buildCharIndex,
+  buildLayerAccess,
+  findBaseLayers,
+  resolveHint,
+} from '../utils/keyIndex';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
 
 const DEFAULT_LAYOUT_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.json`;
@@ -67,7 +71,7 @@ function netWpm(input: string, text: string, startTime: number | null, now: numb
 export const TypingTrainer: React.FC = () => {
   const [layout, setLayout] = useState<KeyboardLayout | null>(null);
   const [keymap, setKeymap] = useState<ParsedKeymap | null>(null);
-  const [layerMode, setLayerMode] = useState<LayerMode>('auto');
+  const [baseLayer, setBaseLayer] = useState(0);
   const [textContent, setTextContent] = useState<TextContent | null>(null);
   const [showKeyboard, setShowKeyboard] = useState(true);
   const [showConfig, setShowConfig] = useState(false);
@@ -156,7 +160,7 @@ export const TypingTrainer: React.FC = () => {
           const parsed = parseZmkKeymap(text);
           if (validateParsedKeymap(parsed).length === 0) {
             setKeymap(parsed);
-            setLayerMode('auto');
+            setBaseLayer(0);
           }
         } catch (err) {
           console.error('Failed to load keymap from URL:', err);
@@ -310,21 +314,23 @@ export const TypingTrainer: React.FC = () => {
     ? Object.values(layout.layouts)[0]?.layout ?? []
     : [];
 
-  // Indexes depend only on the keymap, so they survive every keystroke.
+  // The character index depends only on the keymap; the access chains also
+  // depend on which layout the hands are resting on.
   const charIndex = useMemo(() => (keymap ? buildCharIndex(keymap) : null), [keymap]);
-  const layerAccess = useMemo(() => (keymap ? buildLayerAccess(keymap) : null), [keymap]);
+  const baseLayers = useMemo(() => (keymap ? findBaseLayers(keymap) : []), [keymap]);
+  const layerAccess = useMemo(
+    () => (keymap ? buildLayerAccess(keymap, baseLayer) : null),
+    [keymap, baseLayer]
+  );
 
   const nextChar: string | undefined = typing.text[typing.input.length];
-  // In auto mode the base layer is the reference point, so characters that
-  // exist on several layers resolve to the one closest to home.
-  const preferredLayer = layerMode === 'auto' ? 0 : layerMode;
   const hint =
     keymap && charIndex && layerAccess && nextChar !== undefined
-      ? resolveHint(nextChar, keymap, charIndex, layerAccess, keyPositions, preferredLayer)
+      ? resolveHint(nextChar, keymap, charIndex, layerAccess, keyPositions, baseLayer, baseLayer)
       : null;
 
-  // Auto mode follows the character; a manual choice pins the view.
-  const displayedLayer = layerMode === 'auto' ? hint?.layer ?? 0 : layerMode;
+  // The view follows the character; with nothing to show it rests on the base.
+  const displayedLayer = hint?.layer ?? baseLayer;
 
   const keyLabels: string[] = keymap?.layers[displayedLayer]?.bindings.map(b => b.label) ?? [];
 
@@ -451,8 +457,9 @@ export const TypingTrainer: React.FC = () => {
               hint={hint}
               keymap={keymap}
               displayedLayer={displayedLayer}
-              layerMode={layerMode}
-              onLayerModeChange={setLayerMode}
+              baseLayer={baseLayer}
+              baseLayers={baseLayers}
+              onBaseLayerChange={setBaseLayer}
             />
           </>
         )}
@@ -480,7 +487,7 @@ export const TypingTrainer: React.FC = () => {
             textContent={textContent}
             onLayoutChange={setLayout}
             onKeymapChange={setKeymap}
-            onLayerReset={() => setLayerMode('auto')}
+            onLayerReset={() => setBaseLayer(0)}
             onTextChange={setTextContent}
             onClose={() => setShowConfig(false)}
           />

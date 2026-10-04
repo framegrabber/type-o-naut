@@ -99,6 +99,25 @@ export function buildLayerAccess(keymap: ParsedKeymap, baseLayer = 0): LayerAcce
   return access;
 }
 
+/**
+ * Layers that can serve as a resting layout: the root plus any layer a key
+ * latches on with &to/&tog. An alternative alphabet such as a Colemak or
+ * FOCAL layer is reached that way and then stays active, so while it is on,
+ * it *is* the base and its characters need no access keys. Momentary and
+ * sticky layers are excluded; you never rest on them.
+ */
+export function findBaseLayers(keymap: ParsedKeymap, root = 0): number[] {
+  const bases = [root];
+  keymap.layers.forEach(layer =>
+    layer.bindings.forEach(binding => {
+      if (binding.engage !== 'tap' || !binding.engages || !('layer' in binding.engages)) return;
+      const candidate = binding.engages.layer;
+      if (candidate < keymap.layers.length && !bases.includes(candidate)) bases.push(candidate);
+    })
+  );
+  return bases;
+}
+
 /** Keys on a layer that bring shift into play, by hold-tap, plain modifier or sticky key. */
 function shiftKeys(keymap: ParsedKeymap, layerIndex: number): KeyStep[] {
   const layer = keymap.layers[layerIndex];

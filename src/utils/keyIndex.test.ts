@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { KeyboardLayout, KeyPosition } from '../types';
-import { buildCharIndex, buildLayerAccess, resolveHint } from './keyIndex';
+import { buildCharIndex, buildLayerAccess, findBaseLayers, resolveHint } from './keyIndex';
 import { parseZmkKeymap } from './zmkParser';
 
 const keymap = parseZmkKeymap(readFileSync('public/defaults/ergonaut_one_s.keymap', 'utf8'));
@@ -98,5 +98,35 @@ describe('resolveHint', () => {
 
   it('returns null for characters the keymap cannot produce', () => {
     expect(hintFor('€')).toBeNull();
+  });
+});
+
+describe('findBaseLayers', () => {
+  it('offers the root plus any layer a toggle latches on', () => {
+    // FOCAL is an alternative alphabet latched by NAV's &tog 1; the momentary
+    // and sticky layers are not places the hands rest.
+    expect(findBaseLayers(keymap)).toEqual([0, 1]);
+  });
+});
+
+describe('an alternative base layout', () => {
+  const focalAccess = buildLayerAccess(keymap, 1);
+  const focalHint = (char: string) =>
+    resolveHint(char, keymap, charIndex, focalAccess, keyPositions, 1, 1);
+
+  it('needs no access keys once it is the layout you rest on', () => {
+    const hint = focalHint('t')!;
+    expect(hint.layer).toBe(1);
+    expect(hint.steps).toEqual([]);
+    expect(labelOf(1, hint.target)).toBe('T');
+  });
+
+  it('places characters where that layout puts them, not where MAIN does', () => {
+    // FOCAL moves T to the right of the left home row; MAIN has it on the top.
+    expect(focalHint('t')!.target).not.toBe(hintFor('t')!.target);
+  });
+
+  it('reaches other layers through the keys of that layout', () => {
+    expect(focalHint('1')!.steps).toEqual([{ keyIndex: 34, engage: 'hold' }]);
   });
 });

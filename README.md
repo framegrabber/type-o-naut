@@ -108,7 +108,8 @@ The trainer resolves the next character against the whole keymap, not just the l
 
 - **Cross-layer.** Typing `1` finds it on NUM and shows the layer key to engage; the keyboard view follows along. Layers reachable only from another layer are chained, so a two-step path is shown as two keys. Momentary layers (`&mo`, `&lt`) are marked as **held** in yellow; layers you latch or make sticky (`&to`, `&tog`, `&sl`) are marked as **tapped** in blue, because holding them would be wrong.
 - **Shift.** Capitals and shifted symbols add a shift key, picked from the hand opposite the target. Keycodes that already carry shift in firmware (`&kp EXCL`) need no shift from you.
-- **Layer view.** The selector defaults to **Auto** and follows the character. Picking a layer by hand pins the view; hints are then only drawn while the character is on that layer.
+- **Alternative layouts.** A layer that a `&to`/`&tog` key latches on — a Colemak or FOCAL alphabet, say — is a *resting layout*, not somewhere you visit. The **layout** selector lists those (the root layer plus every latched one); pick the one your keyboard is currently toggled to and the trainer measures everything from there, so its own characters need no access keys and other layers are reached through its thumbs. This is the mode for learning a new alphabet.
+- **Layer view.** The keyboard always follows the character being typed and falls back to the resting layout when there is nothing to show.
 - **Unreachable characters** are called out above the keyboard rather than silently highlighting nothing.
 
 Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildCharIndex` maps every character the keymap can produce to the keys that produce it, `buildLayerAccess` breadth-first searches the chain of steps to each layer and records whether each one is held or tapped, and `resolveHint` picks a target — preferring the displayed layer, then no shift, then the shortest chain.

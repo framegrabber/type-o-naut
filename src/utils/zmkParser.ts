@@ -235,7 +235,7 @@ function parseKeyBinding(binding: string): Binding {
 
   // &sl LAYER - sticky layer: tapped, applies to the next key only.
   if (behavior === '&SL' && parts.length >= 2) {
-    return { label: `⏱L${parts[1]}`, engages: { layer: Number(parts[1]) }, engage: 'tap' };
+    return { label: `⏱L${parts[1]}`, engages: { layer: Number(parts[1]) }, engage: 'sticky' };
   }
 
   // &sk KEYCODE - sticky key, most often a sticky modifier, also tapped.
@@ -243,7 +243,7 @@ function parseKeyBinding(binding: string): Binding {
     const tap = parseKeycode(parts[1]);
     const mod = MODIFIER_KEYCODES[tap.code];
     const label = `⏱${mapKeycode(parts[1])}`;
-    return mod ? { label, engages: { mod }, engage: 'tap' } : { label, tap };
+    return mod ? { label, engages: { mod }, engage: 'sticky' } : { label, tap };
   }
 
   // Hold-tap family: &lt LAYER KEYCODE, &mt MOD KEYCODE and user-defined
