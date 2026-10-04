@@ -123,6 +123,8 @@ Pasting is blocked: only single-character edits are accepted, so a run cannot be
 
 You type onto the text itself: there is no visible input box, the caret sits in the passage, correct characters brighten and mistakes turn red. Clicking the text or pressing any key takes focus back; while focus is elsewhere the passage dims.
 
+The end-of-run card is keyboard-only friendly: focus lands on **Try again**, `Tab` and the arrow keys cycle the actions, `Enter` or `Space` activates, `Escape` retries, and each action has a single-key shortcut (`r`, `n`).
+
 ## Tests
 
 ```bash

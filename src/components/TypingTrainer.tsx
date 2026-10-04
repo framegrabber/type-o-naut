@@ -4,6 +4,7 @@ import { StatsDisplay } from './StatsDisplay';
 import { TextDisplay } from './TextDisplay';
 import { KeyboardDisplay } from './KeyboardDisplay';
 import type { LayerMode } from './KeyboardDisplay';
+import { ResultCard } from './ResultCard';
 import { ConfigPanel } from './ConfigPanel';
 import type { KeyboardLayout, ParsedKeymap, TextContent, KeyPosition } from '../types';
 import { getTextToType, getNextQuoteIndex, DEFAULT_MINIMAL_QUOTES } from '../utils/textLoader';
@@ -398,40 +399,19 @@ export const TypingTrainer: React.FC = () => {
           </>
         )}
 
-        {/* Finish Modal */}
+        {/* Result */}
         {typing.finished && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-40">
-            <div className="bg-gray-800 p-8 rounded-lg max-w-md">
-              <h2 className="text-3xl font-bold text-yellow-400 mb-4">Test Complete!</h2>
-              <div className="space-y-2 mb-6">
-                <p className="text-xl">
-                  WPM: <span className="text-yellow-400 font-bold">{typing.wpm}</span>
-                </p>
-                <p className="text-xl">
-                  Accuracy: <span className="text-green-400 font-bold">{accuracy}%</span>
-                </p>
-                <p className="text-xl">
-                  Errors: <span className="text-red-400 font-bold">{typing.errors}</span>
-                </p>
-              </div>
-              <div className="flex gap-4">
-                <button
-                  onClick={reset}
-                  className="flex-1 px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
-                >
-                  Try Again
-                </button>
-                {textContent?.type === 'quotes' && (
-                  <button
-                    onClick={nextQuote}
-                    className="flex-1 px-6 py-3 bg-gray-700 text-gray-100 rounded-lg hover:bg-gray-600 transition-colors font-semibold"
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          <ResultCard
+            wpm={typing.wpm}
+            accuracy={accuracy}
+            errors={typing.errors}
+            actions={[
+              { label: 'Try again', shortcut: 'r', onSelect: reset, primary: true },
+              ...(textContent?.type === 'quotes'
+                ? [{ label: 'Next', shortcut: 'n', onSelect: nextQuote }]
+                : [{ label: 'New text', shortcut: 'n', onSelect: newText }]),
+            ]}
+          />
         )}
 
         {/* Config Panel */}
