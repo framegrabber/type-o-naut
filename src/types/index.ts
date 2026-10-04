@@ -27,15 +27,21 @@ export interface Keycode {
   mods: Modifier[];
 }
 
+/** How a key's secondary action is engaged. */
+export type Engage = 'hold' | 'tap';
+
 export interface Binding {
   /** Text drawn on the keycap. */
   label: string;
   /** What a plain press emits, when it emits anything. */
   tap?: Keycode;
-  /** Hold action of a hold-tap (&mt/&lt and user-defined behaviors). */
-  hold?: { mod: Modifier } | { layer: number };
-  /** Layer activated by a dedicated layer behavior (&mo/&to/&tog/&sl). */
-  activates?: { layer: number; sticky: boolean };
+  /**
+   * The modifier or layer this key brings into play, beyond its tap. Hold-taps
+   * (&mt/&lt/&hm) and momentary layers (&mo) are engaged by holding; toggles
+   * (&to/&tog) and sticky behaviors (&sl/&sk) are engaged by tapping.
+   */
+  engages?: { mod: Modifier } | { layer: number };
+  engage?: Engage;
 }
 
 export interface KeymapLayer {

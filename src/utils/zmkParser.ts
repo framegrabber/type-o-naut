@@ -187,8 +187,8 @@ function mapKeycode(keycode: string): string {
   return withoutPrefix.replace(/_/g, ' ').slice(0, 12);
 }
 
-/** Hold parameter of a hold-tap: either a layer number or a modifier. */
-function parseHold(token: string): Binding['hold'] {
+/** Secondary parameter of a hold-tap: either a layer number or a modifier. */
+function parseEngages(token: string): Binding['engages'] {
   if (/^\d+$/.test(token)) return { layer: Number(token) };
   const mod = MODIFIER_KEYCODES[parseKeycode(token).code];
   return mod ? { mod } : undefined;
@@ -221,30 +221,40 @@ function parseKeyBinding(binding: string): Binding {
     const tap = parseKeycode(parts[1]);
     const mod = MODIFIER_KEYCODES[tap.code];
     return mod
-      ? { label: mapKeycode(parts[1]), hold: { mod } }
+      ? { label: mapKeycode(parts[1]), engages: { mod }, engage: 'hold' }
       : { label: mapKeycode(parts[1]), tap };
   }
 
-  // Layer behaviors: &mo/&to/&tog LAYER, &sl LAYER (sticky)
-  if ((behavior === '&MO' || behavior === '&TO' || behavior === '&TOG') && parts.length >= 2) {
-    return { label: `L${parts[1]}`, activates: { layer: Number(parts[1]), sticky: false } };
+  // &mo LAYER is momentary: held. &to/&tog LAYER latch the layer on a tap.
+  if (behavior === '&MO' && parts.length >= 2) {
+    return { label: `L${parts[1]}`, engages: { layer: Number(parts[1]) }, engage: 'hold' };
   }
-  if (behavior === '&SL' && parts.length >= 2) {
-    return { label: `⏱L${parts[1]}`, activates: { layer: Number(parts[1]), sticky: true } };
+  if ((behavior === '&TO' || behavior === '&TOG') && parts.length >= 2) {
+    return { label: `L${parts[1]}`, engages: { layer: Number(parts[1]) }, engage: 'tap' };
   }
 
-  // &sk KEYCODE - sticky key, most often a sticky modifier
+  // &sl LAYER - sticky layer: tapped, applies to the next key only.
+  if (behavior === '&SL' && parts.length >= 2) {
+    return { label: `⏱L${parts[1]}`, engages: { layer: Number(parts[1]) }, engage: 'tap' };
+  }
+
+  // &sk KEYCODE - sticky key, most often a sticky modifier, also tapped.
   if (behavior === '&SK' && parts.length >= 2) {
     const tap = parseKeycode(parts[1]);
     const mod = MODIFIER_KEYCODES[tap.code];
     const label = `⏱${mapKeycode(parts[1])}`;
-    return mod ? { label, hold: { mod } } : { label, tap };
+    return mod ? { label, engages: { mod }, engage: 'tap' } : { label, tap };
   }
 
   // Hold-tap family: &lt LAYER KEYCODE, &mt MOD KEYCODE and user-defined
   // hold-taps such as &hm/&hrm. The tap (last) parameter is what gets typed.
   if (parts.length === 3) {
-    return { label: mapKeycode(parts[2]), tap: parseKeycode(parts[2]), hold: parseHold(parts[1]) };
+    const engages = parseEngages(parts[1]);
+    return {
+      label: mapKeycode(parts[2]),
+      tap: parseKeycode(parts[2]),
+      ...(engages ? { engages, engage: 'hold' as const } : {}),
+    };
   }
 
   // Fallback: single parameter behaves like a keycode, otherwise show the name.

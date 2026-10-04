@@ -29,21 +29,32 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
   scale = 50,
   keySize = 0.9,
 }) => {
-  // Hold keys are indices on the base layer; they stay physically correct even
-  // while a different layer's labels are drawn.
-  const holdKeys = hint && hint.layer === displayedLayer ? hint.hold : [];
+  // Steps are physical key indices; they stay correct even while a different
+  // layer's labels are drawn.
+  const steps = hint && hint.layer === displayedLayer ? hint.steps : [];
   const targetKey = hint && hint.layer === displayedLayer ? hint.target : -1;
+  const holdCount = hint?.steps.filter(s => s.engage === 'hold').length ?? 0;
+  const tapCount = hint?.steps.filter(s => s.engage === 'tap').length ?? 0;
 
   return (
     <div className="bg-gray-800/60 p-4 rounded-lg">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-sm font-semibold text-gray-400">Keyboard</h2>
         <div className="flex items-center gap-3">
-          {hint && hint.hold.length > 0 && (
+          {hint && hint.steps.length > 0 && (
             <span className="text-xs text-gray-400">
-              hold <span className="text-yellow-400">{hint.hold.length}</span> key
-              {hint.hold.length > 1 ? 's' : ''} for{' '}
-              <span className="text-yellow-400">{hint.layerName}</span>
+              {holdCount > 0 && (
+                <>
+                  hold <span className="text-yellow-400">{holdCount}</span>
+                </>
+              )}
+              {holdCount > 0 && tapCount > 0 && ', '}
+              {tapCount > 0 && (
+                <>
+                  tap <span className="text-sky-400">{tapCount}</span>
+                </>
+              )}{' '}
+              for <span className="text-yellow-400">{hint.layerName}</span>
             </span>
           )}
           {keymap && keymap.layers.length > 0 && onLayerModeChange && (
@@ -79,7 +90,7 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
         {keyPositions.map((key, index) => {
           const label = keyLabels[index] || '';
           const isTarget = index === targetKey;
-          const isHold = holdKeys.includes(index);
+          const step = steps.find(s => s.keyIndex === index);
           // rx/ry of 0 are valid rotation origins, so test for undefined.
           const hasOrigin = key.rx !== undefined && key.ry !== undefined;
 
@@ -100,15 +111,18 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
           if (isTarget) {
             keyClass = 'bg-yellow-400 border-yellow-500 scale-110 shadow-lg';
             textClass = 'text-gray-900 font-bold text-center';
-          } else if (isHold) {
+          } else if (step?.engage === 'hold') {
             keyClass = 'bg-yellow-400/20 border-yellow-400 border-dashed';
             textClass = 'text-yellow-200 text-center text-xs';
+          } else if (step?.engage === 'tap') {
+            keyClass = 'bg-sky-400/20 border-sky-400 border-dotted';
+            textClass = 'text-sky-200 text-center text-xs';
           }
 
           return (
             <div
               key={index}
-              title={isHold ? 'hold' : undefined}
+              title={step?.engage}
               style={style}
               className={`
                 flex items-center justify-center rounded border-2 text-sm font-mono overflow-hidden

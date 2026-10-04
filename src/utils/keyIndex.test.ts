@@ -21,40 +21,54 @@ const labelOf = (layer: number, key: number) => keymap.layers[layer].bindings[ke
 describe('buildLayerAccess', () => {
   it('finds the key that reaches each directly accessible layer', () => {
     expect(layerAccess.get(0)).toEqual([]);
-    expect(layerAccess.get(5)).toEqual([34]); // &lt 5 SPACE -> NUM
-    expect(layerAccess.get(6)).toEqual([33]); // &lt 6 RET   -> SYM
+    // &lt 5 SPACE -> NUM and &lt 6 RET -> SYM are hold-taps.
+    expect(layerAccess.get(5)).toEqual([{ keyIndex: 34, engage: 'hold' }]);
+    expect(layerAccess.get(6)).toEqual([{ keyIndex: 33, engage: 'hold' }]);
   });
 
-  it('chains holds for layers that are only reachable from another layer', () => {
+  it('chains steps for layers only reachable from another layer', () => {
     // &mo 8 lives on MOUSE, which is itself reached from the base layer.
-    expect(layerAccess.get(8)).toEqual([30, 32]);
+    expect(layerAccess.get(8)).toEqual([
+      { keyIndex: 30, engage: 'hold' },
+      { keyIndex: 32, engage: 'hold' },
+    ]);
+  });
+
+  it('marks a toggled layer as tapped, not held', () => {
+    // NAV's &tog 1 latches FOCAL: hold the NAV thumb, then tap the toggle.
+    expect(layerAccess.get(1)).toEqual([
+      { keyIndex: 31, engage: 'hold' },
+      { keyIndex: 4, engage: 'tap' },
+    ]);
   });
 });
 
 describe('resolveHint', () => {
-  it('resolves a base-layer character with nothing held', () => {
-    expect(hintFor('a')).toMatchObject({ layer: 0, target: 10, hold: [] });
+  it('resolves a base-layer character with nothing to engage', () => {
+    expect(hintFor('a')).toMatchObject({ layer: 0, target: 10, steps: [] });
   });
 
   it('adds a shift key for capitals, on the opposite hand', () => {
     const hint = hintFor('A')!;
     expect(hint.target).toBe(10);
-    expect(hint.hold).toHaveLength(1);
+    expect(hint.steps).toHaveLength(1);
+    const shift = hint.steps[0];
+    expect(shift.engage).toBe('hold');
     // Target is on the left half, so the right-hand shift is chosen.
-    expect(keyPositions[hint.hold[0]].x).toBeGreaterThan(keyPositions[hint.target].x);
-    expect(keymap.layers[0].bindings[hint.hold[0]].hold).toEqual({ mod: 'shift' });
+    expect(keyPositions[shift.keyIndex].x).toBeGreaterThan(keyPositions[hint.target].x);
+    expect(keymap.layers[0].bindings[shift.keyIndex].engages).toEqual({ mod: 'shift' });
   });
 
   it('crosses to another layer for digits and symbols', () => {
     const one = hintFor('1')!;
     expect(one.layerName).toBe('NUM');
     expect(labelOf(one.layer, one.target)).toBe('1');
-    expect(one.hold).toEqual([34]);
+    expect(one.steps).toEqual([{ keyIndex: 34, engage: 'hold' }]);
 
     const bang = hintFor('!')!;
     expect(bang.layerName).toBe('SYM');
     // &kp EXCL already carries shift in firmware, so only the layer key is held.
-    expect(bang.hold).toEqual([33]);
+    expect(bang.steps).toEqual([{ keyIndex: 33, engage: 'hold' }]);
   });
 
   it('combines a layer hold with a shift hold from the target layer', () => {
@@ -63,8 +77,11 @@ describe('resolveHint', () => {
     expect(labelOf(quote.layer, quote.target)).toBe("'");
     // The layer thumb, then NUM's own shift — the base layer's home-row mods
     // are unreachable while that thumb is held.
-    expect(quote.hold).toEqual([34, 16]);
-    expect(labelOf(quote.layer, quote.hold[1])).toBe('Shift');
+    expect(quote.steps).toEqual([
+      { keyIndex: 34, engage: 'hold' },
+      { keyIndex: 16, engage: 'hold' },
+    ]);
+    expect(labelOf(quote.layer, quote.steps[1].keyIndex)).toBe('Shift');
   });
 
   it('prefers a target on the layer already being shown', () => {

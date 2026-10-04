@@ -1,4 +1,4 @@
-import type { KeyPosition, ParsedKeymap } from '../types';
+import type { Engage, KeyPosition, ParsedKeymap } from '../types';
 import { charsFor } from './zmkParser';
 
 /** A key that emits a character, and whether shift has to be held for it. */
@@ -8,6 +8,12 @@ export interface KeyTarget {
   shift: boolean;
 }
 
+/** A key to press before the target, and how: held down, or tapped once. */
+export interface KeyStep {
+  keyIndex: number;
+  engage: Engage;
+}
+
 /** Everything the keyboard view needs to guide the next keystroke. */
 export interface KeyHint {
   /** Layer the character lives on. */
@@ -15,13 +21,13 @@ export interface KeyHint {
   layerName: string;
   /** Index of the key to press. */
   target: number;
-  /** Keys that must be held first, as indices on the *base* layer. */
-  hold: number[];
+  /** Keys to engage first, in order, as physical key indices. */
+  steps: KeyStep[];
 }
 
 export type CharIndex = Map<string, KeyTarget[]>;
-/** Layer number -> base-layer key indices to hold, in order, to reach it. */
-export type LayerAccess = Map<number, number[]>;
+/** Layer number -> the keys to engage, in order, to reach that layer. */
+export type LayerAccess = Map<number, KeyStep[]>;
 
 /**
  * Map every character the keymap can produce to the keys that produce it.
@@ -66,9 +72,10 @@ export function buildCharIndex(keymap: ParsedKeymap): CharIndex {
 }
 
 /**
- * Shortest chain of base-layer keys that activates each layer. Layers can be
- * nested (a &mo on a non-base layer), so this is a breadth-first search rather
- * than a single lookup.
+ * Shortest chain of keys that reaches each layer. Layers can be nested (a &mo
+ * on a non-base layer), so this is a breadth-first search rather than a single
+ * lookup. Each step records whether the key is held (&mo, &lt) or tapped
+ * (&to/&tog latch the layer, &sl applies it to the next key).
  */
 export function buildLayerAccess(keymap: ParsedKeymap, baseLayer = 0): LayerAccess {
   const access: LayerAccess = new Map([[baseLayer, []]]);
@@ -81,9 +88,10 @@ export function buildLayerAccess(keymap: ParsedKeymap, baseLayer = 0): LayerAcce
     if (!layer) continue;
 
     layer.bindings.forEach((binding, keyIndex) => {
-      const to = binding.activates?.layer ?? (binding.hold && 'layer' in binding.hold ? binding.hold.layer : undefined);
-      if (to === undefined || access.has(to)) return;
-      access.set(to, [...path, keyIndex]);
+      if (!binding.engages || !('layer' in binding.engages)) return;
+      const to = binding.engages.layer;
+      if (access.has(to)) return;
+      access.set(to, [...path, { keyIndex, engage: binding.engage ?? 'hold' }]);
       queue.push(to);
     });
   }
@@ -91,19 +99,21 @@ export function buildLayerAccess(keymap: ParsedKeymap, baseLayer = 0): LayerAcce
   return access;
 }
 
-/** Keys on a layer that hold shift: a hold-tap, a plain modifier or a sticky key. */
-function shiftKeys(keymap: ParsedKeymap, layerIndex: number): number[] {
+/** Keys on a layer that bring shift into play, by hold-tap, plain modifier or sticky key. */
+function shiftKeys(keymap: ParsedKeymap, layerIndex: number): KeyStep[] {
   const layer = keymap.layers[layerIndex];
   if (!layer) return [];
-  const keys: number[] = [];
+  const keys: KeyStep[] = [];
   layer.bindings.forEach((binding, keyIndex) => {
-    if (binding.hold && 'mod' in binding.hold && binding.hold.mod === 'shift') keys.push(keyIndex);
+    if (binding.engages && 'mod' in binding.engages && binding.engages.mod === 'shift') {
+      keys.push({ keyIndex, engage: binding.engage ?? 'hold' });
+    }
   });
   return keys;
 }
 
 /**
- * Pick the key to press for `char`, plus the keys to hold to get there.
+ * Pick the key to press for `char`, plus the keys to engage to get there.
  *
  * Preference order: a target on the layer already being shown, then one that
  * needs no shift, then the shortest layer chain, then the lowest layer. Shift
@@ -129,33 +139,33 @@ export function resolveHint(
     t.layer;
 
   const best = candidates.reduce((a, b) => (cost(b) < cost(a) ? b : a));
-  const hold = [...layerAccess.get(best.layer)!];
+  const steps = [...layerAccess.get(best.layer)!];
 
   if (best.shift) {
     // While a layer is held the base layer's home-row mods are out of reach,
     // so take shift from the target layer when it offers one.
     const onTargetLayer = shiftKeys(keymap, best.layer);
     const source = onTargetLayer.length > 0 ? onTargetLayer : shiftKeys(keymap, baseLayer);
-    const available = source.filter(k => !hold.includes(k));
+    const available = source.filter(s => !steps.some(step => step.keyIndex === s.keyIndex));
     const targetX = keyPositions[best.keyIndex]?.x;
     const midpoint =
       keyPositions.length > 0
         ? keyPositions.reduce((sum, k) => sum + k.x, 0) / keyPositions.length
         : 0;
     // Opposite hand first; without coordinates, any shift key will do.
-    const opposite = available.filter(k => {
-      const x = keyPositions[k]?.x;
+    const opposite = available.filter(s => {
+      const x = keyPositions[s.keyIndex]?.x;
       if (x === undefined || targetX === undefined) return false;
       return x < midpoint !== targetX < midpoint;
     });
     const chosen = opposite[0] ?? available[0];
-    if (chosen !== undefined) hold.push(chosen);
+    if (chosen !== undefined) steps.push(chosen);
   }
 
   return {
     layer: best.layer,
     layerName: keymap.layers[best.layer]?.name ?? `Layer ${best.layer}`,
     target: best.keyIndex,
-    hold,
+    steps,
   };
 }

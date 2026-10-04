@@ -106,12 +106,12 @@ New keycodes go in `ZMK_KEYCODE_MAP` (keycap text) and `KEYCODE_CHARS` (the char
 
 The trainer resolves the next character against the whole keymap, not just the layer on screen:
 
-- **Cross-layer.** Typing `1` finds it on NUM and shows the layer key to hold; the keyboard view follows along. Layers reachable only from another layer are chained, so a two-hold path is shown as two keys.
+- **Cross-layer.** Typing `1` finds it on NUM and shows the layer key to engage; the keyboard view follows along. Layers reachable only from another layer are chained, so a two-step path is shown as two keys. Momentary layers (`&mo`, `&lt`) are marked as **held** in yellow; layers you latch or make sticky (`&to`, `&tog`, `&sl`) are marked as **tapped** in blue, because holding them would be wrong.
 - **Shift.** Capitals and shifted symbols add a shift key, picked from the hand opposite the target. Keycodes that already carry shift in firmware (`&kp EXCL`) need no shift from you.
 - **Layer view.** The selector defaults to **Auto** and follows the character. Picking a layer by hand pins the view; hints are then only drawn while the character is on that layer.
 - **Unreachable characters** are called out above the keyboard rather than silently highlighting nothing.
 
-Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildCharIndex` maps every character the keymap can produce to the keys that produce it, `buildLayerAccess` breadth-first searches the hold chain to each layer, and `resolveHint` picks a target — preferring the displayed layer, then no shift, then the shortest chain.
+Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildCharIndex` maps every character the keymap can produce to the keys that produce it, `buildLayerAccess` breadth-first searches the chain of steps to each layer and records whether each one is held or tapped, and `resolveHint` picks a target — preferring the displayed layer, then no shift, then the shortest chain.
 
 ## How the metrics work
 
