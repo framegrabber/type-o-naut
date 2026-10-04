@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { RotateCcw, Settings, Keyboard } from 'lucide-react';
+import { Keyboard, Maximize, Minimize, RotateCcw, Settings } from 'lucide-react';
 import { StatsDisplay } from './StatsDisplay';
 import { TextDisplay } from './TextDisplay';
 import { KeyboardDisplay } from './KeyboardDisplay';
@@ -78,6 +78,7 @@ export const TypingTrainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quoteIndex, setQuoteIndex] = useState(0); // Track current quote for quote sessions
   const [sessionNonce, setSessionNonce] = useState(0); // Bumped to re-roll a word session
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [inputFocused, setInputFocused] = useState(false);
 
   const [typing, setTyping] = useState<TypingState>({ text: '', ...EMPTY_SESSION });
@@ -207,6 +208,14 @@ export const TypingTrainer: React.FC = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [showConfig, typing.finished]);
 
+  // Fullscreen can also be left with Esc or F11, which the browser handles
+  // without telling us, so the flag follows the document rather than the click.
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(document.fullscreenElement !== null);
+    document.addEventListener('fullscreenchange', onChange);
+    return () => document.removeEventListener('fullscreenchange', onChange);
+  }, []);
+
   // Live WPM while a run is in progress. Depends only on run start/stop so the
   // interval is not torn down and recreated on every keystroke.
   useEffect(() => {
@@ -284,6 +293,17 @@ export const TypingTrainer: React.FC = () => {
     });
   };
 
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
+    } catch (err) {
+      // Denied by the browser (iOS Safari has no element fullscreen at all).
+      console.error('Fullscreen request failed:', err);
+    }
+    inputRef.current?.focus();
+  };
+
   const reset = () => {
     setTyping(prev => ({ ...prev, ...EMPTY_SESSION }));
     inputRef.current?.focus();
@@ -354,26 +374,43 @@ export const TypingTrainer: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 px-8 py-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-bold text-yellow-400">Type-o-naut</h1>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setShowKeyboard(!showKeyboard)}
-              className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
-              title="Toggle keyboard display"
-            >
-              <Keyboard size={20} />
-            </button>
-            <button
-              onClick={() => setShowConfig(true)}
-              className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
-              title="Open configuration"
-            >
-              <Settings size={20} />
-            </button>
+        {/* Header. Fullscreen is a distraction-free mode, so it goes too. */}
+        {isFullscreen ? (
+          <button
+            onClick={toggleFullscreen}
+            className="fixed top-3 right-3 z-30 p-2 rounded text-gray-700 hover:text-gray-300 hover:bg-gray-800 transition-colors"
+            title="Leave fullscreen (Esc)"
+          >
+            <Minimize size={18} />
+          </button>
+        ) : (
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-xl font-bold text-yellow-400">Type-o-naut</h1>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowKeyboard(!showKeyboard)}
+                className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
+                title="Toggle keyboard display"
+              >
+                <Keyboard size={20} />
+              </button>
+              <button
+                onClick={toggleFullscreen}
+                className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
+                title="Fullscreen"
+              >
+                <Maximize size={20} />
+              </button>
+              <button
+                onClick={() => setShowConfig(true)}
+                className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
+                title="Open configuration"
+              >
+                <Settings size={20} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Stats */}
         <StatsDisplay wpm={typing.wpm} accuracy={accuracy} errors={typing.errors} />
@@ -423,8 +460,8 @@ export const TypingTrainer: React.FC = () => {
           className="absolute opacity-0 w-px h-px -z-10 resize-none"
         />
 
-        {/* Controls */}
-        <div className="flex gap-3 mb-6">
+        {/* Controls. Hidden in fullscreen; the result card covers both. */}
+        <div className={`flex gap-3 mb-6 ${isFullscreen ? 'hidden' : ''}`}>
           <button
             onClick={reset}
             className="flex items-center gap-2 px-4 py-2 text-sm bg-gray-800 text-gray-300 rounded hover:bg-gray-700 hover:text-gray-100 transition-colors"

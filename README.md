@@ -128,6 +128,8 @@ The end-of-run card is keyboard-only friendly: focus lands on **Try again**, `Ta
 
 Multi-line sources work, including MonkeyType's `code_*.json` quote files. Line structure and indentation are preserved, line ends are marked with a dim `↵`, `Enter` types the newline and `Tab` types a tab. A correct newline also consumes the next line's indentation the way a code editor would, so one keystroke takes you to the first real character of the line. Sources are normalised to LF with trailing whitespace stripped. On single-line text, `Tab` still moves focus and `Enter` does nothing.
 
+The ⛶ button puts the page into fullscreen, hiding the browser's own chrome along with the app's header and buttons — just stats, text and keyboard. Leave with the corner button, `Esc` or `F11`; the app follows whichever you use. iOS Safari has no element fullscreen, so the button reports the refusal and nothing changes.
+
 Each passage is credited underneath: a quote's own `source` field (`— Albert Einstein`, `— Dark Web: Thriller, Veit Etzold`), or the word list's `name` for a word session. Blank sources are omitted rather than rendered as an empty dash.
 
 ## Tests
