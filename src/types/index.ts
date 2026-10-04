@@ -26,7 +26,6 @@ export interface KeymapLayer {
 
 export interface ParsedKeymap {
   layers: KeymapLayer[];
-  defaultLayer: number;
 }
 
 export interface WordList {

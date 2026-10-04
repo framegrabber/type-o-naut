@@ -43,28 +43,51 @@ const ZMK_KEYCODE_MAP: Record<string, string> = {
   'PSCRN': 'PrtSc', 'SLCK': 'Slk', 'PAUSE_BREAK': 'Pause',
 };
 
+// ZMK modifier functions, e.g. LG(LS(N4)) -> ⌘⇧4
+const ZMK_MODIFIER_FUNCTIONS: Record<string, string> = {
+  LS: '⇧', RS: '⇧',
+  LC: '⌃', RC: '⌃',
+  LA: '⌥', RA: '⌥',
+  LG: '⌘', RG: '⌘',
+};
+
+// Parameterless behaviors that never produce a character.
+const ZMK_BEHAVIOR_LABELS: Record<string, string> = {
+  '&SYS_RESET': 'RESET',
+  '&BOOTLOADER': 'BOOT',
+  '&STUDIO_UNLOCK': 'STUDIO',
+  '&CAPS_WORD': 'CAPSWD',
+  '&KEY_REPEAT': 'REPEAT',
+};
+
 function mapKeycode(keycode: string): string {
-  const normalized = keycode.toUpperCase();
-  
+  const normalized = keycode.trim().toUpperCase();
+
+  // Modifier function wrapper: LG(V), LG(LS(N4)), ...
+  const modMatch = normalized.match(/^([A-Z]{2})\((.*)\)$/);
+  if (modMatch && ZMK_MODIFIER_FUNCTIONS[modMatch[1]]) {
+    return ZMK_MODIFIER_FUNCTIONS[modMatch[1]] + mapKeycode(modMatch[2]);
+  }
+
   // Direct keycode lookup
   if (ZMK_KEYCODE_MAP[normalized]) {
     return ZMK_KEYCODE_MAP[normalized];
   }
-  
+
   // Try removing common prefixes
   const withoutPrefix = normalized
     .replace(/^KC_/, '')
     .replace(/^K_/, '')
     .replace(/^C_/, '');
-  
+
   if (ZMK_KEYCODE_MAP[withoutPrefix]) {
     return ZMK_KEYCODE_MAP[withoutPrefix];
   }
-  
+
   // Format remaining: N4 -> 4, LEFT_SHIFT -> Left Shift, etc.
   const numbered = withoutPrefix.replace(/^N(\d)$/, '$1');
   if (numbered !== withoutPrefix) return numbered;
-  
+
   return withoutPrefix.replace(/_/g, ' ').slice(0, 12);
 }
 
@@ -72,46 +95,33 @@ function parseKeyBinding(binding: string): string {
   const parts = binding.trim().split(/\s+/);
   const behavior = parts[0].toUpperCase();
 
-  // &none - empty/transparent
+  // &none renders as an unassigned key, &trans as "same as lower layer".
   if (behavior === '&NONE') return '';
   if (behavior === '&TRANS') return '∅';
 
+  // Parameterless behaviors (&sys_reset, &bootloader, ...).
+  if (ZMK_BEHAVIOR_LABELS[behavior]) return ZMK_BEHAVIOR_LABELS[behavior];
+
+  // &bt BT_SEL 0 / &bt BT_CLR
+  if (behavior === '&BT' && parts.length >= 2) {
+    const action = parts[1].toUpperCase().replace(/^BT_/, '');
+    return action === 'SEL' && parts[2] ? `BT${parts[2]}` : `BT ${action}`;
+  }
+
+  // &out OUT_TOG / OUT_BLE / OUT_USB
+  if (behavior === '&OUT' && parts.length >= 2) {
+    return parts[1].toUpperCase().replace(/^OUT_/, '');
+  }
+
   // &kp KEYCODE - simple key press
   if (behavior === '&KP' && parts.length >= 2) {
-    return mapKeycode(parts.slice(1).join(' '));
+    return mapKeycode(parts[1]);
   }
 
-  // &mt MODIFIER KEYCODE - mod-tap (just show the keycode for typing)
-  if (behavior === '&MT' && parts.length >= 3) {
-    return mapKeycode(parts[2]);
-  }
-
-  // &hm MODIFIER KEYCODE - homerow mods (just show the keycode for typing)
-  if (behavior === '&HM' && parts.length >= 3) {
-    return mapKeycode(parts[2]);
-  }
-
-  // &lt LAYER KEYCODE - layer-tap (just show the keycode)
-  if (behavior === '&LT' && parts.length >= 3) {
-    return mapKeycode(parts[2]);
-  }
-
-  // &mo LAYER - momentary layer
-  if (behavior === '&MO' && parts.length >= 2) {
+  // Layer behaviors: &mo/&to/&tog LAYER, &sl LAYER (sticky)
+  if ((behavior === '&MO' || behavior === '&TO' || behavior === '&TOG') && parts.length >= 2) {
     return `L${parts[1]}`;
   }
-
-  // &to LAYER - toggle layer
-  if (behavior === '&TO' && parts.length >= 2) {
-    return `L${parts[1]}`;
-  }
-
-  // &tog LAYER - toggle layer (variant)
-  if (behavior === '&TOG' && parts.length >= 2) {
-    return `L${parts[1]}`;
-  }
-
-  // &sl LAYER - sticky layer
   if (behavior === '&SL' && parts.length >= 2) {
     return `⏱L${parts[1]}`;
   }
@@ -121,11 +131,17 @@ function parseKeyBinding(binding: string): string {
     return `⏱${mapKeycode(parts[1])}`;
   }
 
-  // Fallback: return first param or behavior name
-  if (parts.length > 1) {
-    return mapKeycode(parts.slice(1).join(' '));
+  // Hold-tap family: &lt LAYER KEYCODE, &mt MOD KEYCODE and user-defined
+  // hold-taps such as &hm/&hrm. The tap (last) parameter is what gets typed.
+  if (parts.length === 3) {
+    return mapKeycode(parts[2]);
   }
-  
+
+  // Fallback: single parameter behaves like a keycode, otherwise show the name.
+  if (parts.length === 2) {
+    return mapKeycode(parts[1]);
+  }
+
   return behavior.replace(/^&/, '').slice(0, 8);
 }
 
@@ -133,7 +149,6 @@ export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
   const layers: KeymapLayer[] = [];
   let currentLayerName: string | null = null;
   let bindings: string[] = [];
-  let defaultLayer = 0;
   let inKeymap = false;
   let inBindings = false;
   let bindingsBuffer: string[] = [];
@@ -174,7 +189,7 @@ export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
     }
 
     // Layer definition: layer_name {
-    const layerMatch = trimmed.match(/^\s*([a-z_]+)\s*{\s*$/i);
+    const layerMatch = trimmed.match(/^([A-Za-z_][A-Za-z0-9_]*)\s*{$/);
     if (layerMatch) {
       // Save previous layer if exists
       if (currentLayerName && bindings.length > 0) {
@@ -245,7 +260,7 @@ export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
     }
   }
 
-  return { layers, defaultLayer };
+  return { layers };
 }
 
 function processBindings(bufferLines: string[]): string[] {
@@ -261,11 +276,9 @@ function processBindings(bufferLines: string[]): string[] {
     if (token.startsWith('&')) {
       // New binding found - save previous if exists
       if (currentBinding.length > 0) {
-        const binding = currentBinding.join(' ');
-        const parsed = parseKeyBinding(binding);
-        if (parsed) {
-          results.push(parsed);
-        }
+        // Keep empty labels (&none): the index of every binding must stay
+        // aligned with the index of the physical key it belongs to.
+        results.push(parseKeyBinding(currentBinding.join(' ')));
       }
       currentBinding = [token];
     } else {
@@ -276,11 +289,7 @@ function processBindings(bufferLines: string[]): string[] {
   
   // Process last binding
   if (currentBinding.length > 0) {
-    const binding = currentBinding.join(' ');
-    const parsed = parseKeyBinding(binding);
-    if (parsed) {
-      results.push(parsed);
-    }
+    results.push(parseKeyBinding(currentBinding.join(' ')));
   }
   
   return results;

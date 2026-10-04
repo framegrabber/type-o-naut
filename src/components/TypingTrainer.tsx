@@ -11,19 +11,49 @@ import { parseKeyboardLayout, validateKeyboardLayout } from '../utils/layoutVali
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
 
-const DEFAULT_LAYOUT_PATH = '/type-o-naut/defaults/ergonaut_one_s.json';
-const DEFAULT_KEYMAP_PATH = '/type-o-naut/defaults/ergonaut_one_s.keymap';
-const DEFAULT_TEXT_PATH = '/type-o-naut/defaults/english_minimal.json';
+const DEFAULT_LAYOUT_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.json`;
+const DEFAULT_KEYMAP_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.keymap`;
+const DEFAULT_TEXT_PATH = `${import.meta.env.BASE_URL}defaults/english_minimal.json`;
+
+const FALLBACK_TEXT: TextContent = {
+  type: 'quotes',
+  data: { language: 'English', groups: [], quotes: DEFAULT_MINIMAL_QUOTES },
+};
+
+// Display symbols the keymap parser emits for non-printing characters.
+const CHAR_LABELS: Record<string, string> = { ' ': '␣', '\n': '⏎', '\t': '⇥' };
 
 interface TypingState {
   text: string;
   input: string;
-  currentIndex: number;
+  /** Characters typed over the whole session, including corrected ones. */
+  keystrokes: number;
+  /** Keystrokes that did not match the expected character. */
   errors: number;
   startTime: number | null;
   wpm: number;
-  accuracy: number;
   finished: boolean;
+}
+
+const EMPTY_SESSION: Omit<TypingState, 'text'> = {
+  input: '',
+  keystrokes: 0,
+  errors: 0,
+  startTime: null,
+  wpm: 0,
+  finished: false,
+};
+
+/** Net WPM: correctly typed characters / 5 over elapsed minutes. */
+function netWpm(input: string, text: string, startTime: number | null, now: number): number {
+  if (startTime === null) return 0;
+  const minutes = (now - startTime) / 60000;
+  if (minutes <= 0) return 0;
+  let correct = 0;
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] === text[i]) correct += 1;
+  }
+  return Math.round(correct / 5 / minutes);
 }
 
 export const TypingTrainer: React.FC = () => {
@@ -35,62 +65,56 @@ export const TypingTrainer: React.FC = () => {
   const [showConfig, setShowConfig] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [quoteIndex, setQuoteIndex] = useState(0); // Track current quote for quote sessions
+  const [sessionNonce, setSessionNonce] = useState(0); // Bumped to re-roll a word session
 
-  const [typing, setTyping] = useState<TypingState>({
-    text: '',
-    input: '',
-    currentIndex: 0,
-    errors: 0,
-    startTime: null,
-    wpm: 0,
-    accuracy: 100,
-    finished: false,
-  });
+  const [typing, setTyping] = useState<TypingState>({ text: '', ...EMPTY_SESSION });
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load defaults on mount
+  // Load defaults on mount. Each resource is loaded independently so that one
+  // missing file cannot leave the trainer without text to type.
   useEffect(() => {
     const loadDefaults = async () => {
       try {
-        // Load keyboard layout
-        const layoutResponse = await fetch(DEFAULT_LAYOUT_PATH);
-        const layoutData = await layoutResponse.json();
-        const parsed = parseKeyboardLayout(layoutData);
-        if (parsed) setLayout(parsed);
+        const [layoutResult, keymapResult, textResult] = await Promise.allSettled([
+          fetch(DEFAULT_LAYOUT_PATH).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          }),
+          fetch(DEFAULT_KEYMAP_PATH).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.text();
+          }),
+          fetch(DEFAULT_TEXT_PATH).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          }),
+        ]);
 
-        // Load keymap
-        const keymapResponse = await fetch(DEFAULT_KEYMAP_PATH);
-        const keymapText = await keymapResponse.text();
-        const parsedKeymap = parseZmkKeymap(keymapText);
-        if (validateParsedKeymap(parsedKeymap).length === 0) {
-          setKeymap(parsedKeymap);
+        if (layoutResult.status === 'fulfilled') {
+          const parsed = parseKeyboardLayout(layoutResult.value);
+          if (parsed) setLayout(parsed);
+        } else {
+          console.error('Failed to load default layout:', layoutResult.reason);
         }
 
-        // Load text content
-        let textData;
-        try {
-          const textResponse = await fetch(DEFAULT_TEXT_PATH);
-          textData = await textResponse.json();
-          if (validateTextContent(textData).valid) {
-            const parsed = parseTextContent(textData);
-            if (parsed) setTextContent(parsed);
+        if (keymapResult.status === 'fulfilled') {
+          const parsedKeymap = parseZmkKeymap(keymapResult.value);
+          const keymapErrors = validateParsedKeymap(parsedKeymap);
+          if (keymapErrors.length === 0) {
+            setKeymap(parsedKeymap);
+          } else {
+            console.error('Default keymap is invalid:', keymapErrors);
           }
-        } catch (err) {
-          // Fallback to minimal quotes if default file not found
-          console.log('Using default minimal quotes');
-          const minimalContent: TextContent = {
-            type: 'quotes',
-            data: {
-              language: 'English',
-              groups: [],
-              quotes: DEFAULT_MINIMAL_QUOTES,
-            },
-          };
-          setTextContent(minimalContent);
+        } else {
+          console.error('Failed to load default keymap:', keymapResult.reason);
         }
-      } catch (err) {
-        console.error('Failed to load defaults:', err);
+
+        const parsedText =
+          textResult.status === 'fulfilled' && validateTextContent(textResult.value).valid
+            ? parseTextContent(textResult.value)
+            : null;
+        setTextContent(parsedText ?? FALLBACK_TEXT);
       } finally {
         setIsLoading(false);
       }
@@ -148,93 +172,64 @@ export const TypingTrainer: React.FC = () => {
     }
   }, [isLoading]);
 
-  // Update text when content changes
+  // Start a fresh session whenever the source text changes.
   useEffect(() => {
-    if (textContent) {
-      const newText = getTextToType(textContent, quoteIndex);
-      setTyping(prev => ({
-        ...prev,
-        text: newText,
-        input: '',
-        currentIndex: 0,
-        errors: 0,
-        startTime: null,
-        wpm: 0,
-        accuracy: 100,
-        finished: false,
-      }));
-    }
-  }, [textContent, quoteIndex]);
+    if (!textContent) return;
+    setTyping({ text: getTextToType(textContent, quoteIndex), ...EMPTY_SESSION });
+  }, [textContent, quoteIndex, sessionNonce]);
 
-  // Focus input on mount
+  // Keep the hidden-ish input focused. This must run after the render that
+  // re-enables the field, otherwise focusing a disabled input is a no-op.
   useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
-  }, []);
+    if (!typing.finished && !showConfig) inputRef.current?.focus();
+  }, [typing.text, typing.finished, showConfig]);
 
-  // Calculate WPM
+  // Live WPM while a run is in progress. Depends only on run start/stop so the
+  // interval is not torn down and recreated on every keystroke.
   useEffect(() => {
-    if (typing.startTime && !typing.finished) {
-      const interval = setInterval(() => {
-        const timeElapsed = (Date.now() - typing.startTime!) / 1000 / 60;
-        const wordsTyped = typing.input.length / 5;
-        setTyping(prev => ({
-          ...prev,
-          wpm: Math.round(wordsTyped / timeElapsed),
-        }));
-      }, 100);
-      return () => clearInterval(interval);
-    }
-  }, [typing.startTime, typing.input.length, typing.finished]);
+    if (typing.startTime === null || typing.finished) return;
+    const interval = setInterval(() => {
+      setTyping(prev => ({ ...prev, wpm: netWpm(prev.input, prev.text, prev.startTime, Date.now()) }));
+    }, 250);
+    return () => clearInterval(interval);
+  }, [typing.startTime, typing.finished]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
 
-    if (!typing.startTime && value.length > 0) {
-      setTyping(prev => ({ ...prev, startTime: Date.now() }));
-    }
+    setTyping(prev => {
+      // Reject anything that is not a single-character edit (paste, drop,
+      // autocomplete) and anything past the end of the target text. A new
+      // object is returned so React re-renders and restores the input value.
+      if (prev.finished) return { ...prev };
+      if (value.length > prev.input.length + 1) return { ...prev };
+      if (value.length > prev.text.length) return { ...prev };
 
-    if (value.length > typing.input.length) {
-      const newChar = value[value.length - 1];
-      if (newChar !== typing.text[typing.currentIndex]) {
-        setTyping(prev => ({ ...prev, errors: prev.errors + 1 }));
+      const now = Date.now();
+      const startTime = prev.startTime ?? (value.length > 0 ? now : null);
+      let { keystrokes, errors } = prev;
+
+      if (value.length > prev.input.length) {
+        keystrokes += 1;
+        if (value[value.length - 1] !== prev.text[value.length - 1]) errors += 1;
       }
-      setTyping(prev => ({ ...prev, currentIndex: prev.currentIndex + 1 }));
-    } else if (value.length < typing.input.length) {
-      setTyping(prev => ({
+
+      const finished = prev.text.length > 0 && value.length === prev.text.length;
+      return {
         ...prev,
-        currentIndex: Math.max(0, prev.currentIndex - 1),
-      }));
-    }
-
-    const correct = value
-      .split('')
-      .filter((char, i) => char === typing.text[i]).length;
-    const newAccuracy = value.length > 0 ? Math.round((correct / value.length) * 100) : 100;
-
-    setTyping(prev => ({
-      ...prev,
-      input: value,
-      accuracy: newAccuracy,
-      finished: value.length === typing.text.length && typing.text.length > 0,
-    }));
+        input: value,
+        keystrokes,
+        errors,
+        startTime,
+        finished,
+        wpm: finished ? netWpm(value, prev.text, startTime, now) : prev.wpm,
+      };
+    });
   };
 
   const reset = () => {
-    setTyping(prev => ({
-      ...prev,
-      input: '',
-      currentIndex: 0,
-      errors: 0,
-      startTime: null,
-      wpm: 0,
-      accuracy: 100,
-      finished: false,
-    }));
-    if (inputRef.current) inputRef.current.focus();
-  };
-
-  const redoText = () => {
-    reset();
+    setTyping(prev => ({ ...prev, ...EMPTY_SESSION }));
+    inputRef.current?.focus();
   };
 
   const nextQuote = () => {
@@ -248,71 +243,33 @@ export const TypingTrainer: React.FC = () => {
   };
 
   const newText = () => {
-    if (textContent && textContent.type === 'quotes') {
+    if (textContent?.type === 'quotes') {
       nextQuote();
-    } else if (textContent && textContent.type === 'words') {
-      // Generate new random words for word lists
-      const newTextStr = getTextToType(textContent, 0);
-      setTyping(prev => ({
-        ...prev,
-        text: newTextStr,
-        input: '',
-        currentIndex: 0,
-        errors: 0,
-        startTime: null,
-        wpm: 0,
-        accuracy: 100,
-        finished: false,
-      }));
-      if (inputRef.current) inputRef.current.focus();
     } else {
-      reset();
+      // Word sessions re-roll their random selection; quote sessions advance.
+      setSessionNonce(n => n + 1);
     }
   };
 
-  const getKeyLabels = (): string[] => {
-    if (!keymap || selectedLayer >= keymap.layers.length) {
-      return [];
-    }
-    return keymap.layers[selectedLayer].bindings;
-  };
+  const keyLabels: string[] =
+    keymap && selectedLayer < keymap.layers.length ? keymap.layers[selectedLayer].bindings : [];
 
-  const getKeyPositions = (): KeyPosition[] => {
-    if (!layout) return [];
-    const layoutDef = Object.values(layout.layouts)[0];
-    return layoutDef?.layout || [];
-  };
+  const keyPositions: KeyPosition[] = layout
+    ? Object.values(layout.layouts)[0]?.layout ?? []
+    : [];
 
-  const getNextKeyIndex = (): number => {
-    if (typing.currentIndex >= typing.text.length) return -1;
-    const nextChar = typing.text[typing.currentIndex].toLowerCase();
-    const labels = getKeyLabels();
+  const nextChar: string | undefined = typing.text[typing.input.length];
+  const wantedLabel =
+    nextChar === undefined ? null : (CHAR_LABELS[nextChar] ?? nextChar).toLowerCase();
+  // Exact match only: substring matching highlighted "Ctrl" when "c" was due.
+  const nextKeyIndex =
+    wantedLabel === null ? -1 : keyLabels.findIndex(label => label.toLowerCase() === wantedLabel);
 
-    // Map special characters to their display symbols
-    const charMap: Record<string, string[]> = {
-      ' ': ['␣', 'space'],
-      '\n': ['⏎', 'enter'],
-      '\t': ['⇥', 'tab'],
-    };
-
-    // Try to find exact match
-    for (let i = 0; i < labels.length; i++) {
-      const label = labels[i].toLowerCase();
-      
-      // Check if this character maps to any symbol for this key
-      if (charMap[nextChar]) {
-        if (charMap[nextChar].some(symbol => label.includes(symbol))) {
-          return i;
-        }
-      }
-      
-      // Direct match
-      if (label === nextChar || label.includes(nextChar)) {
-        return i;
-      }
-    }
-    return -1;
-  };
+  // Accuracy is keystroke-based: correcting a mistake does not erase it.
+  const accuracy =
+    typing.keystrokes === 0
+      ? 100
+      : Math.round(((typing.keystrokes - typing.errors) / typing.keystrokes) * 100);
 
   if (isLoading) {
     return (
@@ -350,10 +307,10 @@ export const TypingTrainer: React.FC = () => {
         </div>
 
         {/* Stats */}
-        <StatsDisplay wpm={typing.wpm} accuracy={typing.accuracy} errors={typing.errors} />
+        <StatsDisplay wpm={typing.wpm} accuracy={accuracy} errors={typing.errors} />
 
         {/* Text Display */}
-        <TextDisplay text={typing.text} input={typing.input} currentIndex={typing.currentIndex} />
+        <TextDisplay text={typing.text} input={typing.input} />
 
         {/* Input */}
         <input
@@ -361,7 +318,13 @@ export const TypingTrainer: React.FC = () => {
           type="text"
           value={typing.input}
           onChange={handleInput}
+          onPaste={e => e.preventDefault()}
+          onDrop={e => e.preventDefault()}
           disabled={typing.finished}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           className="w-full bg-gray-800 text-gray-100 p-4 rounded-lg mb-8 font-mono text-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
           placeholder="Start typing..."
         />
@@ -386,9 +349,9 @@ export const TypingTrainer: React.FC = () => {
         {/* Keyboard Visualization */}
         {showKeyboard && layout && (
           <KeyboardDisplay
-            keyPositions={getKeyPositions()}
-            keyLabels={getKeyLabels()}
-            nextKeyIndex={getNextKeyIndex()}
+            keyPositions={keyPositions}
+            keyLabels={keyLabels}
+            nextKeyIndex={nextKeyIndex}
             keymap={keymap}
             selectedLayer={selectedLayer}
             onLayerChange={setSelectedLayer}
@@ -405,7 +368,7 @@ export const TypingTrainer: React.FC = () => {
                   WPM: <span className="text-yellow-400 font-bold">{typing.wpm}</span>
                 </p>
                 <p className="text-xl">
-                  Accuracy: <span className="text-green-400 font-bold">{typing.accuracy}%</span>
+                  Accuracy: <span className="text-green-400 font-bold">{accuracy}%</span>
                 </p>
                 <p className="text-xl">
                   Errors: <span className="text-red-400 font-bold">{typing.errors}</span>
@@ -413,7 +376,7 @@ export const TypingTrainer: React.FC = () => {
               </div>
               <div className="flex gap-4">
                 <button
-                  onClick={redoText}
+                  onClick={reset}
                   className="flex-1 px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
                 >
                   Try Again

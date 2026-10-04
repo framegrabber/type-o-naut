@@ -105,7 +105,7 @@ export function validateTextContent(data: unknown): { valid: boolean; errors: st
 }
 
 /**
- * Get a random selection of words, repeated multiple times
+ * Get a random selection of words, reshuffled for each repetition.
  * @param words - Array of all available words
  * @param wordCount - Number of unique words to select (default: 15)
  * @param repeatCount - How many times to repeat the selected words (default: 5)
@@ -117,20 +117,27 @@ export function getRandomWords(
 ): string {
   if (words.length === 0) return '';
 
-  // Adjust wordCount if more words requested than available
-  const actualWordCount = Math.min(wordCount, words.length);
-
-  // Fisher-Yates shuffle to randomly select words
-  const shuffled = [...words].sort(() => Math.random() - 0.5);
-  const selectedWords = shuffled.slice(0, actualWordCount);
-
-  // Repeat the selected words
-  const repeatedWords: string[] = [];
-  for (let i = 0; i < repeatCount; i++) {
-    repeatedWords.push(...selectedWords);
+  // Fisher-Yates: Array.sort with a random comparator is biased and, with a
+  // non-transitive comparator, implementation-defined.
+  const shuffled = [...words];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
 
-  return repeatedWords.join(' ');
+  const selected = shuffled.slice(0, Math.min(wordCount, words.length));
+  const out: string[] = [];
+  for (let round = 0; round < repeatCount; round++) {
+    // Reshuffle each round so the drill is not a memorisable loop.
+    const roundWords = [...selected];
+    for (let i = roundWords.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [roundWords[i], roundWords[j]] = [roundWords[j], roundWords[i]];
+    }
+    out.push(...roundWords);
+  }
+
+  return out.join(' ');
 }
 
 /**
@@ -161,49 +168,4 @@ export function getTextToType(content: TextContent, quoteIndex: number = 0): str
 export function getNextQuoteIndex(currentIndex: number, totalQuotes: number): number {
   if (totalQuotes === 0) return 0;
   return (currentIndex + 1) % totalQuotes;
-}
-
-export function saveCustomText(name: string, text: string, type: 'words' | 'quotes'): void {
-  if (type === 'words') {
-    const wordList: WordList = {
-      name,
-      words: text.split(/\s+/).filter(w => w.length > 0),
-    };
-    localStorage.setItem('customText', JSON.stringify(wordList));
-  } else {
-    const quotes: QuoteList = {
-      language: name,
-      groups: [],
-      quotes: [{ text, source: 'Custom', id: 1, length: text.length }],
-    };
-    localStorage.setItem('customTextLong', JSON.stringify(quotes));
-  }
-}
-
-export function loadCustomText(): TextContent | null {
-  const customText = localStorage.getItem('customText');
-  if (customText) {
-    try {
-      const data = JSON.parse(customText);
-      if (isWordList(data)) {
-        return { type: 'words', data };
-      }
-    } catch {
-      // Ignore parse errors
-    }
-  }
-
-  const customTextLong = localStorage.getItem('customTextLong');
-  if (customTextLong) {
-    try {
-      const data = JSON.parse(customTextLong);
-      if (isQuoteList(data)) {
-        return { type: 'quotes', data };
-      }
-    } catch {
-      // Ignore parse errors
-    }
-  }
-
-  return null;
 }

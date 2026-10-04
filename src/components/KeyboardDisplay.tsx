@@ -43,14 +43,18 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
       <div
         className="relative"
         style={{
-          height: `${Math.max(...keyPositions.map(k => (k.y + 1) * scale))}px`,
-          width: `${Math.max(...keyPositions.map(k => (k.x + 1) * scale))}px`,
+          // Math.max() of an empty list is -Infinity, which produces an
+          // invalid CSS length, so fall back to 0 for an empty layout.
+          height: `${keyPositions.reduce((max, k) => Math.max(max, (k.y + 1) * scale), 0)}px`,
+          width: `${keyPositions.reduce((max, k) => Math.max(max, (k.x + 1) * scale), 0)}px`,
           margin: '0 auto',
         }}
       >
         {keyPositions.map((key, index) => {
           const label = keyLabels[index] || '';
           const isNextKey = index === nextKeyIndex;
+          // rx/ry of 0 are valid rotation origins, so test for undefined.
+          const hasOrigin = key.rx !== undefined && key.ry !== undefined;
 
           const style: React.CSSProperties = {
             position: 'absolute',
@@ -59,10 +63,9 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
             width: `${keySize * scale}px`,
             height: `${keySize * scale}px`,
             transform: key.r ? `rotate(${key.r}deg)` : 'none',
-            transformOrigin:
-              key.rx && key.ry
-                ? `${(key.rx - key.x) * scale}px ${(key.ry - key.y) * scale}px`
-                : 'center',
+            transformOrigin: hasOrigin
+              ? `${(key.rx! - key.x) * scale}px ${(key.ry! - key.y) * scale}px`
+              : 'center',
           };
 
           return (
