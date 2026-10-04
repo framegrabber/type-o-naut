@@ -121,6 +121,8 @@ Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildChar
 
 Pasting is blocked: only single-character edits are accepted, so a run cannot be skipped.
 
+You type onto the text itself: there is no visible input box, the caret sits in the passage, correct characters brighten and mistakes turn red. Clicking the text or pressing any key takes focus back; while focus is elsewhere the passage dims.
+
 ## Tests
 
 ```bash

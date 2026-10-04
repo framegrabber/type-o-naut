@@ -56,6 +56,7 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 10. **Bindings are structured, not strings.** `Binding.label` is display only; `tap`/`hold`/`activates` are what `keyIndex` resolves against. Adding a keycode means adding it to `ZMK_KEYCODE_MAP` (keycap text) *and* `KEYCODE_CHARS` (emitted characters) — the two tables answer different questions.
 11. **Shift comes from the target layer when that layer has one.** Holding a layer key puts the base layer's home-row mods out of reach; `resolveHint` falls back to the base layer only when the target layer has no shift binding.
 12. **`hold` indices are physical key positions,** valid regardless of which layer's labels are drawn. Do not try to remap them onto the displayed layer.
+13. **The typing surface is a real but invisible `<input>`.** `TextDisplay` only renders; keystrokes still go through the controlled input (`opacity-0`, off-flow) so IME, composition and mobile keyboards keep working. Never reimplement typing on raw `keydown`.
 
 ## Conventions
 

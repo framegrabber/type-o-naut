@@ -68,6 +68,7 @@ export const TypingTrainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quoteIndex, setQuoteIndex] = useState(0); // Track current quote for quote sessions
   const [sessionNonce, setSessionNonce] = useState(0); // Bumped to re-roll a word session
+  const [inputFocused, setInputFocused] = useState(false);
 
   const [typing, setTyping] = useState<TypingState>({ text: '', ...EMPTY_SESSION });
 
@@ -186,6 +187,16 @@ export const TypingTrainer: React.FC = () => {
     if (!typing.finished && !showConfig) inputRef.current?.focus();
   }, [typing.text, typing.finished, showConfig]);
 
+  // Typing anywhere on the page resumes the run, like a real typing test.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (showConfig || typing.finished || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (document.activeElement !== inputRef.current) inputRef.current?.focus();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [showConfig, typing.finished]);
+
   // Live WPM while a run is in progress. Depends only on run start/stop so the
   // interval is not torn down and recreated on every keystroke.
   useEffect(() => {
@@ -293,12 +304,12 @@ export const TypingTrainer: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-8">
+    <div className="min-h-screen bg-gray-900 text-gray-100 px-8 py-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-yellow-400">Type-o-naut</h1>
-          <div className="flex gap-4">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl font-bold text-yellow-400">Type-o-naut</h1>
+          <div className="flex gap-2">
             <button
               onClick={() => setShowKeyboard(!showKeyboard)}
               className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
@@ -319,10 +330,16 @@ export const TypingTrainer: React.FC = () => {
         {/* Stats */}
         <StatsDisplay wpm={typing.wpm} accuracy={accuracy} errors={typing.errors} />
 
-        {/* Text Display */}
-        <TextDisplay text={typing.text} input={typing.input} />
+        {/* Text, typed into directly. The input below is invisible but real,
+            so IME, mobile keyboards and composition still work. */}
+        <TextDisplay
+          text={typing.text}
+          input={typing.input}
+          caret={inputFocused && !typing.finished}
+          prompt={!inputFocused && !typing.finished && !showConfig}
+          onActivate={() => inputRef.current?.focus()}
+        />
 
-        {/* Input */}
         <input
           ref={inputRef}
           type="text"
@@ -330,27 +347,29 @@ export const TypingTrainer: React.FC = () => {
           onChange={handleInput}
           onPaste={e => e.preventDefault()}
           onDrop={e => e.preventDefault()}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setInputFocused(false)}
           disabled={typing.finished}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="w-full bg-gray-800 text-gray-100 p-4 rounded-lg mb-8 font-mono text-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          placeholder="Start typing..."
+          aria-label="Typing input"
+          className="absolute opacity-0 w-px h-px -z-10"
         />
 
         {/* Controls */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-3 mb-6">
           <button
             onClick={reset}
-            className="flex items-center gap-2 px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg hover:bg-yellow-500 transition-colors font-semibold"
+            className="flex items-center gap-2 px-4 py-2 text-sm bg-gray-800 text-gray-300 rounded hover:bg-gray-700 hover:text-gray-100 transition-colors"
           >
-            <RotateCcw size={20} />
+            <RotateCcw size={16} />
             Reset
           </button>
           <button
             onClick={newText}
-            className="flex items-center gap-2 px-6 py-3 bg-gray-700 text-gray-100 rounded-lg hover:bg-gray-600 transition-colors font-semibold"
+            className="flex items-center gap-2 px-4 py-2 text-sm bg-gray-800 text-gray-300 rounded hover:bg-gray-700 hover:text-gray-100 transition-colors"
           >
             New Text
           </button>

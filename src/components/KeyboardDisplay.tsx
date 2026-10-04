@@ -35,9 +35,9 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
   const targetKey = hint && hint.layer === displayedLayer ? hint.target : -1;
 
   return (
-    <div className="bg-gray-800 p-8 rounded-lg">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-yellow-400">Keyboard Layout</h2>
+    <div className="bg-gray-800/60 p-4 rounded-lg">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-sm font-semibold text-gray-400">Keyboard</h2>
         <div className="flex items-center gap-3">
           {hint && hint.hold.length > 0 && (
             <span className="text-xs text-gray-400">
