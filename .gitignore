@@ -5,3 +5,7 @@ dist/
 .env
 .env.local
 .env.*.local
+
+# Installed agent skills (restore with: npx skills install, see skills-lock.json)
+.agents/skills/
+.claude/skills/

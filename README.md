@@ -1,281 +1,129 @@
-# Type-o-naut - Ergonaut Typing Trainer
+# Type-o-naut
 
-A modern, statically-hosted typing trainer built for custom keyboard layouts. Practice typing with your own keyboard layout and keymap, with support for ZMK keymaps and MonkeyType-style text content.
+A typing trainer for custom ergonomic keyboards. Load your own keyboard layout and ZMK keymap, and the trainer highlights the physical key you need to press next while you type.
 
-## Features
+Runs entirely in the browser — no backend, no accounts, no telemetry. Deployed as a static site to GitHub Pages.
 
-- ⌨️ **Custom Keyboard Layouts** - Load keyboard layout JSON files (via file upload or URL)
-- 🗺️ **ZMK Keymap Support** - Parse ZMK `.keymap` files with multiple layers
-- 📚 **Flexible Text Content** - Support for word lists and quotes in MonkeyType format
-- 🎯 **Real-time Feedback** - Visual keyboard highlighting showing the next key to type
-- 📊 **Performance Metrics** - Track WPM, accuracy, and errors in real-time
-- 💾 **URL Sharing** - Load configurations via query parameters for easy sharing
-- 🎨 **Responsive UI** - Dark theme with Tailwind CSS
-- 📱 **Client-side Only** - Runs entirely in the browser, perfect for GitHub Pages
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 16+ (for development)
-- npm or yarn
-
-### Installation
+## Quick start
 
 ```bash
-cd type-o-naut
 npm install
+npm run dev      # http://localhost:5173/type-o-naut/
 ```
 
-### Development
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` | Vite dev server with HMR |
+| `npm run build` | Typecheck (`tsc --noEmit`) + production bundle into `dist/` |
+| `npm run preview` | Serve the built bundle locally |
 
-```bash
-npm run dev
+Requires Node 18+ (CI builds on Node 24).
+
+## What ships by default
+
+On first load the app fetches three files from `public/defaults/`:
+
+| File | Contents |
+| --- | --- |
+| `ergonaut_one_s.json` | Ergonaut One S physical layout — 36 keys with `x`/`y`/rotation |
+| `ergonaut_one_s.keymap` | ZMK keymap with 9 layers (MAIN, FOCAL, NAV, MOUSE, MEDIA, NUM, SYM, FUN, ADJ) |
+| `english_minimal.json` | Four pangram quotes |
+
+Each file is fetched independently; if one is missing or invalid the rest still load, and the text falls back to the built-in pangrams.
+
+## Using your own hardware
+
+Open **⚙ Settings** to upload a layout JSON, a `.keymap` file, or a text JSON — or paste a URL and press Enter. Validation errors are listed inline with the exact field that failed.
+
+The same three sources can be passed as query parameters, which makes configurations shareable:
+
+```
+https://<user>.github.io/type-o-naut/?keyboardUrl=…&keymapUrl=…&textUrl=…
 ```
 
-This will start a development server at `http://localhost:5173`.
+URLs must be CORS-readable from the browser.
 
-### Production Build
+### Keyboard layout format
 
-```bash
-npm run build
-```
+The ZMK/QMK physical-layout shape. `x` and `y` are in key units; `r`/`rx`/`ry` are optional rotation in degrees around an absolute origin.
 
-Output will be in the `dist/` directory.
-
-## Usage
-
-### Default Setup
-
-On first load, the app comes with:
-- **Keyboard Layout**: Ergonaut One S
-- **Keymap**: FOCAL layer (a Colemak-based layout)
-- **Text**: English 1K word list
-
-### Configuration
-
-Click the **Settings** button (⚙️) to open the Configuration Panel where you can:
-
-#### Keyboard Layout
-- Upload a JSON file with keyboard layout definition
-- Or provide a URL to fetch from
-- Required format:
 ```json
 {
-  "id": "keyboard_id",
-  "name": "Keyboard Name",
+  "id": "ergonaut_one_s",
+  "name": "Ergonaut One S",
   "layouts": {
     "LAYOUT": {
       "layout": [
-        {"row": 0, "col": 0, "x": 0, "y": 0},
-        {"row": 0, "col": 1, "x": 1, "y": 0.32}
+        { "row": 0, "col": 0, "x": 0, "y": 0.95 },
+        { "row": 3, "col": 5, "x": 4.65, "y": 3.95, "r": 30, "rx": 5.15, "ry": 4.45 }
       ]
     }
   }
 }
 ```
 
-#### ZMK Keymap
-- Upload a `.keymap` file
-- Or provide a URL to fetch from
-- The app will parse all layers and allow you to select which one to practice on
-- Example binding formats supported:
-  - `&kp KEY` - Key press
-  - `&mt MOD KEY` - Mod-tap (modifier + key)
-  - `&lt LAYER KEY` - Layer-tap
-  - `&mo LAYER` - Momentary layer
-  - `&none` - Empty key
+Only the first entry in `layouts` is rendered. The nth binding of a keymap layer is drawn on the nth key of this array, so the two files must describe the same key order.
 
-#### Text Content
-- Upload JSON in MonkeyType word list format:
+### Text format
+
+MonkeyType-compatible. Word lists:
+
 ```json
-{
-  "name": "word_list_name",
-  "words": ["word1", "word2", "word3"]
-}
+{ "name": "english_1k", "words": ["the", "and", "for"] }
 ```
-- Or quotes format:
+
+A word session draws 15 random words and repeats them over 5 rounds, reshuffling each round. Quote lists:
+
 ```json
 {
   "language": "english",
-  "groups": [[0, 100], [101, 300]],
-  "quotes": [
-    {"text": "...", "source": "...", "length": 0, "id": 1}
-  ]
+  "groups": [[0, 100]],
+  "quotes": [{ "text": "…", "source": "…", "length": 42, "id": 1 }]
 }
 ```
 
-### URL Parameters
+A quote session types one quote; **Next** advances through the list and wraps.
 
-Share configurations via URL parameters:
+### Supported ZMK bindings
 
-```
-https://your-domain/type-o-naut/?keyboardUrl=URL&keymapUrl=URL&textUrl=URL
-```
+| Binding | Label |
+| --- | --- |
+| `&kp Q`, `&kp N4`, `&kp SEMI` | `Q`, `4`, `;` |
+| `&kp SPACE` / `ENTER` / `TAB` / `BSPC` / `DEL` | `␣` `⏎` `⇥` `⌫` `⌦` |
+| `&kp LG(V)`, `&kp LG(LS(N4))` | `⌘V`, `⌘⇧4` (nested modifier functions) |
+| `&mt MOD KEY`, `&lt LAYER KEY`, and user-defined hold-taps such as `&hm` | the tap key, e.g. `&hm LEFT_SHIFT A` → `A` |
+| `&mo N`, `&to N`, `&tog N` | `LN` |
+| `&sl N`, `&sk KEY` | `⏱LN`, `⏱KEY` |
+| `&bt BT_SEL 0`, `&bt BT_CLR`, `&out OUT_USB` | `BT0`, `BT CLR`, `USB` |
+| `&sys_reset`, `&bootloader`, `&studio_unlock` | `RESET`, `BOOT`, `STUDIO` |
+| `&none`, `&trans` | blank, `∅` |
 
-Example:
-```
-https://your-domain/type-o-naut/?keyboardUrl=https://example.com/my_layout.json&keymapUrl=https://example.com/my_keymap.keymap&textUrl=https://example.com/words.json
-```
+Unknown behaviors fall back to their last parameter mapped as a keycode. Hold-tap labels intentionally show only the tap key, because that is what gets typed.
 
-## Key Label Mapping
+New keycodes go in `ZMK_KEYCODE_MAP` in [`src/utils/zmkParser.ts`](src/utils/zmkParser.ts).
 
-The app converts ZMK keycodes to human-readable labels:
+## How the metrics work
 
-| ZMK Keycode | Display |
-|---|---|
-| `A-Z` | `A-Z` |
-| `N0-N9` | `0-9` |
-| `SPACE`, `SPC` | `␣` |
-| `ENTER`, `RET` | `⏎` |
-| `TAB` | `⇥` |
-| `BSPC` | `⌫` |
-| `DEL` | `⌦` |
-| `LEFT_SHIFT` | `⇧` |
-| `LEFT_CONTROL` | `⌃` |
-| `LEFT_ALT` | `⌥` |
-| `LEFT_GUI` | `⌘` |
-| `UP`, `DOWN`, `LEFT`, `RIGHT` | `↑`, `↓`, `←`, `→` |
+- **WPM** — net: correctly typed characters ÷ 5 ÷ elapsed minutes. Updated every 250 ms and recomputed exactly once more on the finishing keystroke.
+- **Accuracy** — keystroke-based: `(keystrokes − errors) / keystrokes`. Backspacing over a mistake does **not** restore it.
+- **Errors** — keystrokes that did not match the expected character.
 
-### Modifiers
+Pasting is blocked: only single-character edits are accepted, so a run cannot be skipped.
 
-Modifier combinations are displayed as `MOD+KEY`, e.g.:
-- `&mt LEFT_SHIFT A` → `⇧+A`
-- `&mt LEFT_CONTROL S` → `⌃+S`
+## Known limitations
 
-### Layer Taps
+- The next-key highlight only searches the **selected** layer. Characters that live on another layer (digits, `!`, `?`, `_` on this keymap) highlight nothing, and capitals do not indicate shift.
+- Results are not persisted between sessions.
+- Combos and macros are not parsed.
 
-Layer-tap keys show both the layer and key:
-- `&lt 1 SPACE` → `L1/␣`
+## Deployment
 
-## Project Structure
+`.github/workflows/deploy.yml` builds on every push to `main`/`master` and publishes `dist/` via GitHub Pages (Actions source, not a `gh-pages` branch). Repository → Settings → Pages → Source → **GitHub Actions**.
 
-```
-type-o-naut/
-├── src/
-│   ├── components/
-│   │   ├── TypingTrainer.tsx        # Main component with state management
-│   │   ├── StatsDisplay.tsx         # WPM, accuracy, errors display
-│   │   ├── TextDisplay.tsx          # Text rendering with feedback
-│   │   ├── KeyboardDisplay.tsx      # Keyboard visualization
-│   │   └── ConfigPanel.tsx          # Settings UI
-│   ├── utils/
-│   │   ├── zmkParser.ts            # ZMK keymap parsing
-│   │   ├── layoutValidator.ts      # Keyboard layout validation
-│   │   ├── textLoader.ts           # Text content loading and validation
-│   │   └── fileLoader.ts           # File and URL loading utilities
-│   ├── types/
-│   │   └── index.ts                # TypeScript type definitions
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── public/
-│   └── defaults/
-│       ├── ergonaut_one_s.json
-│       ├── ergonaut_one_s.keymap
-│       └── english_minimal.json
-├── .github/
-│   └── workflows/
-│       └── deploy.yml              # GitHub Pages deployment
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
-└── postcss.config.js
-```
-
-## Error Handling
-
-The app provides detailed error messages for:
-
-- **Invalid JSON** - Malformed JSON files
-- **Missing required fields** - Layout missing coordinates, keymaps without bindings
-- **Invalid bindings** - Unrecognized ZMK keycodes
-- **Network errors** - Failed to load from URLs
-- **Type validation** - Wrong data structure detected
-
-All errors are displayed in the Configuration Panel with helpful descriptions.
-
-## GitHub Pages Deployment
-
-1. **Push to repository** with the `main` or `master` branch
-2. **GitHub Actions** automatically builds and deploys to GitHub Pages
-3. **Access** at `https://username.github.io/type-o-naut/`
-
-### Initial Setup
-
-1. In repository settings, enable GitHub Pages
-2. Set source to "Deploy from a branch"
-3. Select `gh-pages` branch (created by Actions)
-
-The workflow file (`.github/workflows/deploy.yml`) handles everything automatically.
-
-## Customization
-
-### Adding Default Text
-
-Create new word list files in `public/defaults/` and load them via URL parameters.
-
-### Modifying Styling
-
-Edit `src/index.css` and `tailwind.config.js` to customize colors and layout.
-
-### Adding Key Label Mappings
-
-Extend the `ZMK_KEYCODE_MAP` in `src/utils/zmkParser.ts` to support additional keycodes.
-
-## Browser Compatibility
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Modern mobile browsers
-
-## Performance
-
-- **Bundle size**: ~150KB (gzipped)
-- **No external API calls** (except for user-provided URLs)
-- **Instant UI updates** - 60 FPS keyboard highlighting
-- **Efficient re-renders** - React with TypeScript
-
-## Future Enhancements
-
-- [ ] Save results to localStorage
-- [ ] Theme customization
-- [ ] More ZMK binding types (combos, macros)
-- [ ] Import from Keyboard Layout Editor (KLE)
-- [ ] Multi-language support
-- [ ] Typing statistics and history
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues.
-
-## License
-
-MIT License - feel free to use this for your own typing practice!
-
-## Troubleshooting
-
-### Files won't load from URL
-- Ensure the URL is accessible and CORS-enabled
-- Check browser console for specific error messages
-
-### Keymap not showing all layers
-- Verify the `.keymap` file has valid `default_layer` section
-- Check that layer definitions have proper `bindings` arrays
-
-### Keyboard not displaying correctly
-- Ensure layout JSON has all required key properties (`x`, `y`)
-- Check that key positions don't overlap (or intentionally position them)
-
-### Text not loading
-- Ensure JSON has either `words` array (word list) or `quotes` array (quotes)
-- Word lists require `name` property, quotes require `language` property
+`vite.config.ts` sets `base: '/type-o-naut/'`; asset paths derive from `import.meta.env.BASE_URL`, so change that one value if you host under a different path.
 
 ## Credits
 
-- Inspired by [MonkeyType](https://monkeytype.com/) typing test
-- Keyboard visualization based on [Keyboard Layout Editor](http://www.keyboard-layout-editor.com/)
-- ZMK parsing inspired by [Keymap Editor](https://github.com/nickcoutsos/keymap-editor) and [Keymap Drawer](https://github.com/caksoylar/keymap-drawer)
+Inspired by [MonkeyType](https://monkeytype.com/). Keymap handling informed by [keymap-editor](https://github.com/nickcoutsos/keymap-editor) and [keymap-drawer](https://github.com/caksoylar/keymap-drawer).
+
+MIT.
