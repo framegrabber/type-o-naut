@@ -12,7 +12,7 @@ interface ConfigPanelProps {
   textContent: TextContent | null;
   onLayoutChange: (layout: KeyboardLayout | null) => void;
   onKeymapChange: (keymap: ParsedKeymap | null) => void;
-  onLayerChange: (layer: number) => void;
+  onLayerReset: () => void;
   onTextChange: (text: TextContent | null) => void;
   onClose: () => void;
 }
@@ -29,7 +29,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   textContent,
   onLayoutChange,
   onKeymapChange,
-  onLayerChange,
+  onLayerReset,
   onTextChange,
   onClose,
 }) => {
@@ -68,7 +68,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
         return;
       }
       onKeymapChange(parsed);
-      onLayerChange(0);
+      onLayerReset();
       setErrors(prev => ({ ...prev, keymap: undefined }));
     } catch (err) {
       setErrors(prev => ({
@@ -140,7 +140,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
         return;
       }
       onKeymapChange(parsed);
-      onLayerChange(0);
+      onLayerReset();
       setErrors(prev => ({ ...prev, keymap: undefined }));
     } catch (err) {
       setErrors(prev => ({

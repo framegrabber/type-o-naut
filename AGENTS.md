@@ -4,18 +4,19 @@ Working notes for coding agents in this repository. Read this before changing an
 
 ## Project
 
-Static, client-only typing trainer for custom ergonomic keyboards. React 18 + TypeScript + Vite 4 + Tailwind 3. No backend, no router, no state library, no test runner.
+Static, client-only typing trainer for custom ergonomic keyboards. React 18 + TypeScript + Vite 4 + Tailwind 3. No backend, no router, no state library. Vitest covers the pure utils; component behaviour is verified by hand.
 
 ## Commands
 
 ```bash
 npm install
 npm run dev      # http://localhost:5173/type-o-naut/  (note the base path)
+npm test         # vitest run — unit tests for the pure utils
 npm run build    # tsc --noEmit && vite build
 npm run preview
 ```
 
-`npm run build` is the only gate in CI. There is no linter and no test suite; do not add either as a side effect of an unrelated change.
+CI runs `npm test` then `npm run build`. There is no linter; do not add one as a side effect of an unrelated change.
 
 ## Layout
 
@@ -28,7 +29,8 @@ src/
     StatsDisplay.tsx    WPM / accuracy / errors
     ConfigPanel.tsx     file + URL loading, renders validation errors
   utils/
-    zmkParser.ts        .keymap text  -> ParsedKeymap
+    zmkParser.ts        .keymap text  -> ParsedKeymap (labels + structured taps/holds)
+    keyIndex.ts         ParsedKeymap  -> character index, layer access, next-key hint
     layoutValidator.ts  unknown       -> KeyboardLayout
     textLoader.ts       unknown       -> TextContent, session text generation
     fileLoader.ts       File/URL readers, query params
@@ -51,6 +53,9 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 7. **Asset paths come from `import.meta.env.BASE_URL`.** Never hardcode `/type-o-naut/`.
 8. **`tsconfig.json` sets `noEmit`.** `npm run build` runs `tsc` directly; without it, `.js` files are emitted into `src/`.
 9. **Focus restoration runs in an effect, not inline.** The input is `disabled` while `finished` is true; focusing it before the re-enabling render is a no-op.
+10. **Bindings are structured, not strings.** `Binding.label` is display only; `tap`/`hold`/`activates` are what `keyIndex` resolves against. Adding a keycode means adding it to `ZMK_KEYCODE_MAP` (keycap text) *and* `KEYCODE_CHARS` (emitted characters) — the two tables answer different questions.
+11. **Shift comes from the target layer when that layer has one.** Holding a layer key puts the base layer's home-row mods out of reach; `resolveHint` falls back to the base layer only when the target layer has no shift binding.
+12. **`hold` indices are physical key positions,** valid regardless of which layer's labels are drawn. Do not try to remap them onto the displayed layer.
 
 ## Conventions
 
@@ -63,17 +68,15 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 
 ## Verification
 
-There is no test harness, so changes are verified by running the app:
-
-1. `npm run build` — typecheck plus bundle.
-2. `npm run dev`, then exercise the changed path in a real browser and check the console is clean.
-3. For keymap or layout changes, confirm the parsed binding count equals the layout key count for **every** layer (36 each for the bundled Ergonaut One S), and that labels land on the expected physical keys.
-4. For typing-logic changes, cover: a correct run to completion, a wrong character followed by a correction (accuracy must not recover), an attempted paste, and the Reset / New Text / Next buttons (each must return focus to the input).
-
-If you add a test runner, Vitest fits: `zmkParser`, `textLoader`, and the input reducer are pure and the obvious first targets.
+1. `npm test` — parser and resolution unit tests, which run against the bundled keymap.
+2. `npm run build` — typecheck plus bundle.
+3. `npm run dev`, then exercise the changed path in a real browser and check the console is clean.
+4. For keymap or layout changes, confirm the parsed binding count equals the layout key count for **every** layer (36 each for the bundled Ergonaut One S), and that labels land on the expected physical keys.
+5. For typing-logic changes, cover: a correct run to completion, a wrong character followed by a correction (accuracy must not recover), an attempted paste, and the Reset / New Text / Next buttons (each must return focus to the input).
+6. For guidance changes, type text containing a capital, a digit and a shifted symbol (`Say "Hi!" 42 times; ok?` is a good probe) and check the layer auto-follows and the hold keys are the ones you would really press.
 
 ## Known gaps
 
-- Next-key highlighting searches only the selected layer, so off-layer characters highlight nothing and capitals do not indicate shift. Cross-layer lookup with automatic layer switching is the main outstanding feature.
+- `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
 - No persistence of results.
-- Combos and macros are not parsed from `.keymap` files.
+- Combos and macros are not parsed from `.keymap` files. The line-oriented scanner in `parseZmkKeymap` only enters the `keymap` node; adding sibling nodes is the point at which it should be replaced by a small DTS tokenizer rather than extended again.

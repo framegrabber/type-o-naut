@@ -98,9 +98,20 @@ A quote session types one quote; **Next** advances through the list and wraps.
 | `&sys_reset`, `&bootloader`, `&studio_unlock` | `RESET`, `BOOT`, `STUDIO` |
 | `&none`, `&trans` | blank, `∅` |
 
-Unknown behaviors fall back to their last parameter mapped as a keycode. Hold-tap labels intentionally show only the tap key, because that is what gets typed.
+Unknown behaviors fall back to their last parameter mapped as a keycode. Hold-tap labels intentionally show only the tap key, because that is what gets typed — the hold action is still parsed, and is what lets the trainer tell you when to hold shift or a layer key.
 
-New keycodes go in `ZMK_KEYCODE_MAP` in [`src/utils/zmkParser.ts`](src/utils/zmkParser.ts).
+New keycodes go in `ZMK_KEYCODE_MAP` (keycap text) and `KEYCODE_CHARS` (the characters a key emits) in [`src/utils/zmkParser.ts`](src/utils/zmkParser.ts).
+
+## Next-key guidance
+
+The trainer resolves the next character against the whole keymap, not just the layer on screen:
+
+- **Cross-layer.** Typing `1` finds it on NUM and shows the layer key to hold; the keyboard view follows along. Layers reachable only from another layer are chained, so a two-hold path is shown as two keys.
+- **Shift.** Capitals and shifted symbols add a shift key, picked from the hand opposite the target. Keycodes that already carry shift in firmware (`&kp EXCL`) need no shift from you.
+- **Layer view.** The selector defaults to **Auto** and follows the character. Picking a layer by hand pins the view; hints are then only drawn while the character is on that layer.
+- **Unreachable characters** are called out above the keyboard rather than silently highlighting nothing.
+
+Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildCharIndex` maps every character the keymap can produce to the keys that produce it, `buildLayerAccess` breadth-first searches the hold chain to each layer, and `resolveHint` picks a target — preferring the displayed layer, then no shift, then the shortest chain.
 
 ## How the metrics work
 
@@ -110,9 +121,17 @@ New keycodes go in `ZMK_KEYCODE_MAP` in [`src/utils/zmkParser.ts`](src/utils/zmk
 
 Pasting is blocked: only single-character edits are accepted, so a run cannot be skipped.
 
+## Tests
+
+```bash
+npm test       # vitest run
+```
+
+Unit tests cover the keymap parser and the character resolution against the bundled Ergonaut One S files; CI runs them before the build. UI behaviour is verified by hand (see `AGENTS.md`).
+
 ## Known limitations
 
-- The next-key highlight only searches the **selected** layer. Characters that live on another layer (digits, `!`, `?`, `_` on this keymap) highlight nothing, and capitals do not indicate shift.
+- `&trans` is resolved against the base layer rather than ZMK's "next active layer" semantics.
 - Results are not persisted between sessions.
 - Combos and macros are not parsed.
 

@@ -1,13 +1,19 @@
 import React from 'react';
 import type { KeyPosition, ParsedKeymap } from '../types';
+import type { KeyHint } from '../utils/keyIndex';
+
+export type LayerMode = 'auto' | number;
 
 interface KeyboardDisplayProps {
   keyPositions: KeyPosition[];
   keyLabels: string[];
-  nextKeyIndex: number;
+  /** Where the next character lives, or null if the keymap cannot type it. */
+  hint: KeyHint | null;
+  /** Layer currently drawn, already resolved from the layer mode. */
+  displayedLayer: number;
   keymap?: ParsedKeymap | null;
-  selectedLayer?: number;
-  onLayerChange?: (layer: number) => void;
+  layerMode?: LayerMode;
+  onLayerModeChange?: (mode: LayerMode) => void;
   scale?: number;
   keySize?: number;
 }
@@ -15,30 +21,50 @@ interface KeyboardDisplayProps {
 export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
   keyPositions,
   keyLabels,
-  nextKeyIndex,
+  hint,
+  displayedLayer,
   keymap,
-  selectedLayer = 0,
-  onLayerChange,
+  layerMode = 'auto',
+  onLayerModeChange,
   scale = 50,
   keySize = 0.9,
 }) => {
+  // Hold keys are indices on the base layer; they stay physically correct even
+  // while a different layer's labels are drawn.
+  const holdKeys = hint && hint.layer === displayedLayer ? hint.hold : [];
+  const targetKey = hint && hint.layer === displayedLayer ? hint.target : -1;
+
   return (
     <div className="bg-gray-800 p-8 rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-yellow-400">Keyboard Layout</h2>
-        {keymap && keymap.layers.length > 0 && onLayerChange && (
-          <select
-            value={selectedLayer}
-            onChange={e => onLayerChange(parseInt(e.target.value))}
-            className="px-3 py-1 bg-gray-700 text-white rounded border border-gray-600 focus:border-yellow-400 outline-none text-sm"
-          >
-            {keymap.layers.map((layer, i) => (
-              <option key={i} value={i}>
-                {layer.name}
+        <div className="flex items-center gap-3">
+          {hint && hint.hold.length > 0 && (
+            <span className="text-xs text-gray-400">
+              hold <span className="text-yellow-400">{hint.hold.length}</span> key
+              {hint.hold.length > 1 ? 's' : ''} for{' '}
+              <span className="text-yellow-400">{hint.layerName}</span>
+            </span>
+          )}
+          {keymap && keymap.layers.length > 0 && onLayerModeChange && (
+            <select
+              value={layerMode === 'auto' ? 'auto' : String(layerMode)}
+              onChange={e =>
+                onLayerModeChange(e.target.value === 'auto' ? 'auto' : Number(e.target.value))
+              }
+              className="px-3 py-1 bg-gray-700 text-white rounded border border-gray-600 focus:border-yellow-400 outline-none text-sm"
+            >
+              <option value="auto">
+                Auto{layerMode === 'auto' ? ` — ${keymap.layers[displayedLayer]?.name ?? ''}` : ''}
               </option>
-            ))}
-          </select>
-        )}
+              {keymap.layers.map((layer, i) => (
+                <option key={i} value={i}>
+                  {layer.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
       </div>
       <div
         className="relative"
@@ -52,7 +78,8 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
       >
         {keyPositions.map((key, index) => {
           const label = keyLabels[index] || '';
-          const isNextKey = index === nextKeyIndex;
+          const isTarget = index === targetKey;
+          const isHold = holdKeys.includes(index);
           // rx/ry of 0 are valid rotation origins, so test for undefined.
           const hasOrigin = key.rx !== undefined && key.ry !== undefined;
 
@@ -68,23 +95,28 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
               : 'center',
           };
 
+          let keyClass = 'bg-gray-700 border-gray-600 hover:bg-gray-600';
+          let textClass = 'text-gray-200 text-center text-xs';
+          if (isTarget) {
+            keyClass = 'bg-yellow-400 border-yellow-500 scale-110 shadow-lg';
+            textClass = 'text-gray-900 font-bold text-center';
+          } else if (isHold) {
+            keyClass = 'bg-yellow-400/20 border-yellow-400 border-dashed';
+            textClass = 'text-yellow-200 text-center text-xs';
+          }
+
           return (
             <div
               key={index}
+              title={isHold ? 'hold' : undefined}
               style={style}
               className={`
                 flex items-center justify-center rounded border-2 text-sm font-mono overflow-hidden
                 transition-all duration-150
-                ${
-                  isNextKey
-                    ? 'bg-yellow-400 border-yellow-500 scale-110 shadow-lg'
-                    : 'bg-gray-700 border-gray-600 hover:bg-gray-600'
-                }
+                ${keyClass}
               `}
             >
-              <span className={isNextKey ? 'text-gray-900 font-bold text-center' : 'text-gray-200 text-center text-xs'}>
-                {label}
-              </span>
+              <span className={textClass}>{label}</span>
             </div>
           );
         })}
