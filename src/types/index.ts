@@ -52,8 +52,18 @@ export interface KeymapLayer {
   bindings: Binding[];
 }
 
+export interface Combo {
+  name: string;
+  /** Physical key indices pressed together. */
+  keyPositions: number[];
+  binding: Binding;
+  /** Layers the combo is restricted to; empty means every layer. */
+  layers: number[];
+}
+
 export interface ParsedKeymap {
   layers: KeymapLayer[];
+  combos: Combo[];
 }
 
 export interface WordList {

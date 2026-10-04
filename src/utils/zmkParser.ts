@@ -1,4 +1,4 @@
-import type { Binding, Keycode, KeymapLayer, Modifier, ParsedKeymap } from '../types';
+import type { Binding, Combo, Keycode, KeymapLayer, Modifier, ParsedKeymap } from '../types';
 import { findCompatible, findNodes, parseDts } from './dts';
 
 const ZMK_KEYCODE_MAP: Record<string, string> = {
@@ -195,9 +195,15 @@ function parseEngages(token: string): Binding['engages'] {
   return mod ? { mod } : undefined;
 }
 
-function parseKeyBinding(binding: string): Binding {
+/** Macro label by its `&reference`, so a macro binding can show its own name. */
+type MacroNames = Map<string, string>;
+
+function parseKeyBinding(binding: string, macros: MacroNames = new Map()): Binding {
   const parts = binding.trim().split(/\s+/);
   const behavior = parts[0].toUpperCase();
+
+  const macro = macros.get(behavior);
+  if (macro) return { label: macro.slice(0, 10) };
 
   // &none renders as an unassigned key, &trans as "same as lower layer".
   if (behavior === '&NONE') return { label: '' };
@@ -266,55 +272,72 @@ function parseKeyBinding(binding: string): Binding {
   return { label: behavior.replace(/^&/, '').slice(0, 8) };
 }
 
+/** Numbers in a devicetree cell list, e.g. "0 1 2" or "<0 1> <2>". */
+function parseCells(value: string | undefined): number[] {
+  if (!value) return [];
+  return value
+    .split(/[\s<>,]+/)
+    .filter(token => /^\d+$/.test(token))
+    .map(Number);
+}
+
 /**
  * Layers are the children of the `zmk,keymap` node, in order, and each one
  * carries its bindings as a single property. Their position in that node is
  * the layer number every &mo/&lt/&tog refers to.
+ *
+ * Combos live in a sibling `zmk,combos` node and address the same physical
+ * key indices as the layers. Macros only contribute their names, so a
+ * `&my_macro` binding can be labelled with something better than a fallback.
  */
 export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
   const root = parseDts(keymapContent);
   const keymapNode = findCompatible(root, 'zmk,keymap') ?? findNodes(root, 'keymap')[0];
-  if (!keymapNode) return { layers: [] };
 
-  const layers: KeymapLayer[] = keymapNode.children
+  const macroNames = new Map<string, string>();
+  const macrosNode = findCompatible(root, 'zmk,macros') ?? findNodes(root, 'macros')[0];
+  for (const macro of macrosNode?.children ?? []) {
+    if (macro.label) macroNames.set(`&${macro.label.toUpperCase()}`, macro.label);
+  }
+
+  const layers: KeymapLayer[] = (keymapNode?.children ?? [])
     .filter(child => child.props.bindings !== undefined)
     .map(child => ({
       name: child.props['display-name'] || child.name,
-      bindings: processBindings([child.props.bindings]),
+      bindings: processBindings(child.props.bindings, macroNames),
     }));
 
-  return { layers };
+  const combosNode = findCompatible(root, 'zmk,combos') ?? findNodes(root, 'combos')[0];
+  const combos: Combo[] = (combosNode?.children ?? [])
+    .filter(child => child.props.bindings !== undefined && child.props['key-positions'])
+    .map(child => ({
+      name: child.props['display-name'] || child.name,
+      keyPositions: parseCells(child.props['key-positions']),
+      binding: parseKeyBinding(child.props.bindings, macroNames),
+      layers: parseCells(child.props.layers),
+    }));
+
+  return { layers, combos };
 }
 
-function processBindings(bufferLines: string[]): Binding[] {
-  const bindingText = bufferLines.join(' ');
+function processBindings(bindingText: string, macros: MacroNames = new Map()): Binding[] {
   const results: Binding[] = [];
-  
-  // Split text into tokens by whitespace
-  const tokens = bindingText.split(/\s+/).filter(t => t.length > 0);
-  
-  let currentBinding: string[] = [];
-  
+  const tokens = bindingText.split(/\s+/).filter(token => token.length > 0);
+  let current: string[] = [];
+
   for (const token of tokens) {
     if (token.startsWith('&')) {
-      // New binding found - save previous if exists
-      if (currentBinding.length > 0) {
-        // Keep empty labels (&none): the index of every binding must stay
-        // aligned with the index of the physical key it belongs to.
-        results.push(parseKeyBinding(currentBinding.join(' ')));
-      }
-      currentBinding = [token];
+      // Keep empty labels (&none): the index of every binding must stay
+      // aligned with the index of the physical key it belongs to.
+      if (current.length > 0) results.push(parseKeyBinding(current.join(' '), macros));
+      current = [token];
     } else {
-      // Add to current binding (parameter)
-      currentBinding.push(token);
+      current.push(token);
     }
   }
-  
-  // Process last binding
-  if (currentBinding.length > 0) {
-    results.push(parseKeyBinding(currentBinding.join(' ')));
-  }
-  
+
+  if (current.length > 0) results.push(parseKeyBinding(current.join(' '), macros));
+
   return results;
 }
 

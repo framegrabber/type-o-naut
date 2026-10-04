@@ -1,7 +1,13 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import type { KeyboardLayout, KeyPosition } from '../types';
-import { buildCharIndex, buildLayerAccess, findBaseLayers, resolveHint } from './keyIndex';
+import type { KeyboardLayout, KeyPosition, ParsedKeymap } from '../types';
+import {
+  buildCharIndex,
+  buildLayerAccess,
+  findBaseLayers,
+  resolveComboHint,
+  resolveHint,
+} from './keyIndex';
 import { parseZmkKeymap } from './zmkParser';
 
 const keymap = parseZmkKeymap(readFileSync('public/defaults/ergonaut_one_s.keymap', 'utf8'));
@@ -128,5 +134,36 @@ describe('an alternative base layout', () => {
 
   it('reaches other layers through the keys of that layout', () => {
     expect(focalHint('1')!.steps).toEqual([{ keyIndex: 34, engage: 'hold' }]);
+  });
+});
+
+describe('resolveComboHint', () => {
+  const withCombos: ParsedKeymap = {
+    layers: keymap.layers,
+    combos: [
+      { name: 'q', keyPositions: [2, 3], binding: { label: '?', tap: { code: 'FSLH', mods: ['shift'] } }, layers: [] },
+      { name: 'nav_only', keyPositions: [5, 6], binding: { label: 'Z', tap: { code: 'Z', mods: [] } }, layers: [2] },
+      { name: 'shortcut', keyPositions: [7, 8], binding: { label: '⌘V', tap: { code: 'V', mods: ['gui'] } }, layers: [] },
+    ],
+  };
+
+  it('offers the chord for a character a combo types', () => {
+    const hint = resolveComboHint('?', withCombos, 0)!;
+    expect(hint.chord).toEqual([2, 3]);
+    expect(hint.steps).toEqual([]);
+  });
+
+  it('respects the combo layer restriction', () => {
+    expect(resolveComboHint('z', withCombos, 0)).toBeNull();
+    expect(resolveComboHint('z', withCombos, 2)?.chord).toEqual([5, 6]);
+  });
+
+  it('ignores combos that fire a shortcut rather than a character', () => {
+    expect(resolveComboHint('v', withCombos, 0)).toBeNull();
+  });
+
+  it('returns nothing when no combo matches', () => {
+    expect(resolveComboHint('x', withCombos, 0)).toBeNull();
+    expect(resolveComboHint('x', keymap, 0)).toBeNull();
   });
 });

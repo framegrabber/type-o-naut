@@ -29,7 +29,9 @@ src/
     StatsDisplay.tsx    WPM / accuracy / errors
     ConfigPanel.tsx     file + URL loading, renders validation errors
   utils/
-    zmkParser.ts        .keymap text  -> ParsedKeymap (labels + structured taps/holds)
+    dts.ts              .keymap text  -> devicetree node tree
+    zmkParser.ts        node tree     -> ParsedKeymap (layers, combos, structured bindings)
+    history.ts          finished runs -> localStorage, summaries
     keyIndex.ts         ParsedKeymap  -> character index, layer access, next-key hint
     layoutValidator.ts  unknown       -> KeyboardLayout
     textLoader.ts       unknown       -> TextContent, session text generation
@@ -84,4 +86,5 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 - No results screen beyond wpm/acc/err. Nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are all blocked on sampling `{second, netWpm, rawWpm, errors}` into a ref during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
 - Characters outside the keymap's plain and shifted bindings never resolve, so accented text (`ö`, `ä`, `ß` in the German quote file) shows the "not on this keymap" notice. Teaching `keyIndex` about `RA(...)` and compose sequences is the fix.
 - `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
-- Combos and macros are not parsed from `.keymap` files. The line-oriented scanner in `parseZmkKeymap` only enters the `keymap` node; adding sibling nodes is the point at which it should be replaced by a small DTS tokenizer rather than extended again. The same scanner also requires each layer's opening brace to end its line.
+- Macros contribute only their name; their expansion is not typed out or resolved.
+- `src/utils/dts.ts` covers nodes and properties only: no macro expansion, no `#include` following, no `/delete-node/`. A keymap that relies on those will parse the text as written.

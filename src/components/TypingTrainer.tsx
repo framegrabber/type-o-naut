@@ -19,6 +19,7 @@ import {
   buildCharIndex,
   buildLayerAccess,
   findBaseLayers,
+  resolveComboHint,
   resolveHint,
 } from '../utils/keyIndex';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
@@ -371,7 +372,8 @@ export const TypingTrainer: React.FC = () => {
   const nextChar: string | undefined = typing.text[typing.input.length];
   const hint =
     keymap && charIndex && layerAccess && nextChar !== undefined
-      ? resolveHint(nextChar, keymap, charIndex, layerAccess, keyPositions, baseLayer, baseLayer)
+      ? resolveHint(nextChar, keymap, charIndex, layerAccess, keyPositions, baseLayer, baseLayer) ??
+        resolveComboHint(nextChar, keymap, baseLayer)
       : null;
 
   // The view follows the character; with nothing to show it rests on the base.

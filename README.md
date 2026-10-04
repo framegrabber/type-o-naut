@@ -97,6 +97,7 @@ A quote session types one quote; **Next** advances through the list and wraps.
 | `&bt BT_SEL 0`, `&bt BT_CLR`, `&out OUT_USB` | `BT0`, `BT CLR`, `USB` |
 | `&sys_reset`, `&bootloader`, `&studio_unlock` | `RESET`, `BOOT`, `STUDIO` |
 | `&none`, `&trans` | blank, `∅` |
+| `&my_macro` declared in a `macros` node | the macro's own label |
 
 Unknown behaviors fall back to their last parameter mapped as a keycode. Hold-tap labels intentionally show only the tap key, because that is what gets typed — the hold action is still parsed, and is what lets the trainer tell you when to hold shift or a layer key.
 
@@ -110,6 +111,7 @@ The trainer resolves the next character against the whole keymap, not just the l
 - **Shift.** Capitals and shifted symbols add a shift key, picked from the hand opposite the target. Keycodes that already carry shift in firmware (`&kp EXCL`) need no shift from you.
 - **Alternative layouts.** A layer that a `&to`/`&tog` key latches on — a Colemak or FOCAL alphabet, say — is a *resting layout*, not somewhere you visit. The **layout** selector lists those (the root layer plus every latched one); pick the one your keyboard is currently toggled to and the trainer measures everything from there, so its own characters need no access keys and other layers are reached through its thumbs. This is the mode for learning a new alphabet.
 - **Layer view.** The keyboard always follows the character being typed and falls back to the resting layout when there is nothing to show.
+- **Combos.** A `zmk,combos` node is read too. When a character has no ordinary key — or none on a reachable layer — the combo that types it is shown as a chord, with every key in it lit and a "press N keys together" note. Combos that fire a shortcut rather than a character, or that are restricted to other layers, are skipped. A key you can reach normally is always taught as a key, never as a chord.
 - **Unreachable characters** are called out above the keyboard rather than silently highlighting nothing.
 
 Resolution lives in [`src/utils/keyIndex.ts`](src/utils/keyIndex.ts): `buildCharIndex` maps every character the keymap can produce to the keys that produce it, `buildLayerAccess` breadth-first searches the chain of steps to each layer and records whether each one is held or tapped, and `resolveHint` picks a target — preferring the displayed layer, then no shift, then the shortest chain.
@@ -147,7 +149,6 @@ Unit tests cover the keymap parser and the character resolution against the bund
 - The result card shows wpm, accuracy and errors only — no chart, raw speed or consistency, because no per-second series is recorded.
 - Characters the keymap cannot produce plainly or with shift never highlight; accented text (`ö`, `ä`, `ß`) needs compose/`RA(...)` support.
 - `&trans` is resolved against the base layer rather than ZMK's "next active layer" semantics.
-- Combos and macros are not parsed.
 
 ## Deployment
 

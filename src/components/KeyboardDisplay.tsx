@@ -33,8 +33,10 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
 }) => {
   // Steps are physical key indices; they stay correct even while a different
   // layer's labels are drawn.
-  const steps = hint && hint.layer === displayedLayer ? hint.steps : [];
-  const targetKey = hint && hint.layer === displayedLayer ? hint.target : -1;
+  const onThisLayer = hint !== null && hint.layer === displayedLayer;
+  const steps = onThisLayer ? hint.steps : [];
+  const chord = onThisLayer ? hint.chord ?? [] : [];
+  const targetKey = onThisLayer && !hint.chord ? hint.target : -1;
   const holdCount = hint?.steps.filter(s => s.engage === 'hold').length ?? 0;
   const tapCount = hint?.steps.filter(s => s.engage !== 'hold').length ?? 0;
   const onBase = hint !== null && hint.layer === baseLayer;
@@ -49,6 +51,11 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
           )}
         </h2>
         <div className="flex items-center gap-3">
+          {hint && hint.chord && (
+            <span className="text-xs text-gray-400">
+              press <span className="text-yellow-400">{hint.chord.length}</span> keys together
+            </span>
+          )}
           {hint && hint.steps.length > 0 && (
             <span className="text-xs text-gray-400">
               {holdCount > 0 && (
@@ -102,7 +109,7 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({
       >
         {keyPositions.map((key, index) => {
           const label = keyLabels[index] || '';
-          const isTarget = index === targetKey;
+          const isTarget = index === targetKey || chord.includes(index);
           const step = steps.find(s => s.keyIndex === index);
           // rx/ry of 0 are valid rotation origins, so test for undefined.
           const hasOrigin = key.rx !== undefined && key.ry !== undefined;

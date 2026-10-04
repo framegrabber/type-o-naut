@@ -140,7 +140,52 @@ describe('parseZmkKeymap', () => {
 
   it('reports no layers when there is no keymap node', () => {
     expect(parseZmkKeymap('/ { behaviors { x: x { a = <1>; }; }; };').layers).toEqual([]);
-    expect(validateParsedKeymap({ layers: [] })).toEqual(['No layers found in keymap']);
+    expect(validateParsedKeymap({ layers: [], combos: [] })).toEqual(['No layers found in keymap']);
+  });
+
+  it('reads combos with their key positions, binding and layer restriction', () => {
+    const parsed = parseZmkKeymap(`
+      / {
+        combos {
+          compatible = "zmk,combos";
+          combo_esc { timeout-ms = <50>; key-positions = <0 1>; bindings = <&kp ESC>; };
+          combo_q { key-positions = <10 11 12>; bindings = <&kp Q>; layers = <0 2>; };
+        };
+        keymap { compatible = "zmk,keymap"; base { bindings = <&kp A>; }; };
+      };
+    `);
+    expect(parsed.combos).toEqual([
+      {
+        name: 'combo_esc',
+        keyPositions: [0, 1],
+        binding: { label: 'Esc', tap: { code: 'ESC', mods: [] } },
+        layers: [],
+      },
+      {
+        name: 'combo_q',
+        keyPositions: [10, 11, 12],
+        binding: { label: 'Q', tap: { code: 'Q', mods: [] } },
+        layers: [0, 2],
+      },
+    ]);
+    // The combos node is not mistaken for a layer.
+    expect(parsed.layers).toHaveLength(1);
+  });
+
+  it('labels a macro binding with the macro name', () => {
+    const parsed = parseZmkKeymap(`
+      / {
+        macros {
+          email: email { compatible = "zmk,behavior-macro"; bindings = <&kp A &kp B>; };
+        };
+        keymap { compatible = "zmk,keymap"; base { bindings = <&kp A &email>; }; };
+      };
+    `);
+    expect(parsed.layers[0].bindings.map(b => b.label)).toEqual(['A', 'email']);
+  });
+
+  it('has no combos when the keymap defines none', () => {
+    expect(parseZmkKeymap(keymapText).combos).toEqual([]);
   });
   it('accepts digits in layer names', () => {
     const parsed = parseZmkKeymap(`

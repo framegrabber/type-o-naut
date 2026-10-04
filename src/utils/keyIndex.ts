@@ -23,6 +23,8 @@ export interface KeyHint {
   target: number;
   /** Keys to engage first, in order, as physical key indices. */
   steps: KeyStep[];
+  /** Set when the character comes from a combo: press these keys together. */
+  chord?: number[];
 }
 
 export type CharIndex = Map<string, KeyTarget[]>;
@@ -187,4 +189,36 @@ export function resolveHint(
     target: best.keyIndex,
     steps,
   };
+}
+
+/**
+ * A combo that types `char` on the given layer, if one exists. Combos are a
+ * fallback rather than part of the character index: a key you can reach
+ * normally should be taught as a key, not as a chord.
+ */
+export function resolveComboHint(
+  char: string,
+  keymap: ParsedKeymap,
+  layer: number
+): KeyHint | null {
+  for (const combo of keymap.combos) {
+    if (combo.layers.length > 0 && !combo.layers.includes(layer)) continue;
+    if (combo.keyPositions.length === 0) continue;
+
+    const tap = combo.binding.tap;
+    if (!tap || tap.mods.some(mod => mod !== 'shift')) continue;
+    const chars = charsFor(tap.code);
+    if (!chars) continue;
+
+    if ((tap.mods.includes('shift') ? chars.shifted : chars.plain) !== char) continue;
+
+    return {
+      layer,
+      layerName: keymap.layers[layer]?.name ?? `Layer ${layer}`,
+      target: combo.keyPositions[0],
+      steps: [],
+      chord: combo.keyPositions,
+    };
+  }
+  return null;
 }
