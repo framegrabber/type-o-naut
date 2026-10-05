@@ -15,6 +15,8 @@ interface ResultCardProps {
   errors: number;
   /** Personal best and recent average across stored runs. */
   summary: HistorySummary;
+  /** Guided-lesson progress; absent in the quote and word modes. */
+  guided?: { focus: string | null; confidence: number | null; next: string | null };
   actions: ResultAction[];
 }
 
@@ -29,6 +31,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   accuracy,
   errors,
   summary,
+  guided,
   actions,
 }) => {
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -106,6 +109,24 @@ export const ResultCard: React.FC<ResultCardProps> = ({
             <div className="text-5xl font-bold text-red-400">{errors}</div>
           </div>
         </div>
+
+        {guided && guided.focus !== null && (
+          <p className="mb-2 font-mono text-xs text-gray-500">
+            focus <span className="text-gray-300">{guided.focus}</span>
+            {guided.confidence !== null && (
+              <>
+                {' — '}
+                <span className="text-gray-300">{Math.round(guided.confidence * 100)}%</span> of
+                target
+              </>
+            )}
+            {guided.next !== null && (
+              <>
+                {' · '}next unlock <span className="text-gray-300">{guided.next}</span>
+              </>
+            )}
+          </p>
+        )}
 
         <p className="mb-6 font-mono text-xs text-gray-500">
           {isPersonalBest ? (
