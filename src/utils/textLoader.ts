@@ -141,20 +141,25 @@ export function getRandomWords(
 }
 
 /**
- * Get text to type for a session. For quotes, returns a single quote.
- * For words, returns 15 random words repeated 5 times (can be customized).
- * Use getNextQuote() to get the next quote after finishing one.
+ * Get text to type for a session. For quotes, returns the quote at
+ * `opts.quoteIndex` (default 0). For words, returns `opts.wordCount` random
+ * words (default 15) repeated `opts.repeatCount` times (default 5), reshuffled
+ * per repetition.
  *
  * Multi-line sources (MonkeyType's code_* quote files) are normalised to LF
  * and stripped of trailing whitespace, which is not typeable in any useful
  * sense and would otherwise leave an unfinishable run.
  */
-export function getTextToType(content: TextContent, quoteIndex: number = 0): string {
+export function getTextToType(
+  content: TextContent,
+  opts: { quoteIndex?: number; wordCount?: number; repeatCount?: number } = {}
+): string {
   if (content.type === 'words' && 'words' in content.data) {
-    return getRandomWords(content.data.words, 15, 5);
+    return getRandomWords(content.data.words, opts.wordCount, opts.repeatCount);
   }
 
-  const quote = getQuoteAt(content, quoteIndex);
+  const quote = getQuoteAt(content, opts.quoteIndex ?? 0);
+
   if (!quote) return '';
 
   return quote.text

@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { Upload, XCircle } from 'lucide-react';
-import type { KeyboardLayout, ParsedKeymap, TextContent } from '../types';
+import type { KeyboardLayout, LessonMode, ParsedKeymap, Settings, TextContent } from '../types';
 import { loadFileAsJson, loadFileAsText, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
 import { validateKeyboardLayout } from '../utils/layoutValidator';
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
 
+const MODES: { value: LessonMode; label: string }[] = [
+  { value: 'quotes', label: 'Quotes' },
+  { value: 'words', label: 'Words' },
+  { value: 'guided', label: 'Guided' },
+];
+
+const MIN_TARGET_WPM = 10;
+const MAX_TARGET_WPM = 150;
+
 interface ConfigPanelProps {
   layout: KeyboardLayout | null;
   keymap: ParsedKeymap | null;
   textContent: TextContent | null;
+  settings: Settings;
+  onSettingsChange: (next: Settings) => void;
   onLayoutChange: (layout: KeyboardLayout | null) => void;
   onKeymapChange: (keymap: ParsedKeymap | null) => void;
   onLayerReset: () => void;
@@ -30,6 +41,8 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   layout,
   keymap,
   textContent,
+  settings,
+  onSettingsChange,
   onLayoutChange,
   onKeymapChange,
   onLayerReset,
@@ -319,6 +332,51 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        {/* Lesson */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-white mb-3">Lesson</h3>
+          <div className="flex gap-2 mb-3">
+            {MODES.map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => onSettingsChange({ ...settings, mode: value })}
+                className={`px-4 py-2 text-sm rounded transition-colors ${
+                  settings.mode === value
+                    ? 'bg-yellow-400 text-gray-900 font-semibold'
+                    : 'bg-gray-700 text-gray-200 hover:bg-gray-600'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <label className="flex items-center justify-between gap-4">
+            <span className="text-sm text-gray-400">
+              Target speed — the pace a character must hold to count as learned
+            </span>
+            <span className="flex items-center gap-2">
+              <input
+                type="number"
+                min={MIN_TARGET_WPM}
+                max={MAX_TARGET_WPM}
+                step={5}
+                value={settings.targetWpm}
+                onChange={e => {
+                  // An empty or half-typed field parses to NaN; keep the last good value.
+                  const next = Number.parseInt(e.target.value, 10);
+                  if (Number.isNaN(next)) return;
+                  onSettingsChange({
+                    ...settings,
+                    targetWpm: Math.min(MAX_TARGET_WPM, Math.max(MIN_TARGET_WPM, next)),
+                  });
+                }}
+                className="w-20 px-3 py-2 bg-gray-700 text-white rounded text-sm border border-gray-600 focus:border-yellow-400 outline-none"
+              />
+              <span className="text-sm text-gray-400">wpm</span>
+            </span>
+          </label>
         </div>
 
         {/* Results history */}

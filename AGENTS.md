@@ -27,12 +27,16 @@ src/
     TextDisplay.tsx     per-character colouring, derives the cursor from input.length
     KeyboardDisplay.tsx absolute-positioned keys + layer <select>
     StatsDisplay.tsx    WPM / accuracy / errors
-    ConfigPanel.tsx     file + URL loading, renders validation errors
+    KeySetDisplay.tsx   guided alphabet, tinted by confidence; focus key outlined
+    ResultCard.tsx      end-of-run numbers, history summary, guided focus line
+    ConfigPanel.tsx     file + URL loading, lesson mode + target speed, validation errors
   utils/
     dts.ts              .keymap text  -> devicetree node tree
     zmkParser.ts        node tree     -> ParsedKeymap (layers, combos, structured bindings)
     history.ts          finished runs -> localStorage, summaries
-    keyIndex.ts         ParsedKeymap  -> character index, layer access, next-key hint
+    keyIndex.ts         ParsedKeymap  -> character index, layer access, access cost, next-key hint
+    keyStats.ts         per-run samples -> smoothed per-character times, confidence
+    lesson.ts           cost order + statistics -> unlocked set, focus key, generated text
     layoutValidator.ts  unknown       -> KeyboardLayout
     textLoader.ts       unknown       -> TextContent, session text generation
     fileLoader.ts       File/URL readers, query params
@@ -62,6 +66,10 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 14. **The typing surface is a real but invisible `<textarea>`.** `TextDisplay` only renders; keystrokes still go through the controlled field (`opacity-0`, off-flow) so IME, composition and mobile keyboards keep working. Never reimplement typing on raw `keydown`.
 15. **Enter is always `preventDefault`ed.** A textarea would otherwise insert a line break the text never asked for and score it as an error. `Enter` and `Tab` are applied through `typeWhitespace`, which counts one keystroke and, for a correct newline, consumes the next line's indentation for free. `Tab` is only swallowed when the text actually contains one, so focus navigation survives on prose.
 16. **A run is recorded once, keyed by its start time.** StrictMode double-invokes effects and any re-render after the run ends would log it again; `recordedRunRef` holds the finished session's `startTime`. Storage failures are swallowed — history is a nicety and must never break typing.
+17. **A sample is evidence about the key you were asked to hit.** `Sample.char` is the *expected* character, never the typed one, so a wrong keystroke counts against the key it was aimed at. Samples are appended inside the existing `setTyping` updaters — a ref push would double-record under StrictMode. Only `!typo` samples between 40 ms and 12 000 ms feed the timing; outside that window a keystroke is a pause or a machine, not a measurement.
+18. **Statistics are scoped to a keymap.** `ParsedKeymap.id` hashes the keymap source; `history.v2` rows and `keystats.v1` carry it, `summarise(runs, keymapId)` filters by it, and a mismatch empties the table rather than merging. The same character behind a different layer hold is a different skill. Runs shorter than 10 characters or 1000 ms (`isValidRun`) are written nowhere.
+19. **The lesson is read when a session starts, never depended on.** Folding a finished run changes the key statistics, which changes the lesson, while the typed text is still on screen; `lessonRef` is mirrored in render and read by the session effect so only `lessonReady` — whether a lesson exists at all — can trigger a regeneration.
+20. **Unlock order is access cost, not letter frequency.** `charCost` ranks every character the keymap can produce, frequency only breaks ties, and the next character unlocks only when every unlocked one has reached the target speed *at its best* (`bestConfidence >= 1`). The focus key is the least confident one and appears in every generated word — drilling anything else defeats the method.
 
 ## Conventions
 
@@ -80,10 +88,12 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 4. For keymap or layout changes, confirm the parsed binding count equals the layout key count for **every** layer (36 each for the bundled Ergonaut One S), and that labels land on the expected physical keys.
 5. For typing-logic changes, cover: a correct run to completion, a wrong character followed by a correction (accuracy must not recover), an attempted paste, and the Reset / New Text / Next buttons (each must return focus to the input).
 6. For guidance changes, type text containing a capital, a digit and a shifted symbol (`Say "Hi!" 42 times; ok?` is a good probe) and check the layer auto-follows and the hold keys are the ones you would really press.
+7. For guided-mode changes, switch the mode in the config panel and confirm: the key strip renders unmeasured keys gray and at-target keys green (they mean different things to the user), the focus key appears in every generated word, a completed run moves its characters' times in `localStorage['typeonaut.keystats.v1']`, and the next character unlocks only once the whole set is at target. A run typed faster than the 40 ms sample floor will record a result but no timings — that is the filter working, not a bug.
 
 ## Known gaps
 
-- No results screen beyond wpm/acc/err. Nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are all blocked on sampling `{second, netWpm, rawWpm, errors}` into a ref during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
+- No results screen beyond wpm/acc/err and the guided focus line. Per-key samples now exist (`TypingState.samples`), but nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are still blocked on sampling `{second, netWpm, rawWpm, errors}` during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
+- The guided generator falls back to invented words whenever the unlocked alphabet is too thin for real ones (`hownsqxq`), which is readable but not pronounceable. keybr solves this with a phonetic model per language; an order-3 table or a syllable grammar would get closer.
 - Characters outside the keymap's plain and shifted bindings never resolve, so accented text (`ö`, `ä`, `ß` in the German quote file) shows the "not on this keymap" notice. Teaching `keyIndex` about `RA(...)` and compose sequences is the fix.
 - `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
 - Macros contribute only their name; their expansion is not typed out or resolved.

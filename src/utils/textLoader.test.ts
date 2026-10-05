@@ -31,6 +31,29 @@ describe('getTextToType', () => {
     );
   });
 
+  it('takes the quote the session is on', () => {
+    const list: TextContent = {
+      type: 'quotes',
+      data: {
+        language: 'English',
+        groups: [],
+        quotes: [
+          { text: 'first', source: 'a', id: 1, length: 5 },
+          { text: 'second', source: 'b', id: 2, length: 6 },
+        ],
+      },
+    };
+    expect(getTextToType(list, { quoteIndex: 1 })).toBe('second');
+  });
+
+  it('honours the requested word and repeat counts', () => {
+    const words: TextContent = {
+      type: 'words',
+      data: { name: 'test', noLazyMode: true, orderedByFrequency: false, words: ['a', 'b', 'c', 'd'] },
+    };
+    expect(getTextToType(words, { wordCount: 2, repeatCount: 3 }).split(' ')).toHaveLength(6);
+  });
+
   it('draws the requested number of words per round', () => {
     const text = getRandomWords(['a', 'b', 'c', 'd', 'e'], 3, 4);
     expect(text.split(' ')).toHaveLength(12);
