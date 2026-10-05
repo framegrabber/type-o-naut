@@ -134,6 +134,44 @@ function shiftKeys(keymap: ParsedKeymap, layerIndex: number): KeyStep[] {
 }
 
 /**
+ * How expensive a single target is to reach: wrong layer dominates, then
+ * shift, then the length of the layer chain, with the layer number as a
+ * tie-breaker so the result is stable.
+ *
+ * `preferredLayer` is optional because the two callers measure from different
+ * places. A hint is drawn on the layer the user is currently looking at, so a
+ * target already there costs nothing extra. Lesson ordering, by contrast,
+ * needs the cost of a character to be a fixed property of the keymap — if it
+ * moved with whatever layer happened to be displayed, the unlock order would
+ * shuffle mid-run. Omitting `preferredLayer` hands out no discount at all, so
+ * every target is priced from the resting base layer.
+ */
+function targetCost(t: KeyTarget, layerAccess: LayerAccess, preferredLayer?: number): number {
+  return (
+    (t.layer === preferredLayer ? 0 : 1000) +
+    (t.shift ? 100 : 0) +
+    layerAccess.get(t.layer)!.length * 10 +
+    t.layer
+  );
+}
+
+/**
+ * Cost of the cheapest way to type `char`, or null when no key that produces
+ * it sits on a reachable layer — the same condition `resolveHint` treats as
+ * unresolvable. Used to order characters by how hard the keyboard makes them.
+ */
+export function charCost(
+  char: string,
+  charIndex: CharIndex,
+  layerAccess: LayerAccess,
+  opts: { preferredLayer?: number } = {}
+): number | null {
+  const candidates = (charIndex.get(char) ?? []).filter(t => layerAccess.has(t.layer));
+  if (candidates.length === 0) return null;
+  return Math.min(...candidates.map(t => targetCost(t, layerAccess, opts.preferredLayer)));
+}
+
+/**
  * Pick the key to press for `char`, plus the keys to engage to get there.
  *
  * Preference order: a target on the layer already being shown, then one that
@@ -153,13 +191,9 @@ export function resolveHint(
   const candidates = (charIndex.get(char) ?? []).filter(t => layerAccess.has(t.layer));
   if (candidates.length === 0) return null;
 
-  const cost = (t: KeyTarget) =>
-    (t.layer === preferredLayer ? 0 : 1000) +
-    (t.shift ? 100 : 0) +
-    (layerAccess.get(t.layer)!.length * 10) +
-    t.layer;
-
-  const best = candidates.reduce((a, b) => (cost(b) < cost(a) ? b : a));
+  const best = candidates.reduce((a, b) =>
+    targetCost(b, layerAccess, preferredLayer) < targetCost(a, layerAccess, preferredLayer) ? b : a
+  );
   const steps = [...layerAccess.get(best.layer)!];
 
   if (best.shift) {

@@ -4,6 +4,7 @@ import type { KeyboardLayout, KeyPosition, ParsedKeymap } from '../types';
 import {
   buildCharIndex,
   buildLayerAccess,
+  charCost,
   findBaseLayers,
   resolveComboHint,
   resolveHint,
@@ -107,6 +108,32 @@ describe('resolveHint', () => {
   });
 });
 
+describe('charCost', () => {
+  const costOf = (char: string, opts?: { preferredLayer?: number }) =>
+    charCost(char, charIndex, layerAccess, opts);
+
+  it('charges for shift on the base layer', () => {
+    expect(costOf('a')).toBeLessThan(costOf('A')!);
+  });
+
+  it('charges more for a layer hold that still needs shift', () => {
+    // '"' is NUM's quote key plus NUM's own shift: two keys held before the
+    // target. A capital is one. Note the model does not make every layer
+    // character dearer than a capital — '1' is a single thumb hold and so
+    // scores below 'A'; it is the combination that costs.
+    expect(costOf('A')).toBeLessThan(costOf('"')!);
+  });
+
+  it('returns null for characters the keymap cannot produce', () => {
+    expect(costOf('€')).toBeNull();
+  });
+
+  it('discounts a target on the preferred layer', () => {
+    const sym = hintFor('!')!.layer;
+    expect(costOf('!', { preferredLayer: sym })).toBeLessThan(costOf('!')!);
+  });
+});
+
 describe('findBaseLayers', () => {
   it('offers the root plus any layer a toggle latches on', () => {
     // FOCAL is an alternative alphabet latched by NAV's &tog 1; the momentary
@@ -139,6 +166,7 @@ describe('an alternative base layout', () => {
 
 describe('resolveComboHint', () => {
   const withCombos: ParsedKeymap = {
+    id: 'test',
     layers: keymap.layers,
     combos: [
       { name: 'q', keyPositions: [2, 3], binding: { label: '?', tap: { code: 'FSLH', mods: ['shift'] } }, layers: [] },
