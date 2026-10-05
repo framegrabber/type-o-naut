@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RunResult } from './history';
 import { appendRun, clearHistory, loadHistory, summarise } from './history';
 
-const STORAGE_KEY = 'typeonaut.history.v1';
+const STORAGE_KEY = 'typeonaut.history.v2';
 
 function installStorage(): Map<string, string> {
   const store = new Map<string, string>();
@@ -16,6 +16,7 @@ function installStorage(): Map<string, string> {
 
 const run = (over: Partial<RunResult> = {}): RunResult => ({
   ts: 1,
+  keymapId: 'abc12345',
   wpm: 60,
   accuracy: 100,
   errors: 0,
@@ -65,9 +66,18 @@ describe('history storage', () => {
   it('drops entries that do not match the current shape', () => {
     store.set(
       STORAGE_KEY,
-      JSON.stringify({ version: 1, runs: [run(), { wpm: 10 }, { ...run(), source: 'code' }] })
+      JSON.stringify({
+        version: 2,
+        runs: [
+          run(),
+          run({ source: 'guided' }),
+          { wpm: 10 },
+          { ...run(), source: 'code' },
+          { ...run(), keymapId: undefined },
+        ],
+      })
     );
-    expect(loadHistory()).toEqual([run()]);
+    expect(loadHistory()).toEqual([run(), run({ source: 'guided' })]);
   });
 
   it('survives storage that refuses to write', () => {
@@ -106,5 +116,15 @@ describe('summarise', () => {
 
   it('totals time across every run', () => {
     expect(summarise([run({ durationMs: 1000 }), run({ durationMs: 2500 })]).totalMs).toBe(3500);
+  });
+
+  it('scopes the summary to one keymap when asked', () => {
+    const runs = [run({ wpm: 150, keymapId: 'other' }), run({ wpm: 50 }), run({ wpm: 70 })];
+    expect(summarise(runs, 'abc12345')).toEqual({
+      runs: 2,
+      best: 70,
+      recentAverage: 60,
+      totalMs: 20_000,
+    });
   });
 });

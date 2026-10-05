@@ -282,6 +282,20 @@ function parseCells(value: string | undefined): number[] {
 }
 
 /**
+ * FNV-1a over the keymap source. Not cryptographic: it only has to change when
+ * the keymap does, so statistics measured on one keymap are never attributed
+ * to another.
+ */
+function keymapId(content: string): string {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < content.length; i++) {
+    hash ^= content.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+/**
  * Layers are the children of the `zmk,keymap` node, in order, and each one
  * carries its bindings as a single property. Their position in that node is
  * the layer number every &mo/&lt/&tog refers to.
@@ -317,7 +331,7 @@ export function parseZmkKeymap(keymapContent: string): ParsedKeymap {
       layers: parseCells(child.props.layers),
     }));
 
-  return { layers, combos };
+  return { id: keymapId(keymapContent), layers, combos };
 }
 
 function processBindings(bindingText: string, macros: MacroNames = new Map()): Binding[] {

@@ -62,6 +62,12 @@ export interface Combo {
 }
 
 export interface ParsedKeymap {
+  /**
+   * Identity of the keymap source, so per-key statistics can be scoped to the
+   * keymap they were measured on. Moving a character to another layer changes
+   * what its timings mean, and merging the two would be nonsense.
+   */
+  id: string;
   layers: KeymapLayer[];
   combos: Combo[];
 }
@@ -94,4 +100,53 @@ export interface TextContent {
 export interface KeyLabel {
   tap: string;
   hold?: string;
+}
+
+/** One keystroke's worth of evidence, keyed by the character that was expected. */
+export interface Sample {
+  char: string;
+  /** Milliseconds since the previous keystroke; 0 for the first one of a run. */
+  ms: number;
+  typo: boolean;
+}
+
+/** Running per-character skill, smoothed across runs. */
+export interface KeyStat {
+  char: string;
+  /** Exponentially smoothed time to type, in milliseconds. */
+  timeToType: number | null;
+  /** Lowest smoothed time ever reached, so a bad run cannot re-lock a key. */
+  best: number | null;
+  hits: number;
+  misses: number;
+}
+
+export interface KeyStatsTable {
+  keymapId: string;
+  keys: KeyStat[];
+}
+
+export type LessonMode = 'quotes' | 'words' | 'guided';
+
+export interface Settings {
+  mode: LessonMode;
+  /** Speed a character must reach before it counts as learned. */
+  targetWpm: number;
+}
+
+/** What the current text was generated from; bumping any field re-rolls it. */
+export interface Session {
+  mode: LessonMode;
+  quoteIndex: number;
+  nonce: number;
+}
+
+/** The guided lesson's view of what is being practised right now. */
+export interface LessonState {
+  /** Unlocked characters, in the order they were unlocked. */
+  unlocked: string[];
+  /** Least confident unlocked character; it appears in every generated word. */
+  focus: string | null;
+  /** The character that unlocks once the whole unlocked set is at target. */
+  next: string | null;
 }

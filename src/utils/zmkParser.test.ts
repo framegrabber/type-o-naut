@@ -140,7 +140,9 @@ describe('parseZmkKeymap', () => {
 
   it('reports no layers when there is no keymap node', () => {
     expect(parseZmkKeymap('/ { behaviors { x: x { a = <1>; }; }; };').layers).toEqual([]);
-    expect(validateParsedKeymap({ layers: [], combos: [] })).toEqual(['No layers found in keymap']);
+    expect(validateParsedKeymap({ id: 'test', layers: [], combos: [] })).toEqual([
+      'No layers found in keymap',
+    ]);
   });
 
   it('reads combos with their key positions, binding and layer restriction', () => {
