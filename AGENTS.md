@@ -29,19 +29,19 @@ src/
     StatsDisplay.tsx    WPM / accuracy / errors
     KeySetDisplay.tsx   guided alphabet, tinted by confidence; focus key outlined
     ResultCard.tsx      end-of-run numbers, history summary, guided focus line
-    ConfigPanel.tsx     file + URL loading, lesson mode + target speed, validation errors
+    ConfigPanel.tsx     right sidebar: both text sources, keyboard, lesson settings, validation errors
   utils/
     dts.ts              .keymap text  -> devicetree node tree
     zmkParser.ts        node tree     -> ParsedKeymap (layers, combos, structured bindings)
     history.ts          finished runs -> localStorage, summaries
     keyIndex.ts         ParsedKeymap  -> character index, layer access, access cost, next-key hint
     keyStats.ts         per-run samples -> smoothed per-character times, confidence
-    lesson.ts           cost order + statistics -> unlocked set, focus key, generated text
+    lesson.ts           unlock order + statistics -> unlocked set, focus key, generated text
     layoutValidator.ts  unknown       -> KeyboardLayout
-    textLoader.ts       unknown       -> TextContent, session text generation
-    fileLoader.ts       File/URL readers, query params
+    textLoader.ts       unknown -> TextContent; per-kind narrowing and session text
+    fileLoader.ts       File/URL readers, MonkeyType name resolution, query params
   types/index.ts        shared types, no logic
-public/defaults/        the three files fetched on first load
+public/defaults/        keyboard, keymap, quote corpus and word list fetched on first load
 ```
 
 Data flow is one-way: `ConfigPanel` and the URL-param effect produce validated objects, `TypingTrainer` holds them, children receive props. Keep it that way — do not introduce context or a store for this size of app.
@@ -69,7 +69,10 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 17. **A sample is evidence about the key you were asked to hit.** `Sample.char` is the *expected* character, never the typed one, so a wrong keystroke counts against the key it was aimed at. Samples are appended inside the existing `setTyping` updaters — a ref push would double-record under StrictMode. Only `!typo` samples between 40 ms and 12 000 ms feed the timing; outside that window a keystroke is a pause or a machine, not a measurement.
 18. **Statistics are scoped to a keymap.** `ParsedKeymap.id` hashes the keymap source; `history.v2` rows and `keystats.v1` carry it, `summarise(runs, keymapId)` filters by it, and a mismatch empties the table rather than merging. The same character behind a different layer hold is a different skill. Runs shorter than 10 characters or 1000 ms (`isValidRun`) are written nowhere.
 19. **The lesson is read when a session starts, never depended on.** Folding a finished run changes the key statistics, which changes the lesson, while the typed text is still on screen; `lessonRef` is mirrored in render and read by the session effect so only `lessonReady` — whether a lesson exists at all — can trigger a regeneration.
-20. **Unlock order is access cost, not letter frequency.** `charCost` ranks every character the keymap can produce, frequency only breaks ties, and the next character unlocks only when every unlocked one has reached the target speed *at its best* (`bestConfidence >= 1`). The focus key is the least confident one and appears in every generated word — drilling anything else defeats the method.
+20. **Unlock order defaults to access cost, not letter frequency.** `candidates` in `lesson.ts` ranks every character the keymap can produce by `charCost`, with corpus frequency breaking ties; `settings.unlockPolicy = 'frequency'` swaps those two keys and nothing else. Whichever policy is active, the next character unlocks only when every unlocked one has reached the target speed *at its best* (`bestConfidence >= 1`), and the focus key is the least confident one and appears in every generated word — drilling anything else defeats the method.
+21. **The order-3 chain backs off explicitly.** `guidedText` tries the three-character context, then the two-character one, then plain corpus letter frequency, in that order; the fallback is a written sequence, not a lookup that happens to miss. Both orders live in one table keyed by context length, built in a single walk over the corpus and cached per corpus array, so a thin unlocked alphabet degrades in quality rather than falling straight to noise.
+22. **The mode picks the source, not the file.** `wordList` and `quoteList` are independent slots and a loaded file fills the one matching its own kind, so both can be loaded at once; `settings.mode` decides which the session comes from. When the active slot is empty the trainer says so instead of borrowing the other one — the single-slot design this replaced made `quotes` and `words` indistinguishable and silently evicted whichever source was loaded last. The one permitted fallback is the *guided corpus*, which tokenises the quote list when no word list is loaded, because that is a corpus, not a source.
+23. **The config sidebar is not modal.** Typing continues while it is open, so the focus-restoration effect and the type-anywhere handler skip only when the active element is a text entry other than the typing field (`holdsTextEntry`), never on `showConfig` alone. The trainer reserves the sidebar's width; the panel paints no backdrop and never calls `focus()` itself.
 
 ## Conventions
 
@@ -89,11 +92,13 @@ These are load-bearing. Several were previously broken and the fixes are easy to
 5. For typing-logic changes, cover: a correct run to completion, a wrong character followed by a correction (accuracy must not recover), an attempted paste, and the Reset / New Text / Next buttons (each must return focus to the input).
 6. For guidance changes, type text containing a capital, a digit and a shifted symbol (`Say "Hi!" 42 times; ok?` is a good probe) and check the layer auto-follows and the hold keys are the ones you would really press.
 7. For guided-mode changes, switch the mode in the config panel and confirm: the key strip renders unmeasured keys gray and at-target keys green (they mean different things to the user), the focus key appears in every generated word, a completed run moves its characters' times in `localStorage['typeonaut.keystats.v1']`, and the next character unlocks only once the whole set is at target. A run typed faster than the 40 ms sample floor will record a result but no timings — that is the filter working, not a bug.
+8. For text-source changes, load a MonkeyType quote file and a word list by name, and a name that does not exist — the failure must name the URL it tried. Nothing from their repository may be committed here; it is fetched at runtime from `raw.githubusercontent.com`, and the picker's index comes from the GitHub contents API (60 requests/hour per IP, so it is fetched once per kind per session).
 
 ## Known gaps
 
 - No results screen beyond wpm/acc/err and the guided focus line. Per-key samples now exist (`TypingState.samples`), but nothing records a per-second series, so raw wpm, consistency and a MonkeyType-style chart are still blocked on sampling `{second, netWpm, rawWpm, errors}` during the live-WPM interval. A quote run only lasts 5-15 seconds, so a timed mode is what would make such a chart worth drawing.
-- The guided generator falls back to invented words whenever the unlocked alphabet is too thin for real ones (`hownsqxq`), which is readable but not pronounceable. keybr solves this with a phonetic model per language; an order-3 table or a syllable grammar would get closer.
+- The guided generator still invents words when the unlocked alphabet is too thin for real ones, but the order-3 chain keeps most of them pronounceable (`stern sees tree nest sister risen`); the plain letter-frequency tier, which produces the remaining junk, covers ~5-10% of generated characters at six unlocked keys. keybr's answer is a shipped phonetic model per language, which this project deliberately does not carry.
+- `unlockPolicy` only changes anything when frequent characters differ in access cost. On a conventional base layer every letter costs the same, so cost and frequency order agree until capitals, digits and layer symbols appear; it earns its keep on alternative-alphabet keymaps and on corpora where a layer-held character (apostrophe, digits) is common.
 - Characters outside the keymap's plain and shifted bindings never resolve, so accented text (`ö`, `ä`, `ß` in the German quote file) shows the "not on this keymap" notice. Teaching `keyIndex` about `RA(...)` and compose sequences is the fix.
 - `&trans` resolves against the base layer instead of ZMK's "next active layer" semantics; modelling it properly needs an activation stack the trainer does not keep.
 - Macros contribute only their name; their expansion is not typed out or resolved.

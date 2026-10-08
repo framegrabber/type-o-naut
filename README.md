@@ -21,25 +21,30 @@ Requires Node 18+ (CI builds on Node 24).
 
 ## What ships by default
 
-On first load the app fetches three files from `public/defaults/`:
+On first load the app fetches four files from `public/defaults/`:
 
 | File | Contents |
 | --- | --- |
 | `ergonaut_one_s.json` | Ergonaut One S physical layout — 36 keys with `x`/`y`/rotation |
 | `ergonaut_one_s.keymap` | ZMK keymap with 9 layers (MAIN, FOCAL, NAV, MOUSE, MEDIA, NUM, SYM, FUN, ADJ) |
-| `english_minimal.json` | Four pangram quotes |
+| `english_quotes.json` | 685 public-domain quotes from 46 works (Austen, Twain, Dickens, Darwin, Douglass …), ASCII-only and typeable on any keymap |
+| `english_words.json` | 1500 English words, frequency-ranked from the Open American National Corpus (freely redistributable) |
 
 Each file is fetched independently; if one is missing or invalid the rest still load, and the text falls back to the built-in pangrams.
 
 ## Using your own hardware
 
-Open **⚙ Settings** to upload a layout JSON, a `.keymap` file, or a text JSON — or paste a URL and press Enter. Validation errors are listed inline with the exact field that failed.
+Open **⚙ Settings** for a sidebar that stays open while you type. It holds both text sources at once — a word list and a quote list, each with its own upload, URL and MonkeyType controls — plus the keyboard layout, the keymap and the lesson settings. A loaded file fills the slot matching its own kind, and the lesson mode decides which slot the session comes from, so loading one never evicts the other. Validation errors are listed inline with the exact field that failed.
 
-The same three sources can be passed as query parameters, which makes configurations shareable:
+MonkeyType's own content can be loaded by name — the **From MonkeyType** picker, or `monkeytype:english` in a URL field. Their files are fetched from `raw.githubusercontent.com` at runtime; nothing from their repository is copied into this one.
+
+Sources can be passed as query parameters, which makes configurations shareable:
 
 ```
-https://<user>.github.io/type-o-naut/?keyboardUrl=…&keymapUrl=…&textUrl=…
+https://<user>.github.io/type-o-naut/?keyboardUrl=…&keymapUrl=…&wordsUrl=…&quotesUrl=…
 ```
+
+`textUrl=` also still works and routes by the loaded file's kind.
 
 URLs must be CORS-readable from the browser.
 
