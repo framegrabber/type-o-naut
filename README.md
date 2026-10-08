@@ -36,7 +36,7 @@ Each file is fetched independently; if one is missing or invalid the rest still 
 
 Open **⚙ Settings** for a sidebar that stays open while you type. It holds both text sources at once — a word list and a quote list, each with its own upload, URL and MonkeyType controls — plus the keyboard layout, the keymap and the lesson settings. A loaded file fills the slot matching its own kind, and the lesson mode decides which slot the session comes from, so loading one never evicts the other. Validation errors are listed inline with the exact field that failed.
 
-MonkeyType's own content can be loaded by name — the **From MonkeyType** picker, or `monkeytype:english` in a URL field. Their files are fetched from `raw.githubusercontent.com` at runtime; nothing from their repository is copied into this one.
+MonkeyType's own content can be loaded by name — the **From MonkeyType** picker, or `monkeytype:english` in a URL field. Their files are fetched from `raw.githubusercontent.com` at runtime; nothing from their repository is copied into this one. The pickers offer prose lists your keymap can type; chips reveal the code lists and other scripts, and a loaded source that your keyboard cannot produce says so with the share that is untypeable. Each source can be unloaded or reset to the bundled default.
 
 Sources can be passed as query parameters, which makes configurations shareable:
 

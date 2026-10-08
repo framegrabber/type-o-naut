@@ -102,6 +102,13 @@ function candidates(
     if (first !== 0) return first;
     const second = policy === 'frequency' ? byCost : byFreq;
     if (second !== 0) return second;
+    // Neither key could separate them, which happens whenever the corpus has
+    // nothing in common with the keymap — a Hebrew word list on a QWERTY
+    // board leaves every frequency at zero. Falling straight to code point
+    // order would open the lesson on `,` and `.`; letters are what a typing
+    // lesson is for.
+    const letters = Number(/\p{L}/u.test(b)) - Number(/\p{L}/u.test(a));
+    if (letters !== 0) return letters;
     return a.codePointAt(0)! - b.codePointAt(0)!;
   });
 }

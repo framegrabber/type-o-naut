@@ -208,6 +208,14 @@ describe('unlock policy', () => {
     // can separate them and the two policies produce the same opening set.
     expect(orderUnder('frequency', CORPUS)).toEqual(orderUnder('cost', CORPUS));
   });
+
+  it('opens on letters when the corpus shares nothing with the keymap', () => {
+    // A Hebrew word list on a QWERTY board leaves every frequency at zero, so
+    // only the tie-break is left to decide; punctuation is not a typing lesson.
+    const unlocked = orderUnder('cost', ['מגדל', 'לשם', 'מיליון', 'שונות']);
+    expect(unlocked).toHaveLength(6);
+    for (const char of unlocked) expect(char).toMatch(/\p{L}/u);
+  });
 });
 
 describe('guidedText', () => {

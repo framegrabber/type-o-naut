@@ -44,6 +44,7 @@ import {
   resolveComboHint,
   resolveHint,
 } from '../utils/keyIndex';
+import type { CharIndex } from '../utils/keyIndex';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
 import type { RunResult } from '../utils/history';
 import { appendRun, clearHistory, loadHistory, summarise } from '../utils/history';
@@ -78,23 +79,80 @@ const MODES: { value: LessonMode; label: string }[] = [
 const GUIDED_LENGTH = 120;
 
 /**
- * Words to learn letter transitions from. A word list already is one; failing
- * that, the quote list is split into its distinct words, so guided mode works
- * with whatever is loaded rather than needing a corpus of its own.
+ * Words to learn letter transitions from, and which slot they came from. A
+ * word list already is a corpus; failing that, the quote list is split into
+ * its distinct words, so guided mode works with whatever is loaded rather
+ * than needing a corpus of its own. The origin travels with the words so
+ * that nothing has to make the same choice a second time and drift from it.
  */
-function corpusWords(words: TextContent | null, quotes: TextContent | null): string[] {
+function guidedCorpus(
+  words: TextContent | null,
+  quotes: TextContent | null
+): { source: 'words' | 'quotes' | null; words: string[] } {
   const wordList = wordListOf(words);
-  if (wordList) return wordList.words;
+  // A loaded word list is the corpus even if it turns out to hold nothing:
+  // reaching past a source the user did load would hide that it is empty.
+  if (wordList) {
+    return { source: wordList.words.length > 0 ? 'words' : null, words: wordList.words };
+  }
 
   const quoteList = quoteListOf(quotes);
-  if (!quoteList) return [];
+  if (!quoteList) return { source: null, words: [] };
   const distinct = new Set<string>();
   for (const quote of quoteList.quotes) {
     for (const word of quote.text.toLowerCase().split(/[^a-z']+/)) {
       if (word.length >= 2) distinct.add(word);
     }
   }
-  return [...distinct];
+  return { source: distinct.size > 0 ? 'quotes' : null, words: [...distinct] };
+}
+
+/**
+ * Share (0..1) of a source's characters this keymap can produce, counted over
+ * every occurrence rather than over distinct characters: a single stray glyph
+ * in a 1500-word list is then a rounding error, while a list written in
+ * another script reads as 0 — which is the warning worth giving. Whitespace
+ * is left out of the count because every keymap has a space bar, and letting
+ * it in would report a sixth of an untypeable quote file as typeable.
+ * Null when there is no source, no keymap, or nothing countable in it.
+ */
+function charCoverage(content: TextContent | null, charIndex: CharIndex | null): number | null {
+  if (!content || !charIndex) return null;
+
+  // Counted first, looked up afterwards: the quote corpus is ~90k characters
+  // and only a few hundred of them are distinct.
+  const counts = new Map<string, number>();
+  const tally = (text: string) => {
+    for (const char of text) counts.set(char, (counts.get(char) ?? 0) + 1);
+  };
+  const words = wordListOf(content);
+  if (words) words.words.forEach(tally);
+  else for (const quote of quoteListOf(content)?.quotes ?? []) tally(quote.text);
+
+  let total = 0;
+  let typeable = 0;
+  for (const [char, count] of counts) {
+    if (/\s/.test(char)) continue;
+    total += count;
+    if (charIndex.has(char)) typeable += count;
+  }
+  return total === 0 ? null : typeable / total;
+}
+
+/**
+ * A bundled default source, validated exactly the way an uploaded file is.
+ * Shared by the first load and by resetting a slot back to the default, so
+ * the two cannot come to disagree about what is acceptable.
+ */
+async function loadDefaultText(kind: 'words' | 'quotes'): Promise<TextContent> {
+  const response = await fetch(kind === 'words' ? DEFAULT_WORDS_PATH : DEFAULT_QUOTES_PATH);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data: unknown = await response.json();
+  const { valid, errors } = validateTextContent(data);
+  if (!valid) throw new Error(errors.join('; '));
+  const parsed = parseTextContent(data);
+  if (parsed?.type !== kind) throw new Error(`not a ${kind} list`);
+  return parsed;
 }
 
 /**
@@ -267,6 +325,28 @@ export const TypingTrainer: React.FC = () => {
     else setQuoteList(text);
   };
 
+  /**
+   * Empty a slot. The session effect sees the source go and the mode's own
+   * "nothing loaded" notice takes the text's place; guided mode falls back to
+   * whatever corpus is left, and says so when there is none.
+   */
+  const clearText = (kind: 'words' | 'quotes') => {
+    if (kind === 'words') setWordList(null);
+    else setQuoteList(null);
+  };
+
+  /**
+   * Put the bundled default back in a slot, through the same validation an
+   * upload goes through. A failure is reported where the first load reports
+   * its own, and leaves whatever was in the slot alone rather than emptying
+   * it on the strength of a failed fetch.
+   */
+  const resetText = (kind: 'words' | 'quotes') => {
+    loadDefaultText(kind).then(receiveText, (err: unknown) => {
+      console.error(`Failed to load default ${kind === 'words' ? 'word list' : 'quotes'}:`, err);
+    });
+  };
+
   // Load defaults on mount. Each resource is loaded independently so that one
   // missing file cannot leave the trainer without text to type.
   useEffect(() => {
@@ -281,14 +361,8 @@ export const TypingTrainer: React.FC = () => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.text();
           }),
-          fetch(DEFAULT_QUOTES_PATH).then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return r.json();
-          }),
-          fetch(DEFAULT_WORDS_PATH).then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return r.json();
-          }),
+          loadDefaultText('quotes'),
+          loadDefaultText('words'),
         ]);
 
         if (layoutResult.status === 'fulfilled') {
@@ -310,31 +384,19 @@ export const TypingTrainer: React.FC = () => {
           console.error('Failed to load default keymap:', keymapResult.reason);
         }
 
-        const parsedQuotes =
-          quotesResult.status === 'fulfilled' && validateTextContent(quotesResult.value).valid
-            ? parseTextContent(quotesResult.value)
-            : null;
         // The stand-in covers the quote slot only: it is the mode a first
         // visit opens in, so an unreachable file would leave nothing to type.
-        if (parsedQuotes?.type !== 'quotes') {
-          console.error(
-            'Failed to load default quotes:',
-            quotesResult.status === 'rejected' ? quotesResult.reason : 'not a quote list'
-          );
-        }
-        setQuoteList(parsedQuotes?.type === 'quotes' ? parsedQuotes : FALLBACK_QUOTES);
-
-        const parsedWords =
-          wordsResult.status === 'fulfilled' && validateTextContent(wordsResult.value).valid
-            ? parseTextContent(wordsResult.value)
-            : null;
-        if (parsedWords?.type === 'words') {
-          setWordList(parsedWords);
+        if (quotesResult.status === 'fulfilled') {
+          setQuoteList(quotesResult.value);
         } else {
-          console.error(
-            'Failed to load default word list:',
-            wordsResult.status === 'rejected' ? wordsResult.reason : 'not a word list'
-          );
+          console.error('Failed to load default quotes:', quotesResult.reason);
+          setQuoteList(FALLBACK_QUOTES);
+        }
+
+        if (wordsResult.status === 'fulfilled') {
+          setWordList(wordsResult.value);
+        } else {
+          console.error('Failed to load default word list:', wordsResult.reason);
         }
       } finally {
         setIsLoading(false);
@@ -427,10 +489,25 @@ export const TypingTrainer: React.FC = () => {
   );
 
   /**
-   * What the guided generator learns its letter transitions from: the word
-   * list when one is loaded, otherwise the quotes, tokenised.
+   * What the guided generator learns its letter transitions from, and which
+   * slot those words came from: the word list when one is loaded, otherwise
+   * the quotes, tokenised. The panel names `guided.source` rather than
+   * working the rule out again, so the label cannot disagree with the text.
    */
-  const corpus = useMemo(() => corpusWords(wordList, quoteList), [wordList, quoteList]);
+  const guided = useMemo(() => guidedCorpus(wordList, quoteList), [wordList, quoteList]);
+
+  /**
+   * How much of each loaded source this keymap can actually produce. Keyed to
+   * the sources and the index alone: the quote corpus is ~90k characters, and
+   * this may not be recomputed on a keystroke.
+   */
+  const coverage = useMemo(
+    () => ({
+      words: charCoverage(wordList, charIndex),
+      quotes: charCoverage(quoteList, charIndex),
+    }),
+    [wordList, quoteList, charIndex]
+  );
 
   /**
    * The source the running session draws from. Guided mode generates its own
@@ -439,18 +516,29 @@ export const TypingTrainer: React.FC = () => {
    */
   const activeSource = session.mode === 'quotes' ? quoteList : session.mode === 'words' ? wordList : null;
 
+  /**
+   * The corpus behind the *running* session, which is a guided-mode concern
+   * only: unloading the word list hands guided mode the quotes, and swapping
+   * one word list for another changes the alphabet under it. Both are worth a
+   * fresh fragment. The array identity only changes when a source is loaded or
+   * cleared, never mid-run, so this cannot re-roll text under a typist. Null in
+   * the other modes, so loading or clearing the slot they do not read cannot
+   * interrupt them.
+   */
+  const sessionCorpus = session.mode === 'guided' ? guided.words : null;
+
   const lesson = useMemo(
     () =>
       charIndex && layerAccess
-        ? lessonState(charIndex, layerAccess, keyStats, settings, corpus)
+        ? lessonState(charIndex, layerAccess, keyStats, settings, guided.words)
         : null,
-    [charIndex, layerAccess, keyStats, settings, corpus]
+    [charIndex, layerAccess, keyStats, settings, guided]
   );
 
   // Mirrored for the session effect, which reads the lesson without taking a
   // dependency on it. Assigning in render keeps the ref current before any
   // effect runs; it is derived data, so there is nothing to tear.
-  lessonRef.current = lesson ? { lesson, corpus } : null;
+  lessonRef.current = lesson ? { lesson, corpus: guided.words } : null;
   const lessonReady = lesson !== null;
 
   // Start a fresh session whenever the mode's source or the session changes.
@@ -459,9 +547,9 @@ export const TypingTrainer: React.FC = () => {
   // nothing to type, and the notice below says which source is missing.
   useEffect(() => {
     if (session.mode === 'guided') {
-      const guided = lessonRef.current;
+      const current = lessonRef.current;
       setTyping({
-        text: guided ? guidedText(guided.lesson, guided.corpus, GUIDED_LENGTH) : '',
+        text: current ? guidedText(current.lesson, current.corpus, GUIDED_LENGTH) : '',
         ...EMPTY_SESSION,
       });
       return;
@@ -481,7 +569,8 @@ export const TypingTrainer: React.FC = () => {
     });
     // `lessonReady` is a dependency so the first guided session regenerates
     // once the keymap has finished loading; its *contents* deliberately are not.
-  }, [activeSource, session, lessonReady]);
+    // `sessionCorpus` catches a guided corpus being unloaded or restored.
+  }, [activeSource, session, lessonReady, sessionCorpus]);
 
   // Keep the hidden-ish input focused. This must run after the render that
   // re-enables the field, otherwise focusing a disabled input is a no-op.
@@ -699,8 +788,9 @@ export const TypingTrainer: React.FC = () => {
   // keeps to its own source, so an empty one is said out loud rather than
   // quietly answered from the other.
   let emptySource: string | null = null;
-  if (session.mode === 'guided' && corpus.length === 0) {
-    emptySource = 'Guided lessons draw their words from a word list — load one to begin.';
+  if (session.mode === 'guided' && guided.source === null) {
+    emptySource =
+      'Guided lessons draw their words from a word list, or from the quotes when there is none — load one to begin.';
   } else if (session.mode === 'guided' && !lessonReady) {
     emptySource = 'Guided lessons need a keymap to choose their keys from — load one to begin.';
   } else if (session.mode === 'words' && !wordList) {
@@ -958,6 +1048,10 @@ export const TypingTrainer: React.FC = () => {
             wordList={wordList}
             quoteList={quoteList}
             onTextLoaded={receiveText}
+            onTextCleared={clearText}
+            onTextReset={resetText}
+            guidedCorpus={guided.source}
+            coverage={coverage}
             settings={settings}
             onSettingsChange={setSettings}
             onLayoutChange={setLayout}
