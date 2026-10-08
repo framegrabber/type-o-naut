@@ -46,7 +46,7 @@ const CORPUS = [
   'young', 'talk', 'soon', 'list', 'song', 'being', 'leave', 'family',
 ];
 
-const SETTINGS: Settings = { mode: 'guided', targetWpm: 40 };
+const SETTINGS: Settings = { mode: 'guided', targetWpm: 40, unlockPolicy: 'cost' };
 // 40 wpm is 300 ms per character, so 200 ms is comfortably at target and
 // 900 ms is well below it.
 const AT_TARGET = 200;
@@ -182,6 +182,34 @@ describe('lessonState', () => {
   });
 });
 
+describe('unlock policy', () => {
+  // The apostrophe sits behind a layer hold on the bundled keymap, so cost
+  // ordering makes it wait; a corpus full of contractions makes it one of the
+  // most common characters there is.
+  const CONTRACTIONS = ["don't", "isn't", "won't", "can't", "it's", "that's", "he's", "she's"];
+
+  const orderUnder = (unlockPolicy: Settings['unlockPolicy'], corpus: string[]) =>
+    lessonState(charIndex, layerAccess, EMPTY, { ...SETTINGS, unlockPolicy }, corpus).unlocked;
+
+  it('keeps a layer-held character out of the opening set under cost order', () => {
+    expect(orderUnder('cost', CONTRACTIONS)).not.toContain("'");
+  });
+
+  it('opens on the commonest characters under frequency order, layer or not', () => {
+    const unlocked = orderUnder('frequency', CONTRACTIONS);
+    expect(unlocked).toContain("'");
+    expect(charCost("'", charIndex, layerAccess)).toBeGreaterThan(
+      charCost('n', charIndex, layerAccess)!
+    );
+  });
+
+  it('agrees with cost order when every frequent character is equally cheap', () => {
+    // Every letter of the plain corpus is on the base layer, so neither key
+    // can separate them and the two policies produce the same opening set.
+    expect(orderUnder('frequency', CORPUS)).toEqual(orderUnder('cost', CORPUS));
+  });
+});
+
 describe('guidedText', () => {
   const fragment = guidedText(fresh, CORPUS, 120, seeded(7));
   const words = fragment.split(' ');
@@ -262,5 +290,49 @@ describe('guidedText', () => {
   it('returns nothing when there is nothing to practise', () => {
     expect(guidedText({ unlocked: [], focus: null, next: null }, CORPUS, 120, seeded(1))).toBe('');
     expect(guidedText(fresh, CORPUS, 0, seeded(1))).toBe('');
+  });
+});
+
+describe('guidedText backoff', () => {
+  // 'z' is never unlocked, so none of these corpus words is typeable as-is and
+  // every word in the fragment has to come out of the chain.
+  const STATE: LessonState = { unlocked: ['a', 'b', 'c', 'd'], focus: null, next: null };
+  const SEEDS = [1, 2, 3, 7, 11, 42, 99, 12345];
+
+  /**
+   * Each corpus below forces every word to open 'ab', so the third character
+   * is exactly the one the backoff chain chose.
+   */
+  const thirdChars = (corpus: string[]): Set<string> => {
+    const chars = new Set<string>();
+    for (const seed of SEEDS) {
+      for (const word of guidedText(STATE, corpus, 120, seeded(seed)).split(' ')) {
+        expect(word.slice(0, 2)).toBe('ab');
+        chars.add(word[2]);
+      }
+    }
+    return chars;
+  };
+
+  it('takes the order-3 continuation when there is one', () => {
+    // The order-3 context '\0ab' only ever saw 'c'; the order-2 context 'ab'
+    // is dominated twenty to one by the 'd' of 'zabd', so a 'd' here would
+    // mean the shorter context was consulted first.
+    const corpus = ['abcz', ...Array.from({ length: 20 }, () => 'zabd')];
+    expect(thirdChars(corpus)).toEqual(new Set(['c']));
+  });
+
+  it('backs off to order 2 instead of dropping to letter frequency', () => {
+    // 'abz' leaves the order-3 context with a locked continuation only, so it
+    // yields nothing legal; order 2 still has the 'c' of 'zabc'.
+    expect(thirdChars(['abz', 'zabc'])).toEqual(new Set(['c']));
+  });
+
+  it('reaches letter frequency only once no context can continue', () => {
+    // Neither order has a legal continuation of 'ab', so the third character
+    // is drawn from the alphabet — including 'd', which the corpus never uses.
+    const chars = thirdChars(['abz']);
+    expect(chars.size).toBeGreaterThan(1);
+    expect(chars.has('d')).toBe(true);
   });
 });

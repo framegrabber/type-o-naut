@@ -1,4 +1,4 @@
-import type { KeyStat, KeyStatsTable, LessonState, Settings } from '../types';
+import type { KeyStat, KeyStatsTable, LessonState, Settings, UnlockPolicy } from '../types';
 import { charCost, type CharIndex, type LayerAccess } from './keyIndex';
 import { bestConfidence, confidence } from './keyStats';
 
@@ -34,7 +34,20 @@ const FALLBACK_END_WEIGHT = 0.6;
 const START = '\u0000';
 const END = '\u0001';
 
-/** prefix of two characters -> next character -> occurrences. */
+/**
+ * Context length of the chain we sample first. keybr ships an order-4
+ * phonetic model per language; we build ours from whatever corpus is loaded,
+ * so 3 is the compromise: long enough that the next character is nearly
+ * determined by its neighbours, short enough that a few hundred words still
+ * populate it.
+ */
+const ORDER = 3;
+
+/**
+ * context -> next character -> occurrences. One table holds both orders: keys
+ * of ORDER characters are the primary chain, keys of ORDER - 1 the backoff.
+ * Key length tells them apart, so they cannot collide.
+ */
 type MarkovTable = Map<string, Map<string, number>>;
 
 /**
@@ -53,18 +66,22 @@ function charFrequency(corpus: string[]): Map<string, number> {
 }
 
 /**
- * Every character this keymap can actually produce, hardest last.
+ * Every character this keymap can actually produce, in the order the lesson
+ * should take them on.
  *
- * Order is the whole adaptive mechanism: keybr unlocks by letter frequency,
- * we unlock by how much work the keyboard asks for, so a layer-held symbol
- * waits until the home row is learned. Frequency only breaks ties — on a
- * normal base layer all 26 letters cost the same, and there the common ones
- * should come first.
+ * Order is the whole adaptive mechanism. Under `cost` we rank by how much work
+ * the keyboard asks for, so a layer-held symbol waits until the home row is
+ * learned, and frequency only breaks ties — on a normal base layer all 26
+ * letters cost the same, and there the common ones should come first. Under
+ * `frequency` the two keys swap, which is keybr's order: useful when the
+ * keymap makes every letter equally cheap, or when the point is speed on
+ * common characters rather than coverage of awkward ones.
  */
 function candidates(
   charIndex: CharIndex,
   layerAccess: LayerAccess,
-  corpus: string[]
+  corpus: string[],
+  policy: UnlockPolicy
 ): string[] {
   const freq = charFrequency(corpus);
   const costs = new Map<string, number>();
@@ -80,9 +97,11 @@ function candidates(
 
   return [...costs.keys()].sort((a, b) => {
     const byCost = costs.get(a)! - costs.get(b)!;
-    if (byCost !== 0) return byCost;
     const byFreq = (freq.get(b) ?? 0) - (freq.get(a) ?? 0);
-    if (byFreq !== 0) return byFreq;
+    const first = policy === 'frequency' ? byFreq : byCost;
+    if (first !== 0) return first;
+    const second = policy === 'frequency' ? byCost : byFreq;
+    if (second !== 0) return second;
     return a.codePointAt(0)! - b.codePointAt(0)!;
   });
 }
@@ -108,7 +127,7 @@ export function lessonState(
   settings: Settings,
   corpus: string[]
 ): LessonState {
-  const queue = candidates(charIndex, layerAccess, corpus);
+  const queue = candidates(charIndex, layerAccess, corpus, settings.unlockPolicy);
   const byChar = statsByChar(stats);
 
   const learned = (char: string) => {
@@ -141,31 +160,44 @@ export function lessonState(
 }
 
 /**
- * Order-2 transitions over the whole corpus. Building the table from the full
- * word list rather than the handful of words the unlocked alphabet allows is
- * what keeps generated text looking like language: the statistics stay rich
- * and only the sampling is restricted.
+ * Order-3 transitions over the whole corpus, plus the order-2 table used when
+ * the longer context has nothing legal left. Building from the full word list
+ * rather than the handful of words the unlocked alphabet allows is what keeps
+ * generated text looking like language: the statistics stay rich and only the
+ * sampling is restricted.
+ *
+ * Both orders are accumulated in one walk, which costs two map writes per
+ * character. The table is bounded by the corpus's distinct n-grams, not by
+ * the alphabet raised to the order: English words use a small corner of the
+ * 26^3 space, so it stays linear in corpus size. Measured on a 20k-word word
+ * list (174k characters), easily more than a quote file tokenises to: 6.7k
+ * contexts, 38k transitions, 2.4 MiB — against 579 contexts and 334 KiB for
+ * the order-2 half alone. Built once per corpus array and cached.
  */
 function markovTable(corpus: string[]): MarkovTable {
   const cached = tableCache.get(corpus);
   if (cached) return cached;
 
   const table: MarkovTable = new Map();
+  const record = (context: string, char: string) => {
+    let row = table.get(context);
+    if (!row) {
+      row = new Map();
+      table.set(context, row);
+    }
+    row.set(char, (row.get(char) ?? 0) + 1);
+  };
+
   for (const word of corpus) {
     const letters = [...word];
     if (letters.length === 0) continue;
-    let first = START;
-    let second = START;
+    let context = START.repeat(ORDER);
     for (const char of [...letters, END]) {
-      const key = first + second;
-      let row = table.get(key);
-      if (!row) {
-        row = new Map();
-        table.set(key, row);
-      }
-      row.set(char, (row.get(char) ?? 0) + 1);
-      first = second;
-      second = char;
+      record(context, char);
+      // The shorter context is a suffix of the longer one, so the backoff
+      // table is exactly the order-2 table the walk used to rely on.
+      record(context.slice(1), char);
+      context = context.slice(1) + char;
     }
   }
 
@@ -202,7 +234,71 @@ interface Shape {
 }
 
 /**
+ * Continuations of one context that the lesson may actually type: unlocked
+ * characters, no bigram the word has already used, and END only once the word
+ * is long enough and has drilled the focus.
+ *
+ * An empty result is what makes the backoff work — it means this context has
+ * nothing legal to offer, not that the walk is stuck.
+ */
+function contextOptions(
+  table: MarkovTable,
+  context: string,
+  shape: Shape,
+  bigrams: Set<string>,
+  started: boolean,
+  complete: boolean
+): Array<[string, number]> {
+  const row = table.get(context);
+  if (!row) return [];
+
+  const previous = context[context.length - 1];
+  const options: Array<[string, number]> = [];
+  for (const [char, count] of row) {
+    if (char === END) {
+      if (complete) options.push([END, count]);
+      continue;
+    }
+    if (!shape.allowed.has(char)) continue;
+    // Repeating a bigram is what turns a six-letter alphabet into
+    // "jjf jjk jjf": ban it and the walk is forced to branch.
+    if (started && bigrams.has(previous + char)) continue;
+    options.push([char, char === shape.focus ? count * FOCUS_BOOST : count]);
+  }
+  return options;
+}
+
+/**
+ * The chain fell off the unlocked alphabet at every order, which is the normal
+ * case early on. Carry on from plain corpus letter frequency instead.
+ */
+function frequencyOptions(
+  shape: Shape,
+  bigrams: Set<string>,
+  previous: string,
+  started: boolean,
+  complete: boolean
+): Array<[string, number]> {
+  const options: Array<[string, number]> = [];
+  let total = 0;
+  for (const char of shape.unlocked) {
+    if (started && bigrams.has(previous + char)) continue;
+    const weight = (shape.weights.get(char) ?? 1) * (char === shape.focus ? FOCUS_BOOST : 1);
+    total += weight;
+    options.push([char, weight]);
+  }
+  if (complete) options.push([END, total * FALLBACK_END_WEIGHT]);
+  return options;
+}
+
+/**
  * Walk the markov chain, keeping only characters the lesson has unlocked.
+ *
+ * Each step tries the order-3 context, then the order-2 context inside it,
+ * then letter frequency — in that order, deliberately. A thin alphabet knocks
+ * the long context out constantly, and dropping straight to frequency from
+ * there is what used to produce `hownsqxq`; one step of backoff keeps most of
+ * those positions on real transitions.
  *
  * `seed` forces the first character, which is how a word is guaranteed to
  * contain the focus when free generation keeps missing it.
@@ -215,55 +311,34 @@ function generateWord(
 ): string | null {
   const letters: string[] = [];
   const bigrams = new Set<string>();
-  let first = START;
-  let second = START;
+  let context = START.repeat(ORDER);
 
   if (seed) {
     letters.push(seed);
-    second = seed;
+    context = context.slice(1) + seed;
   }
 
   while (letters.length < MAX_WORD) {
     const complete =
       letters.length >= MIN_WORD && (shape.focus === null || letters.includes(shape.focus));
-    const options: Array<[string, number]> = [];
+    const started = letters.length > 0;
+    const previous = context[context.length - 1];
 
-    const row = table.get(first + second);
-    if (row) {
-      for (const [char, count] of row) {
-        if (char === END) {
-          if (complete) options.push([END, count]);
-          continue;
-        }
-        if (!shape.allowed.has(char)) continue;
-        // Repeating a bigram is what turns a six-letter alphabet into
-        // "jjf jjk jjf": ban it and the walk is forced to branch.
-        if (letters.length > 0 && bigrams.has(second + char)) continue;
-        options.push([char, char === shape.focus ? count * FOCUS_BOOST : count]);
-      }
-    }
-
+    let options = contextOptions(table, context, shape, bigrams, started, complete);
     if (options.length === 0) {
-      // The chain fell off the unlocked alphabet, which is the normal case
-      // early on. Carry on from plain corpus letter frequency instead.
-      let total = 0;
-      for (const char of shape.unlocked) {
-        if (letters.length > 0 && bigrams.has(second + char)) continue;
-        const weight = (shape.weights.get(char) ?? 1) * (char === shape.focus ? FOCUS_BOOST : 1);
-        total += weight;
-        options.push([char, weight]);
-      }
-      if (complete) options.push([END, total * FALLBACK_END_WEIGHT]);
+      options = contextOptions(table, context.slice(1), shape, bigrams, started, complete);
+    }
+    if (options.length === 0) {
+      options = frequencyOptions(shape, bigrams, previous, started, complete);
     }
 
     if (options.length === 0) break;
     const next = weightedPick(options, rng);
     if (next === END) break;
 
-    if (letters.length > 0) bigrams.add(second + next);
+    if (started) bigrams.add(previous + next);
     letters.push(next);
-    first = second;
-    second = next;
+    context = context.slice(1) + next;
   }
 
   if (letters.length < MIN_WORD) return null;

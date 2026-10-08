@@ -128,10 +128,21 @@ export interface KeyStatsTable {
 
 export type LessonMode = 'quotes' | 'words' | 'guided';
 
+/**
+ * What decides which character the guided lesson unlocks next. `cost` is this
+ * trainer's own answer — the characters the keymap makes easiest to reach come
+ * first, so a layer-held symbol waits for the home row. `frequency` is
+ * keybr's — the characters the corpus uses most come first, which is what you
+ * want when the keymap is uniform, or when you already touch-type and care
+ * about speed on common letters rather than coverage of awkward keys.
+ */
+export type UnlockPolicy = 'cost' | 'frequency';
+
 export interface Settings {
   mode: LessonMode;
   /** Speed a character must reach before it counts as learned. */
   targetWpm: number;
+  unlockPolicy: UnlockPolicy;
 }
 
 /** What the current text was generated from; bumping any field re-rolls it. */
