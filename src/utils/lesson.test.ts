@@ -159,6 +159,19 @@ describe('lessonState', () => {
     expect(state.focus).toBe(fresh.unlocked[2]);
   });
 
+  it('focuses the unreliable character over equally quick clean ones', () => {
+    // Everything is just under target, so nothing unlocks and speed alone
+    // cannot separate the six — only the miss rate can.
+    const keys = fresh.unlocked.map((char, i) =>
+      i === 2
+        ? { char, timeToType: 320, best: 320, hits: 40, misses: 10 }
+        : { char, timeToType: 320, best: 320, hits: 40, misses: 0 }
+    );
+    const state = stateWith(tableOf(keys));
+    expect(state.unlocked).toEqual(fresh.unlocked);
+    expect(state.focus).toBe(fresh.unlocked[2]);
+  });
+
   it('reports nothing at all when the keymap produces no characters', () => {
     const state = lessonState(new Map(), new Map(), EMPTY, SETTINGS, CORPUS);
     expect(state).toEqual({ unlocked: [], focus: null, next: null });

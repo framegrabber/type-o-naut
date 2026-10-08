@@ -132,6 +132,33 @@ export function confidence(stat: KeyStat | undefined, targetWpm: number): number
   return targetMs(targetWpm) / stat.timeToType;
 }
 
+/**
+ * How many hits a character is credited with before its miss rate is believed.
+ * Without it the first typo on a fresh key reads as 100% inaccurate and that
+ * key would hold the focus for the rest of the lesson.
+ */
+const MISS_PRIOR = 4;
+
+/**
+ * What a miss costs relative to its share of the keystrokes: a key missed a
+ * tenth of the time scores as if it were 20% slower than it is. Errors are
+ * worth more than time because a typo you correct also costs the correction.
+ */
+const MISS_WEIGHT = 2;
+
+/**
+ * Speed and accuracy as one number on `confidence`'s scale, which is what the
+ * lesson ranks keys by: a character is practised until it is both fast and
+ * reliable. Typos leave `timeToType` untouched by design (they carry no timing
+ * evidence), so without this term a key you miss constantly but hit quickly
+ * would never be drilled.
+ */
+export function proficiency(stat: KeyStat | undefined, targetWpm: number): number | null {
+  const speed = confidence(stat, targetWpm);
+  if (speed === null || !stat) return null;
+  return speed / (1 + (MISS_WEIGHT * stat.misses) / (stat.hits + MISS_PRIOR));
+}
+
 /** As `confidence`, but against the best-ever time; unlocking uses this. */
 export function bestConfidence(stat: KeyStat | undefined, targetWpm: number): number | null {
   if (!stat || stat.best === null) return null;

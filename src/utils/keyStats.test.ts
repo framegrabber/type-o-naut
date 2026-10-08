@@ -6,6 +6,7 @@ import {
   foldRun,
   isValidRun,
   loadKeyStats,
+  proficiency,
   saveKeyStats,
 } from './keyStats';
 
@@ -177,6 +178,39 @@ describe('confidence', () => {
     const learned: KeyStat = { char: 'a', timeToType: 400, best: 200, hits: 9, misses: 1 };
     expect(confidence(learned, 60)).toBe(0.5);
     expect(bestConfidence(learned, 60)).toBe(1);
+  });
+});
+
+describe('proficiency', () => {
+  const atTarget: KeyStat = { char: 'a', timeToType: 200, best: 200, hits: 20, misses: 0 };
+
+  it('equals confidence when the character is never missed', () => {
+    expect(proficiency(atTarget, 60)).toBe(1);
+    expect(proficiency({ ...atTarget, timeToType: 100 }, 60)).toBe(2);
+  });
+
+  it('is null wherever confidence is, because timing is the base', () => {
+    expect(proficiency(undefined, 60)).toBeNull();
+    expect(
+      proficiency({ char: 'a', timeToType: null, best: null, hits: 9, misses: 9 }, 60)
+    ).toBeNull();
+  });
+
+  it('ranks a fast but unreliable key below a slower clean one', () => {
+    // 4 misses in 20 hits penalises by 1 + 2 * 4 / 24 = 1.3333, so a key typed
+    // at 150 ms (1.3333 of target) scores exactly 1.
+    const sloppy = proficiency({ ...atTarget, timeToType: 150, misses: 4 }, 60)!;
+    const clean = proficiency({ ...atTarget, timeToType: 180 }, 60)!;
+    expect(sloppy).toBeCloseTo(1, 6);
+    expect(clean).toBeCloseTo(1.111, 3);
+    expect(sloppy).toBeLessThan(clean);
+    // On speed alone the ranking is the other way round, which is the point.
+    expect(confidence({ ...atTarget, timeToType: 150 }, 60)).toBeGreaterThan(clean);
+  });
+
+  it('does not let the first typo on a fresh key dominate', () => {
+    // 1 miss in 1 hit is 2/5 of a miss rate, not all of it: still above half.
+    expect(proficiency({ ...atTarget, hits: 1, misses: 1 }, 60)).toBeCloseTo(1 / 1.4, 6);
   });
 });
 

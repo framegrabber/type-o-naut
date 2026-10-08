@@ -48,7 +48,7 @@ import type { CharIndex } from '../utils/keyIndex';
 import { parseTextContent, validateTextContent } from '../utils/textLoader';
 import type { RunResult } from '../utils/history';
 import { appendRun, clearHistory, loadHistory, summarise } from '../utils/history';
-import { confidence, foldRun, isValidRun, loadKeyStats, saveKeyStats } from '../utils/keyStats';
+import { foldRun, isValidRun, loadKeyStats, proficiency, saveKeyStats } from '../utils/keyStats';
 import { guidedText, lessonState } from '../utils/lesson';
 
 const DEFAULT_LAYOUT_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.json`;
@@ -1017,10 +1017,10 @@ export const TypingTrainer: React.FC = () => {
               session.mode === 'guided' && lesson
                 ? {
                     focus: lesson.focus,
-                    confidence:
+                    proficiency:
                       lesson.focus === null
                         ? null
-                        : confidence(
+                        : proficiency(
                             keyStats.keys.find(k => k.char === lesson.focus),
                             settings.targetWpm
                           ),

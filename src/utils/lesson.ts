@@ -1,6 +1,6 @@
 import type { KeyStat, KeyStatsTable, LessonState, Settings, UnlockPolicy } from '../types';
 import { charCost, type CharIndex, type LayerAccess } from './keyIndex';
-import { bestConfidence, confidence } from './keyStats';
+import { bestConfidence, proficiency } from './keyStats';
 
 /**
  * Characters the lesson opens with. keybr starts on a handful of keys so the
@@ -123,9 +123,11 @@ function statsByChar(stats: KeyStatsTable): Map<string, KeyStat> {
  * What the guided lesson is practising right now: the unlocked alphabet, the
  * character it is drilling, and the one it will hand out next.
  *
- * Unlocking reads the best-ever time rather than the current average so a
- * single bad run cannot take a learned key away again; the focus reads the
- * current average, because that is what needs work today.
+ * Unlocking reads the best-ever *time* rather than the current score so a
+ * single bad run cannot take a learned key away again — misses only ever
+ * accumulate, so letting them gate the queue would re-lock keys. The focus
+ * reads `proficiency`, speed penalised by the miss rate, because today's worst
+ * key is either the slow one or the unreliable one.
  */
 export function lessonState(
   charIndex: CharIndex,
@@ -153,7 +155,7 @@ export function lessonState(
   let focus: string | null = null;
   let lowest = Infinity;
   for (const char of unlocked) {
-    const current = confidence(byChar.get(char), settings.targetWpm);
+    const current = proficiency(byChar.get(char), settings.targetWpm);
     // A character with no timing evidence is the most in need of practice,
     // so it sorts below any measured one.
     const value = current === null ? -Infinity : current;
