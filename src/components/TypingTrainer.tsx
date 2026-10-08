@@ -10,6 +10,7 @@ import type {
   KeyboardLayout,
   KeyPosition,
   KeyStatsTable,
+  LessonMode,
   LessonState,
   ParsedKeymap,
   Sample,
@@ -18,12 +19,22 @@ import type {
   TextContent,
 } from '../types';
 import {
-  getTextToType,
   getNextQuoteIndex,
   getAttribution,
+  getQuoteText,
+  getRandomWords,
+  quoteListOf,
+  wordListOf,
   DEFAULT_MINIMAL_QUOTES,
 } from '../utils/textLoader';
-import { getQueryParam, loadJsonFromUrl, loadTextFromUrl } from '../utils/fileLoader';
+import {
+  getQueryParam,
+  loadJsonFromUrl,
+  loadMonkeytypeJson,
+  loadTextFromUrl,
+  parseMonkeytypeRef,
+} from '../utils/fileLoader';
+import type { MonkeytypeKind } from '../utils/fileLoader';
 import { parseKeyboardLayout, validateKeyboardLayout } from '../utils/layoutValidator';
 import { parseZmkKeymap, validateParsedKeymap } from '../utils/zmkParser';
 import {
@@ -41,12 +52,24 @@ import { guidedText, lessonState } from '../utils/lesson';
 
 const DEFAULT_LAYOUT_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.json`;
 const DEFAULT_KEYMAP_PATH = `${import.meta.env.BASE_URL}defaults/ergonaut_one_s.keymap`;
-const DEFAULT_TEXT_PATH = `${import.meta.env.BASE_URL}defaults/english_minimal.json`;
+const DEFAULT_QUOTES_PATH = `${import.meta.env.BASE_URL}defaults/english_quotes.json`;
+const DEFAULT_WORDS_PATH = `${import.meta.env.BASE_URL}defaults/english_words.json`;
 
-const FALLBACK_TEXT: TextContent = {
+/**
+ * Enough quotes to type on when the default quote file cannot be fetched.
+ * There is no equivalent for words: an absent word list is visible as such,
+ * and inventing one would hide the failure.
+ */
+const FALLBACK_QUOTES: TextContent = {
   type: 'quotes',
   data: { language: 'English', groups: [], quotes: DEFAULT_MINIMAL_QUOTES },
 };
+
+const MODES: { value: LessonMode; label: string }[] = [
+  { value: 'quotes', label: 'quotes' },
+  { value: 'words', label: 'words' },
+  { value: 'guided', label: 'guided' },
+];
 
 /**
  * Characters a guided fragment aims for. Long enough that the result is worth
@@ -55,21 +78,40 @@ const FALLBACK_TEXT: TextContent = {
 const GUIDED_LENGTH = 120;
 
 /**
- * Words to learn letter transitions from. A word list is one already; a quote
- * file is split into its distinct words so guided mode needs no corpus of its
- * own.
+ * Words to learn letter transitions from. A word list already is one; failing
+ * that, the quote list is split into its distinct words, so guided mode works
+ * with whatever is loaded rather than needing a corpus of its own.
  */
-function corpusWords(content: TextContent | null): string[] {
-  if (!content) return [];
-  if (content.type === 'words' && 'words' in content.data) return content.data.words;
-  if (!('quotes' in content.data)) return [];
-  const words = new Set<string>();
-  for (const quote of content.data.quotes) {
+function corpusWords(words: TextContent | null, quotes: TextContent | null): string[] {
+  const wordList = wordListOf(words);
+  if (wordList) return wordList.words;
+
+  const quoteList = quoteListOf(quotes);
+  if (!quoteList) return [];
+  const distinct = new Set<string>();
+  for (const quote of quoteList.quotes) {
     for (const word of quote.text.toLowerCase().split(/[^a-z']+/)) {
-      if (word.length >= 2) words.add(word);
+      if (word.length >= 2) distinct.add(word);
     }
   }
-  return [...words];
+  return [...distinct];
+}
+
+/**
+ * Whether focus is sitting in a field the user is deliberately typing into —
+ * a URL box in the configuration sidebar, say. The sidebar is not modal, so
+ * the typing surface may not simply take focus back from one of those.
+ */
+function holdsTextEntry(element: Element | null, typingField: HTMLTextAreaElement | null): boolean {
+  if (!element || element === typingField) return false;
+  if (
+    element instanceof HTMLInputElement ||
+    element instanceof HTMLTextAreaElement ||
+    element instanceof HTMLSelectElement
+  ) {
+    return true;
+  }
+  return element instanceof HTMLElement && element.isContentEditable;
 }
 
 // Readable stand-ins for non-printing characters in UI copy.
@@ -130,6 +172,11 @@ function netAccuracy(keystrokes: number, errors: number): number {
 
 const SETTINGS_KEY = 'typeonaut.settings.v1';
 const DEFAULT_TARGET_WPM = 30;
+const DEFAULT_SETTINGS: Settings = {
+  mode: 'quotes',
+  targetWpm: DEFAULT_TARGET_WPM,
+  unlockPolicy: 'cost',
+};
 
 function isSettings(value: unknown): value is Settings {
   if (!value || typeof value !== 'object') return false;
@@ -145,13 +192,19 @@ function isSettings(value: unknown): value is Settings {
  * Stored settings, or null when there are none to speak of. Anything
  * unreadable — no storage at all, invalid JSON, a shape from an older build —
  * counts as a first run, the same way history treats a broken store as empty.
+ * Fields added after a user last saved are filled from the defaults rather
+ * than voiding the whole entry: losing a mode choice over a new toggle would
+ * be a worse trade than a missing field.
  */
 function loadSettings(): Settings | null {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return null;
     const parsed: unknown = JSON.parse(raw);
-    return isSettings(parsed) ? { mode: parsed.mode, targetWpm: parsed.targetWpm } : null;
+    if (!isSettings(parsed)) return null;
+    const policy =
+      'unlockPolicy' in parsed && parsed.unlockPolicy === 'frequency' ? 'frequency' : 'cost';
+    return { mode: parsed.mode, targetWpm: parsed.targetWpm, unlockPolicy: policy };
   } catch {
     return null;
   }
@@ -169,18 +222,16 @@ export const TypingTrainer: React.FC = () => {
   const [layout, setLayout] = useState<KeyboardLayout | null>(null);
   const [keymap, setKeymap] = useState<ParsedKeymap | null>(null);
   const [baseLayer, setBaseLayer] = useState(0);
-  const [textContent, setTextContent] = useState<TextContent | null>(null);
+  // Two independent sources, both loadable at once: the mode decides which one
+  // a session is drawn from, so loading one never costs the other.
+  const [wordList, setWordList] = useState<TextContent | null>(null);
+  const [quoteList, setQuoteList] = useState<TextContent | null>(null);
   const [showKeyboard, setShowKeyboard] = useState(true);
   const [showConfig, setShowConfig] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // Settings read once: whether anything was stored decides if the first-run
-  // default mode still has to follow the text that loads.
-  const [storedSettings] = useState(loadSettings);
-  const [settings, setSettings] = useState<Settings>(
-    storedSettings ?? { mode: 'quotes', targetWpm: DEFAULT_TARGET_WPM }
-  );
+  const [settings, setSettings] = useState<Settings>(() => loadSettings() ?? DEFAULT_SETTINGS);
   const [session, setSession] = useState<Session>({
-    mode: storedSettings?.mode ?? 'quotes',
+    mode: settings.mode,
     quoteIndex: 0,
     nonce: 0,
   });
@@ -206,12 +257,22 @@ export const TypingTrainer: React.FC = () => {
    */
   const lessonRef = useRef<{ lesson: LessonState; corpus: string[] } | null>(null);
 
+  /**
+   * A loaded source goes to the slot matching its own kind, wherever it came
+   * from — file, URL, MonkeyType picker or query parameter. Which slot is
+   * typed from is the mode's decision, not the last file's.
+   */
+  const receiveText = (text: TextContent) => {
+    if (text.type === 'words') setWordList(text);
+    else setQuoteList(text);
+  };
+
   // Load defaults on mount. Each resource is loaded independently so that one
   // missing file cannot leave the trainer without text to type.
   useEffect(() => {
     const loadDefaults = async () => {
       try {
-        const [layoutResult, keymapResult, textResult] = await Promise.allSettled([
+        const [layoutResult, keymapResult, quotesResult, wordsResult] = await Promise.allSettled([
           fetch(DEFAULT_LAYOUT_PATH).then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.json();
@@ -220,7 +281,11 @@ export const TypingTrainer: React.FC = () => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.text();
           }),
-          fetch(DEFAULT_TEXT_PATH).then(r => {
+          fetch(DEFAULT_QUOTES_PATH).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return r.json();
+          }),
+          fetch(DEFAULT_WORDS_PATH).then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return r.json();
           }),
@@ -245,11 +310,32 @@ export const TypingTrainer: React.FC = () => {
           console.error('Failed to load default keymap:', keymapResult.reason);
         }
 
-        const parsedText =
-          textResult.status === 'fulfilled' && validateTextContent(textResult.value).valid
-            ? parseTextContent(textResult.value)
+        const parsedQuotes =
+          quotesResult.status === 'fulfilled' && validateTextContent(quotesResult.value).valid
+            ? parseTextContent(quotesResult.value)
             : null;
-        setTextContent(parsedText ?? FALLBACK_TEXT);
+        // The stand-in covers the quote slot only: it is the mode a first
+        // visit opens in, so an unreachable file would leave nothing to type.
+        if (parsedQuotes?.type !== 'quotes') {
+          console.error(
+            'Failed to load default quotes:',
+            quotesResult.status === 'rejected' ? quotesResult.reason : 'not a quote list'
+          );
+        }
+        setQuoteList(parsedQuotes?.type === 'quotes' ? parsedQuotes : FALLBACK_QUOTES);
+
+        const parsedWords =
+          wordsResult.status === 'fulfilled' && validateTextContent(wordsResult.value).valid
+            ? parseTextContent(wordsResult.value)
+            : null;
+        if (parsedWords?.type === 'words') {
+          setWordList(parsedWords);
+        } else {
+          console.error(
+            'Failed to load default word list:',
+            wordsResult.status === 'rejected' ? wordsResult.reason : 'not a word list'
+          );
+        }
       } finally {
         setIsLoading(false);
       }
@@ -263,7 +349,14 @@ export const TypingTrainer: React.FC = () => {
     const loadFromParams = async () => {
       const keyboardUrl = getQueryParam('keyboardUrl');
       const keymapUrl = getQueryParam('keymapUrl');
-      const textUrl = getQueryParam('textUrl');
+      // A link may carry one source or both; each lands in the slot its own
+      // contents belong to, so the parameter name only decides which
+      // MonkeyType directory an unqualified shorthand is looked up in.
+      const textParams: { param: string; url: string | null; kind: MonkeytypeKind | null }[] = [
+        { param: 'textUrl', url: getQueryParam('textUrl'), kind: null },
+        { param: 'wordsUrl', url: getQueryParam('wordsUrl'), kind: 'words' },
+        { param: 'quotesUrl', url: getQueryParam('quotesUrl'), kind: 'quotes' },
+      ];
 
       if (keyboardUrl) {
         try {
@@ -289,15 +382,20 @@ export const TypingTrainer: React.FC = () => {
         }
       }
 
-      if (textUrl) {
+      for (const { param, url, kind } of textParams) {
+        if (!url) continue;
         try {
-          const data = await loadJsonFromUrl(textUrl);
+          // Shareable links may name a MonkeyType file instead of a full URL.
+          const ref = parseMonkeytypeRef(url);
+          const data = ref
+            ? (await loadMonkeytypeJson({ name: ref.name, kind: ref.kind ?? kind })).data
+            : await loadJsonFromUrl(url);
           if (validateTextContent(data).valid) {
             const parsed = parseTextContent(data);
-            if (parsed) setTextContent(parsed);
+            if (parsed) receiveText(parsed);
           }
         } catch (err) {
-          console.error('Failed to load text from URL:', err);
+          console.error(`Failed to load text from ${param}:`, err);
         }
       }
     };
@@ -306,13 +404,6 @@ export const TypingTrainer: React.FC = () => {
       loadFromParams();
     }
   }, [isLoading]);
-
-  // On a first run there is nothing stored, so the mode follows whatever text
-  // was loaded: a word list opens in words mode, a quote list in quotes.
-  useEffect(() => {
-    if (storedSettings || !textContent) return;
-    setSettings(prev => ({ ...prev, mode: textContent.type }));
-  }, [storedSettings, textContent]);
 
   useEffect(() => {
     saveSettings(settings);
@@ -336,11 +427,17 @@ export const TypingTrainer: React.FC = () => {
   );
 
   /**
-   * What the guided generator learns its letter transitions from. A word list
-   * already is one; a quote file is tokenised, so guided mode works with
-   * whatever the user loaded rather than needing a corpus of its own.
+   * What the guided generator learns its letter transitions from: the word
+   * list when one is loaded, otherwise the quotes, tokenised.
    */
-  const corpus = useMemo(() => corpusWords(textContent), [textContent]);
+  const corpus = useMemo(() => corpusWords(wordList, quoteList), [wordList, quoteList]);
+
+  /**
+   * The source the running session draws from. Guided mode generates its own
+   * text and so has no source; the other two each have exactly one, which is
+   * why loading a word list never disturbs a quote session.
+   */
+  const activeSource = session.mode === 'quotes' ? quoteList : session.mode === 'words' ? wordList : null;
 
   const lesson = useMemo(
     () =>
@@ -356,37 +453,57 @@ export const TypingTrainer: React.FC = () => {
   lessonRef.current = lesson ? { lesson, corpus } : null;
   const lessonReady = lesson !== null;
 
-  // Start a fresh session whenever the source text or the session changes.
+  // Start a fresh session whenever the mode's source or the session changes.
   // Guided mode builds its own text from the unlocked characters; the others
-  // take it from the loaded file.
+  // take it from the slot the mode points at. With that slot empty there is
+  // nothing to type, and the notice below says which source is missing.
   useEffect(() => {
-    if (!textContent) return;
-    const guided = session.mode === 'guided' ? lessonRef.current : null;
+    if (session.mode === 'guided') {
+      const guided = lessonRef.current;
+      setTyping({
+        text: guided ? guidedText(guided.lesson, guided.corpus, GUIDED_LENGTH) : '',
+        ...EMPTY_SESSION,
+      });
+      return;
+    }
+
+    // The slot's kind matches the mode by construction; narrowing is how that
+    // is said in a way the compiler hears.
+    const quotes = quoteListOf(activeSource);
+    const words = wordListOf(activeSource);
     setTyping({
-      text: guided
-        ? guidedText(guided.lesson, guided.corpus, GUIDED_LENGTH)
-        : getTextToType(textContent, { quoteIndex: session.quoteIndex }),
+      text: quotes
+        ? getQuoteText(quotes, session.quoteIndex)
+        : words
+          ? getRandomWords(words.words)
+          : '',
       ...EMPTY_SESSION,
     });
     // `lessonReady` is a dependency so the first guided session regenerates
     // once the keymap has finished loading; its *contents* deliberately are not.
-  }, [textContent, session, lessonReady]);
+  }, [activeSource, session, lessonReady]);
 
   // Keep the hidden-ish input focused. This must run after the render that
   // re-enables the field, otherwise focusing a disabled input is a no-op.
+  // The configuration sidebar is not modal, so it does not suspend this —
+  // only a field the user is actually typing into does.
   useEffect(() => {
-    if (!typing.finished && !showConfig) inputRef.current?.focus();
+    if (typing.finished) return;
+    if (holdsTextEntry(document.activeElement, inputRef.current)) return;
+    inputRef.current?.focus();
+    // Closing the sidebar hands the keyboard back to the text.
   }, [typing.text, typing.finished, showConfig]);
 
   // Typing anywhere on the page resumes the run, like a real typing test.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (showConfig || typing.finished || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (typing.finished || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (holdsTextEntry(document.activeElement, inputRef.current)) return;
       if (document.activeElement !== inputRef.current) inputRef.current?.focus();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [showConfig, typing.finished]);
+  }, [typing.finished]);
 
   // Fullscreen can also be left with Esc or F11, which the browser handles
   // without telling us, so the flag follows the document rather than the click.
@@ -407,10 +524,9 @@ export const TypingTrainer: React.FC = () => {
   // same run rather than being picked up from two different renders.
   const finishedRun = useMemo(() => {
     if (!typing.finished || typing.startTime === null) return null;
-    // What produced the text, not what file it came from: a guided run on a
-    // quote file is still a guided run.
-    const source: RunResult['source'] =
-      session.mode === 'guided' ? 'guided' : textContent?.type ?? 'quotes';
+    // What produced the text, which is what the mode says: a guided run drawn
+    // from a quote corpus is still a guided run.
+    const source: RunResult['source'] = session.mode;
     return {
       startTime: typing.startTime,
       keymapId,
@@ -422,7 +538,7 @@ export const TypingTrainer: React.FC = () => {
       source,
       samples: typing.samples,
     };
-  }, [typing, keymapId, textContent, session.mode]);
+  }, [typing, keymapId, session.mode]);
 
   // Record each finished run exactly once. StrictMode runs effects twice in
   // development, and a re-render after the run ends must not log it again, so
@@ -561,15 +677,13 @@ export const TypingTrainer: React.FC = () => {
   };
 
   /**
-   * Re-roll the text. What a session is generated from decides how: a guided
-   * lesson draws a new fragment, a quote list advances to the next quote, a
-   * word list reshuffles, which needs nothing but a new session identity.
+   * Re-roll the text. The mode decides how: a guided lesson draws a new
+   * fragment, a quote list advances to the next quote, a word list reshuffles,
+   * which needs nothing but a new session identity.
    */
   const newSession = () => {
-    const quoteCount =
-      session.mode !== 'guided' && textContent?.type === 'quotes' && 'quotes' in textContent.data
-        ? textContent.data.quotes.length
-        : 0;
+    const quotes = quoteListOf(activeSource);
+    const quoteCount = quotes?.quotes.length ?? 0;
     setSession(prev =>
       quoteCount > 0
         ? { ...prev, quoteIndex: getNextQuoteIndex(prev.quoteIndex, quoteCount) }
@@ -579,8 +693,21 @@ export const TypingTrainer: React.FC = () => {
   };
 
   // Generated text is credited to nobody; only a loaded file has a source.
-  const attribution =
-    textContent && session.mode !== 'guided' ? getAttribution(textContent, session.quoteIndex) : null;
+  const attribution = activeSource ? getAttribution(activeSource, session.quoteIndex) : null;
+
+  // Why there is nothing to type, when there is nothing to type. Each mode
+  // keeps to its own source, so an empty one is said out loud rather than
+  // quietly answered from the other.
+  let emptySource: string | null = null;
+  if (session.mode === 'guided' && corpus.length === 0) {
+    emptySource = 'Guided lessons draw their words from a word list — load one to begin.';
+  } else if (session.mode === 'guided' && !lessonReady) {
+    emptySource = 'Guided lessons need a keymap to choose their keys from — load one to begin.';
+  } else if (session.mode === 'words' && !wordList) {
+    emptySource = 'No word list loaded — load one to practise words.';
+  } else if (session.mode === 'quotes' && !quoteList) {
+    emptySource = 'No quote list loaded — load one to type quotes.';
+  }
 
   const keyPositions: KeyPosition[] = layout
     ? Object.values(layout.layouts)[0]?.layout ?? []
@@ -612,7 +739,13 @@ export const TypingTrainer: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 px-8 py-6">
+    <div
+      className={`min-h-screen bg-gray-900 text-gray-100 px-8 py-6 transition-[padding] ${
+        // The configuration is a sidebar, not a dialog: the page gives up the
+        // width it occupies (22rem) instead of being covered by it.
+        showConfig ? 'md:pr-[23rem]' : ''
+      }`}
+    >
       <div className="max-w-6xl mx-auto">
         {/* Header. Fullscreen is a distraction-free mode, so it goes too. */}
         {isFullscreen ? (
@@ -642,9 +775,14 @@ export const TypingTrainer: React.FC = () => {
                 <Maximize size={20} />
               </button>
               <button
-                onClick={() => setShowConfig(true)}
-                className="p-2 rounded bg-gray-800 hover:bg-gray-700 transition-colors"
-                title="Open configuration"
+                onClick={() => setShowConfig(open => !open)}
+                aria-pressed={showConfig}
+                className={`p-2 rounded transition-colors ${
+                  showConfig
+                    ? 'bg-gray-700 text-yellow-400'
+                    : 'bg-gray-800 hover:bg-gray-700'
+                }`}
+                title={showConfig ? 'Close configuration' : 'Open configuration'}
               >
                 <SettingsIcon size={20} />
               </button>
@@ -652,8 +790,35 @@ export const TypingTrainer: React.FC = () => {
           </div>
         )}
 
-        {/* Stats */}
-        <StatsDisplay wpm={typing.wpm} accuracy={accuracy} errors={typing.errors} />
+        {/* Stats, with the mode beside them: it is the control reached for
+            most often, so it belongs on the trainer itself rather than in a
+            dialog. Hidden in fullscreen like the other chrome. */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6">
+          <StatsDisplay wpm={typing.wpm} accuracy={accuracy} errors={typing.errors} />
+          <div
+            role="group"
+            aria-label="Lesson mode"
+            className={`flex gap-1 mb-4 font-mono text-sm ${isFullscreen ? 'hidden' : ''}`}
+          >
+            {MODES.map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => {
+                  setSettings(prev => ({ ...prev, mode: value }));
+                  inputRef.current?.focus();
+                }}
+                aria-pressed={settings.mode === value}
+                className={`px-3 py-1 rounded transition-colors ${
+                  settings.mode === value
+                    ? 'bg-gray-800 text-yellow-400'
+                    : 'text-gray-500 hover:bg-gray-800 hover:text-gray-300'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* The guided alphabet and how well each of its keys is known. */}
         {session.mode === 'guided' && lesson && (
@@ -661,16 +826,21 @@ export const TypingTrainer: React.FC = () => {
         )}
 
         {/* Text, typed into directly. The input below is invisible but real,
-            so IME, mobile keyboards and composition still work. */}
-        <TextDisplay
-          text={typing.text}
-          input={typing.input}
-          caret={inputFocused && !typing.finished}
-          prompt={!inputFocused && !typing.finished && !showConfig}
-          onActivate={() => inputRef.current?.focus()}
-        />
+            so IME, mobile keyboards and composition still work. With the
+            mode's source empty there is no session to show, only the reason. */}
+        {emptySource ? (
+          <p className="mb-6 font-mono text-2xl leading-relaxed text-gray-500">{emptySource}</p>
+        ) : (
+          <TextDisplay
+            text={typing.text}
+            input={typing.input}
+            caret={inputFocused && !typing.finished}
+            prompt={!inputFocused && !typing.finished}
+            onActivate={() => inputRef.current?.focus()}
+          />
+        )}
 
-        {attribution && (
+        {attribution && !emptySource && (
           <p className="-mt-4 mb-6 font-mono text-sm text-gray-500">— {attribution}</p>
         )}
 
@@ -771,7 +941,8 @@ export const TypingTrainer: React.FC = () => {
             actions={[
               { label: 'Try again', shortcut: 'r', onSelect: reset, primary: true },
               {
-                label: session.mode === 'guided' || textContent?.type !== 'quotes' ? 'New text' : 'Next',
+                // Quotes have a next one; everything else is rolled again.
+                label: session.mode === 'quotes' ? 'Next' : 'New text',
                 shortcut: 'n',
                 onSelect: newSession,
               },
@@ -779,18 +950,19 @@ export const TypingTrainer: React.FC = () => {
           />
         )}
 
-        {/* Config Panel */}
+        {/* Configuration, as a sidebar the trainer keeps room for. */}
         {showConfig && (
           <ConfigPanel
             layout={layout}
             keymap={keymap}
-            textContent={textContent}
+            wordList={wordList}
+            quoteList={quoteList}
+            onTextLoaded={receiveText}
             settings={settings}
             onSettingsChange={setSettings}
             onLayoutChange={setLayout}
             onKeymapChange={setKeymap}
             onLayerReset={() => setBaseLayer(0)}
-            onTextChange={setTextContent}
             historyRuns={history.length}
             onClearHistory={() => {
               clearHistory();

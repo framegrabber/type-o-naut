@@ -141,25 +141,30 @@ export function getRandomWords(
 }
 
 /**
- * Get text to type for a session. For quotes, returns the quote at
- * `opts.quoteIndex` (default 0). For words, returns `opts.wordCount` random
- * words (default 15) repeated `opts.repeatCount` times (default 5), reshuffled
- * per repetition.
+ * The quote list behind a source, or null when the source is a word list.
+ * The caller already knows which kind it wants — the mode decides that — so
+ * this is the one place the union is narrowed.
+ */
+export function quoteListOf(content: TextContent | null): QuoteList | null {
+  if (!content || content.type !== 'quotes' || !('quotes' in content.data)) return null;
+  return content.data;
+}
+
+/** The word list behind a source, or null when the source is a quote list. */
+export function wordListOf(content: TextContent | null): WordList | null {
+  if (!content || content.type !== 'words' || !('words' in content.data)) return null;
+  return content.data;
+}
+
+/**
+ * The text of the quote a session is on, ready to be typed.
  *
  * Multi-line sources (MonkeyType's code_* quote files) are normalised to LF
  * and stripped of trailing whitespace, which is not typeable in any useful
  * sense and would otherwise leave an unfinishable run.
  */
-export function getTextToType(
-  content: TextContent,
-  opts: { quoteIndex?: number; wordCount?: number; repeatCount?: number } = {}
-): string {
-  if (content.type === 'words' && 'words' in content.data) {
-    return getRandomWords(content.data.words, opts.wordCount, opts.repeatCount);
-  }
-
-  const quote = getQuoteAt(content, opts.quoteIndex ?? 0);
-
+export function getQuoteText(list: QuoteList, quoteIndex: number = 0): string {
+  const quote = getQuoteAt(list, quoteIndex);
   if (!quote) return '';
 
   return quote.text
@@ -168,23 +173,26 @@ export function getTextToType(
     .trimEnd();
 }
 
-/** The quote a session is currently on, cycling by index, or null for word lists. */
-export function getQuoteAt(content: TextContent, quoteIndex: number): Quote | null {
-  if (content.type !== 'quotes' || !('quotes' in content.data)) return null;
-  const quotes = content.data.quotes;
+/** The quote a session is currently on, cycling by index. */
+export function getQuoteAt(list: QuoteList, quoteIndex: number): Quote | null {
+  const quotes = list.quotes;
   if (quotes.length === 0) return null;
   return quotes[quoteIndex % quotes.length];
 }
 
 /**
  * What the current text should be credited to: a quote's own source, or the
- * name of the word list it was drawn from.
+ * name of the word list it was drawn from. The source passed in is the one
+ * being rendered, so its kind — not the mode — decides what credit means.
  */
 export function getAttribution(content: TextContent, quoteIndex: number): string | null {
-  const quote = getQuoteAt(content, quoteIndex);
-  if (quote) return quote.source.trim() || null;
-  if (content.type === 'words' && 'words' in content.data) return content.data.name.trim() || null;
-  return null;
+  const quotes = quoteListOf(content);
+  if (quotes) {
+    const quote = getQuoteAt(quotes, quoteIndex);
+    return quote ? quote.source.trim() || null : null;
+  }
+  const words = wordListOf(content);
+  return words ? words.name.trim() || null : null;
 }
 
 /**

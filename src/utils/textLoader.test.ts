@@ -1,57 +1,77 @@
 import { describe, expect, it } from 'vitest';
-import type { TextContent } from '../types';
+import type { QuoteList, TextContent } from '../types';
 import {
   getAttribution,
   getQuoteAt,
+  getQuoteText,
   getRandomWords,
-  getTextToType,
   parseTextContent,
+  quoteListOf,
   validateTextContent,
+  wordListOf,
 } from './textLoader';
 
-const quotes = (text: string): TextContent => ({
-  type: 'quotes',
-  data: { language: 'code_javascript', groups: [], quotes: [{ text, source: 'x', id: 1, length: text.length }] },
+const quoteList = (text: string): QuoteList => ({
+  language: 'code_javascript',
+  groups: [],
+  quotes: [{ text, source: 'x', id: 1, length: text.length }],
 });
 
-describe('getTextToType', () => {
+const quotes = (text: string): TextContent => ({ type: 'quotes', data: quoteList(text) });
+
+describe('getQuoteText', () => {
   it('keeps the line structure of multi-line sources', () => {
-    expect(getTextToType(quotes('function f() {\n\treturn 1;\n}'))).toBe(
+    expect(getQuoteText(quoteList('function f() {\n\treturn 1;\n}'))).toBe(
       'function f() {\n\treturn 1;\n}'
     );
   });
 
   it('normalises CRLF and lone CR to LF', () => {
-    expect(getTextToType(quotes('a\r\nb\rc'))).toBe('a\nb\nc');
+    expect(getQuoteText(quoteList('a\r\nb\rc'))).toBe('a\nb\nc');
   });
 
   it('strips trailing whitespace, which cannot be typed meaningfully', () => {
-    expect(getTextToType(quotes('let a = 1;   \n\tlet b = 2;\t\n\n'))).toBe(
+    expect(getQuoteText(quoteList('let a = 1;   \n\tlet b = 2;\t\n\n'))).toBe(
       'let a = 1;\n\tlet b = 2;'
     );
   });
 
   it('takes the quote the session is on', () => {
-    const list: TextContent = {
-      type: 'quotes',
-      data: {
-        language: 'English',
-        groups: [],
-        quotes: [
-          { text: 'first', source: 'a', id: 1, length: 5 },
-          { text: 'second', source: 'b', id: 2, length: 6 },
-        ],
-      },
+    const list: QuoteList = {
+      language: 'English',
+      groups: [],
+      quotes: [
+        { text: 'first', source: 'a', id: 1, length: 5 },
+        { text: 'second', source: 'b', id: 2, length: 6 },
+      ],
     };
-    expect(getTextToType(list, { quoteIndex: 1 })).toBe('second');
+    expect(getQuoteText(list, 1)).toBe('second');
+  });
+
+  it('has nothing to type when the list holds no quotes', () => {
+    expect(getQuoteText({ language: 'English', groups: [], quotes: [] })).toBe('');
+  });
+});
+
+describe('source slots', () => {
+  const words: TextContent = {
+    type: 'words',
+    data: { name: 'test', noLazyMode: true, orderedByFrequency: false, words: ['a', 'b', 'c', 'd'] },
+  };
+
+  it('hands back only the kind that was asked for', () => {
+    expect(wordListOf(words)?.words).toEqual(['a', 'b', 'c', 'd']);
+    expect(quoteListOf(words)).toBeNull();
+    expect(quoteListOf(quotes('hi'))?.quotes).toHaveLength(1);
+    expect(wordListOf(quotes('hi'))).toBeNull();
+    expect(quoteListOf(null)).toBeNull();
+    expect(wordListOf(null)).toBeNull();
   });
 
   it('honours the requested word and repeat counts', () => {
-    const words: TextContent = {
-      type: 'words',
-      data: { name: 'test', noLazyMode: true, orderedByFrequency: false, words: ['a', 'b', 'c', 'd'] },
-    };
-    expect(getTextToType(words, { wordCount: 2, repeatCount: 3 }).split(' ')).toHaveLength(6);
+    const list = wordListOf(words);
+    if (!list) throw new Error('expected a word list');
+    expect(getRandomWords(list.words, 2, 3).split(' ')).toHaveLength(6);
   });
 
   it('draws the requested number of words per round', () => {
@@ -83,13 +103,15 @@ describe('attribution', () => {
   });
 
   it('cycles with the quote index', () => {
-    expect(getQuoteAt(german, 2)?.id).toBe(3);
+    const list = quoteListOf(german);
+    if (!list) throw new Error('expected a quote list');
+    expect(getQuoteAt(list, 2)?.id).toBe(3);
     expect(getAttribution(german, 3)).toBe('Friedrich Nietzsche');
   });
 
   it('falls back to the list name for word sessions', () => {
     const words: TextContent = { type: 'words', data: { name: 'english_1k', words: ['a'] } };
-    expect(getQuoteAt(words, 0)).toBeNull();
+    expect(quoteListOf(words)).toBeNull();
     expect(getAttribution(words, 0)).toBe('english_1k');
   });
 
