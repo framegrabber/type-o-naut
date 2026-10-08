@@ -1,0 +1,4116 @@
+{
+  "language": "english",
+  "groups": [[0, 100], [101, 180], [181, 290]],
+  "quotes": [
+    {
+      "text": "Jim said if we had the canoe hid in a good place, and had all the traps in the cavern, we could rush there if anybody was to come to the island, and they would never find us without dogs.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 187,
+      "id": 1
+    },
+    {
+      "text": "Not one man in a thousand has accuracy of eye and judgment sufficient to become an eminent breeder.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 99,
+      "id": 2
+    },
+    {
+      "text": "It cost her a pang even to think of giving up the little treasures which in her eyes were as precious as the old lady's jewels.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 127,
+      "id": 3
+    },
+    {
+      "text": "The serious people who took him seriously never felt quite sure of his deportment; they were somehow aware that trusting their reputations for judgment with him was like furnishing a nursery with eggshell china.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 211,
+      "id": 4
+    },
+    {
+      "text": "Nothing less than the frosty light of the cheerful sky, the sight of people passing beyond the bars of the court-yard gate, and the reviving influence of the rest of the bread and meat and beer, would have brought me round.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 223,
+      "id": 5
+    },
+    {
+      "text": "He had not seen this lonely man upon the tor and could not feel the thrill which his strange presence and his commanding attitude had given to me.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 146,
+      "id": 6
+    },
+    {
+      "text": "The result from capital employed in the production of any movement of a mental nature is sometimes as tremendous as the cause itself is absurdly minute.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 152,
+      "id": 7
+    },
+    {
+      "text": "One of the children stood at the door to give notice if he saw the apparitor coming, who was an officer of the spiritual court.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 127,
+      "id": 8
+    },
+    {
+      "text": "Else to-morrow a stranger will say with masterly good sense precisely what we have thought and felt all the time, and we shall be forced to take with shame our own opinion from another.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 185,
+      "id": 9
+    },
+    {
+      "text": "I do not mean that they ought to leave them to make a choice of what is contemptible and bad, but that they should place before them what is good and then allow them to make a good choice as they please.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 203,
+      "id": 10
+    },
+    {
+      "text": "Each blue car, therefore, received a double measure of welcome as it topped the crest of the hill and each cheer of welcome was acknowledged with smiles and nods by those in the car.",
+      "source": "James Joyce, Dubliners",
+      "length": 182,
+      "id": 11
+    },
+    {
+      "text": "The colonel had to resort to all kinds of stratagems to keep his slaves out of the garden.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 90,
+      "id": 12
+    },
+    {
+      "text": "How haunted are your shadowy vistas with the ghosts of laughing faces! how from your whispering leaves there softly fall the voices of long ago!",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 144,
+      "id": 13
+    },
+    {
+      "text": "It will be soon enough to forget them when we have the learning and the genius which will enable us to attend to and appreciate them.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 133,
+      "id": 14
+    },
+    {
+      "text": "I have lived in the same house with her, at one time for five and at another for nearly two years.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 98,
+      "id": 15
+    },
+    {
+      "text": "You thought you were as dead as a herring two hours since, and you are all alive and talking now.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 97,
+      "id": 16
+    },
+    {
+      "text": "To my left the view is cut off by a black line of roof of the old house next the abbey.",
+      "source": "Bram Stoker, Dracula",
+      "length": 87,
+      "id": 17
+    },
+    {
+      "text": "Whereas, in my opinion, by her taking so much notice of you, and treating you in this kind of way, she has given you a sort of claim on her future consideration, which a conscientious woman would not disregard.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 210,
+      "id": 18
+    },
+    {
+      "text": "The thought of the confined creature was so dreadful to him that he forgot the heat and went forward to the cylinder to help turn.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 130,
+      "id": 19
+    },
+    {
+      "text": "This is not the sort of happiness which a man would in general wish to owe to his wife; but where other powers of entertainment are wanting, the true philosopher will derive benefit from such as are given.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 205,
+      "id": 20
+    },
+    {
+      "text": "Such and such a one took care of such and such a one's burial, and soon after was buried himself.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 97,
+      "id": 21
+    },
+    {
+      "text": "Their bearing, which was simply the bearing of commonplace individuals going about their business in the assurance of perfect safety, was offensive to me like the outrageous flauntings of folly in the face of a danger it is unable to comprehend.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 245,
+      "id": 22
+    },
+    {
+      "text": "Whereupon the other world would vanish and the real world come into his eyes, and he would get up and yawn and stretch as though he had been asleep.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 148,
+      "id": 23
+    },
+    {
+      "text": "We were busy with the hay in a far-away field, when the girl that usually brought our breakfasts came running an hour too soon across the meadow and up the lane, calling me as she ran.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 184,
+      "id": 24
+    },
+    {
+      "text": "In much the same way do the commonalty lead their leaders in many other things, at the same time that the leaders little suspect it.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 132,
+      "id": 25
+    },
+    {
+      "text": "Down in the valley the path came out to the main road and then it was just up the spruce hill to the school.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 108,
+      "id": 26
+    },
+    {
+      "text": "I say that we have never sat down in earnest together to try and get at the bottom of anything.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 95,
+      "id": 27
+    },
+    {
+      "text": "He sat for a long time on the bench in the thickening dusk, his eyes never turning from the balcony.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 100,
+      "id": 28
+    },
+    {
+      "text": "Of course now indeed she might be with the maids, so that the immediate thing was to look for her without an air of alarm.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 122,
+      "id": 29
+    },
+    {
+      "text": "A white layer of ashes covered the fire, and a thin blue breath of smoke rose straight into the air.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 100,
+      "id": 30
+    },
+    {
+      "text": "You can't have forgotten that you assured me most solemnly that nothing in the world would induce you to send it to any exhibition.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 131,
+      "id": 31
+    },
+    {
+      "text": "Forty paces farther we came to the edge of the wood and saw the stockade in front of us.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 88,
+      "id": 32
+    },
+    {
+      "text": "When he was not learning he sat out in the sun and slept, and ate and went to sleep again.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 90,
+      "id": 33
+    },
+    {
+      "text": "He threw off all assistance, and stepped passionately forward a pace before the woman and the child.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 100,
+      "id": 34
+    },
+    {
+      "text": "Alice was very nearly getting up and saying, \"Thank you, sir, for your interesting story,\" but she could not help thinking there must be more to come, so she sat still and said nothing.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 185,
+      "id": 35
+    },
+    {
+      "text": "It would not be a bad thing for her to be very much in love with a proper object.",
+      "source": "Jane Austen, Emma",
+      "length": 81,
+      "id": 36
+    },
+    {
+      "text": "Then that part of the soul which has an opinion contrary to measure is not the same with that which has an opinion in accordance with measure?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 142,
+      "id": 37
+    },
+    {
+      "text": "He never laid claim to a very profound knowledge of biology, and his criticism is far more valuable as the attitude of a fresh mind than as that of a specialist towards the question.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 182,
+      "id": 38
+    },
+    {
+      "text": "He read with young men who could find any leisure and interest for the study of a living tongue spoken all over the world, and he cultivated a taste for its stores of knowledge and fancy.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 187,
+      "id": 39
+    },
+    {
+      "text": "While she constrained herself to lie still lest she should disturb him, her mind was carrying on a conflict in which imagination ranged its forces first on one side and then on the other.",
+      "source": "George Eliot, Middlemarch",
+      "length": 187,
+      "id": 40
+    },
+    {
+      "text": "He advanced to meet me and gave me a hard hand, burned red on the back and heavily coated with hair.",
+      "source": "Willa Cather, My Antonia",
+      "length": 100,
+      "id": 41
+    },
+    {
+      "text": "The sea was quiet now, and swelled lazily in broad billows that melted into one another and did not break except upon the beach in little foamy crests that coiled back like slow, white serpents.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 194,
+      "id": 42
+    },
+    {
+      "text": "A broad wheal from an old scar ran right across it from eye to chin, and by its contraction had turned up one side of the upper lip, so that three teeth were exposed in a perpetual snarl.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 187,
+      "id": 43
+    },
+    {
+      "text": "I was ready to fall on my knees and kneel for three days at your windows until you let me in.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 93,
+      "id": 44
+    },
+    {
+      "text": "Well, I know, of course, how important it is not to keep a business engagement, if one wants to retain any sense of the beauty of life, but still I think you had better wait till Uncle Jack arrives.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 198,
+      "id": 45
+    },
+    {
+      "text": "He said there was only one window and not room for two beds, and no near room for him if he took another.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 105,
+      "id": 46
+    },
+    {
+      "text": "I went along up the bank with one eye out for pap and t'other one out for what the rise might fetch along.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 106,
+      "id": 47
+    },
+    {
+      "text": "Can a more striking instance of adaptation be given than that of a woodpecker for climbing trees and for seizing insects in the chinks of the bark?",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 147,
+      "id": 48
+    },
+    {
+      "text": "The first sound in the morning was her voice as she went about the house singing like a lark, and the last sound at night was the same cheery sound, for the girls never grew too old for that familiar lullaby.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 208,
+      "id": 49
+    },
+    {
+      "text": "There were, perhaps, a couple of hundred people dining in the hall, and most of them, seated as near to me as they could come, were watching me with interest, their little eyes shining over the fruit they were eating.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 217,
+      "id": 50
+    },
+    {
+      "text": "Drummle upon this, informed our host that he much preferred our room to our company, and that as to skill he was more than our master, and that as to strength he could scatter us like chaff.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 190,
+      "id": 51
+    },
+    {
+      "text": "One struck, and two, and we had almost for the second time given it up in despair when in an instant we both sat bolt upright in our chairs with all our weary senses keenly on the alert once more.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 196,
+      "id": 52
+    },
+    {
+      "text": "Bathsheba was revolving in her mind whether by a bold and desperate rush she could free herself at the risk of leaving a portion of her skirt bodily behind her.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 160,
+      "id": 53
+    },
+    {
+      "text": "My allegation on the contrary, that it met with such approbation as to leave no doubt of our being able to raise two thousand pounds by voluntary donations, they considered as a most extravagant supposition, and utterly impossible.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 231,
+      "id": 54
+    },
+    {
+      "text": "In the fog of good and evil affections it is hard for man to walk forward in a straight line.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 93,
+      "id": 55
+    },
+    {
+      "text": "They won't give a pint of wine at the tavern for a good cast of the bar or a neat thrust of the sword.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 102,
+      "id": 56
+    },
+    {
+      "text": "He was laughing heartily in a high key at a story which he had been telling Gabriel on the stairs and at the same time rubbing the knuckles of his left fist backwards and forwards into his left eye.",
+      "source": "James Joyce, Dubliners",
+      "length": 198,
+      "id": 57
+    },
+    {
+      "text": "She had never had a slave under her control previously to myself, and prior to her marriage she had been dependent upon her own industry for a living.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 150,
+      "id": 58
+    },
+    {
+      "text": "Sometimes he shot up stream and sometimes he shot down stream, and at other times he simply spun round and came up the other side of the pole.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 142,
+      "id": 59
+    },
+    {
+      "text": "We are for the most part more lonely when we go abroad among men than when we stay in our chambers.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 99,
+      "id": 60
+    },
+    {
+      "text": "I thought of the promise of virtues which he had displayed on the opening of his existence and the subsequent blight of all kindly feeling by the loathing and scorn which his protectors had manifested towards him.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 213,
+      "id": 61
+    },
+    {
+      "text": "There was an unceremonious directness, a searching, decided steadfastness in his gaze now, which told that intention, and not diffidence, had hitherto kept it averted from the stranger.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 185,
+      "id": 62
+    },
+    {
+      "text": "It was hard to believe that amongst so prosaic surroundings of neglect and dust and decay there was any ground for such fear as already we knew.",
+      "source": "Bram Stoker, Dracula",
+      "length": 144,
+      "id": 63
+    },
+    {
+      "text": "To have his love used so scornfully! for they say he is monstrous fond of her, as well he may.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 94,
+      "id": 64
+    },
+    {
+      "text": "He was so fascinated by this and by the creeping danger away to the left that he had no eyes for anything seaward.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 114,
+      "id": 65
+    },
+    {
+      "text": "He could not help seeing that you were about five times as pretty as every other woman in the room.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 99,
+      "id": 66
+    },
+    {
+      "text": "Now if it be no wonder that a man should have such and such opinions, how can it be a wonder that he should do such and such things?",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 132,
+      "id": 67
+    },
+    {
+      "text": "In the evening he could be seen squatted on the bank rinsing that wrapper in the creek with great care, then spreading it solemnly on a bush to dry.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 148,
+      "id": 68
+    },
+    {
+      "text": "Then came the search for a place to descend, which descent was ultimately made by the aid of the rope, and night found them back on the river with a quarter of a mile to the day's credit.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 187,
+      "id": 69
+    },
+    {
+      "text": "He did not thoroughly comprehend the meaning of his father's speech, or whether it were intended for him: indeed, he was not yet certain that the grim, sneering stranger was his father.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 185,
+      "id": 70
+    },
+    {
+      "text": "At the middle of the forehead horizontally subdivide this upper quoin, and then you have two almost equal parts, which before were naturally divided by an internal wall of a thick tendinous substance.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 200,
+      "id": 71
+    },
+    {
+      "text": "Marilla knew too little about precious stones to realize how fine the amethysts actually were; but she thought them very beautiful and was always pleasantly conscious of their violet shimmer at her throat, above her good brown satin dress, even although she could not see it.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 275,
+      "id": 72
+    },
+    {
+      "text": "It was to me that the doctors came and said that his life was in danger, and that the only thing to save him was to live in the south.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 134,
+      "id": 73
+    },
+    {
+      "text": "He delighted in the radiant good looks of his betrothed, in her health, her horsemanship, her grace and quickness at games, and the shy interest in books and ideas that she was beginning to develop under his guidance.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 217,
+      "id": 74
+    },
+    {
+      "text": "On the spot there came to me the added shock of a certitude that it was not for me he had come there.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 101,
+      "id": 75
+    },
+    {
+      "text": "Would she cry, and wish that she had a right to put her arms around his neck and comfort him?",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 93,
+      "id": 76
+    },
+    {
+      "text": "We live in an age when men treat art as if it were meant to be a form of autobiography.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 87,
+      "id": 77
+    },
+    {
+      "text": "I could now see that he was a white man like myself and that his features were even pleasing.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 93,
+      "id": 78
+    },
+    {
+      "text": "After that, he learned to lie in a beach pool and let the wash of the waves just cover him and lift him up while he paddled, but he always kept his eye open for big waves that might hurt.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 187,
+      "id": 79
+    },
+    {
+      "text": "They were now illuminated by the morning radiance of a young child's disposition, but later in the day of earthly existence might be prolific of the storm and whirlwind.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 169,
+      "id": 80
+    },
+    {
+      "text": "Once more she found herself in the long hall, and close to the little glass table.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 82,
+      "id": 81
+    },
+    {
+      "text": "She could not but suppose it to be a match that every body who knew them must think of.",
+      "source": "Jane Austen, Emma",
+      "length": 87,
+      "id": 82
+    },
+    {
+      "text": "To him the supporter of justice makes answer that he should ever so speak and act as to give the man within him in some way or other the most complete mastery over the entire human creature.",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 190,
+      "id": 83
+    },
+    {
+      "text": "Nietzsche practically tells us here that it is not he who intentionally wears eccentric clothes or does eccentric things who is truly the individualist.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 152,
+      "id": 84
+    },
+    {
+      "text": "At length the sun rose so high that it struck a kindly ray as of hope or protection, directly down upon the old prisoner's head.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 128,
+      "id": 85
+    },
+    {
+      "text": "To ask her to be less simple and direct would be like breathing on the crystal that you want to see the light through.",
+      "source": "George Eliot, Middlemarch",
+      "length": 118,
+      "id": 86
+    },
+    {
+      "text": "We agreed that no one who had not grown up in a little prairie town could know anything about it.",
+      "source": "Willa Cather, My Antonia",
+      "length": 97,
+      "id": 87
+    },
+    {
+      "text": "The vision of her little brood looking fresh and dainty and new for once in their lives excited her and made her restless and wakeful with anticipation.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 152,
+      "id": 88
+    },
+    {
+      "text": "I need not point out to you that your refusal to answer will prejudice your case considerably in any future proceedings which may arise.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 136,
+      "id": 89
+    },
+    {
+      "text": "He had not gone three steps before the biggest stone the boy had in his pocket hit him a painful blow in the back.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 114,
+      "id": 90
+    },
+    {
+      "text": "Was it in order that you might have an opportunity of coming up to town to see me as often as possible?",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 103,
+      "id": 91
+    },
+    {
+      "text": "I hate to see it sometimes, it creeps so slowly, and always comes in by one window or another.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 94,
+      "id": 92
+    },
+    {
+      "text": "De white one gits him to go right a little while, den de black one sail in en bust it all up.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 93,
+      "id": 93
+    },
+    {
+      "text": "We clearly see this in the fossil remains from consecutive formations invariably being much more closely related to each other, than are the fossils from formations distant from each other in time.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 197,
+      "id": 94
+    },
+    {
+      "text": "A stout little retainer came in with chains and led them away, looking very much frightened and evidently forgetting the speech he ought to have made.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 150,
+      "id": 95
+    },
+    {
+      "text": "Here and there rose a white or silvery figure in the waste garden of the earth, here and there came the sharp vertical line of some cupola or obelisk.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 150,
+      "id": 96
+    },
+    {
+      "text": "He has a watch and a chain and a ring and a breast-pin and a handsome suit of clothes.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 86,
+      "id": 97
+    },
+    {
+      "text": "It would be a poor expert who could not give the date of a document within a decade or so.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 90,
+      "id": 98
+    },
+    {
+      "text": "A beholder was convinced that nothing on earth could be more hideous than those he saw on the south side until he went round to the north.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 138,
+      "id": 99
+    },
+    {
+      "text": "Our sensations being very much fixed to the moment, we are apt to forget that more moments are to follow the first, and consequently that man should arrange his conduct so as to suit the whole of a life.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 203,
+      "id": 100
+    },
+    {
+      "text": "With his will or against his will he draws his portrait to the eye of his companions by every word.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 99,
+      "id": 101
+    },
+    {
+      "text": "I am convinced beyond a doubt that the adventure which is about to befall me is a terrible one.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 95,
+      "id": 102
+    },
+    {
+      "text": "Her blue felt hat would show off the bronze of her hair against the darkness and the dark panels of her skirt would show off the light ones.",
+      "source": "James Joyce, Dubliners",
+      "length": 140,
+      "id": 103
+    },
+    {
+      "text": "For what this separation is done, I do not know, unless it be to hinder the development of the child's affection toward its mother, and to blunt and destroy the natural affection of the mother for the child.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 207,
+      "id": 104
+    },
+    {
+      "text": "They had to wait till one of the old keepers came back from his dinner before they got out.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 91,
+      "id": 105
+    },
+    {
+      "text": "It was as good when a week old as the day it was dipped, and had no taste of the pump.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 86,
+      "id": 106
+    },
+    {
+      "text": "My companion will be of the same nature as myself and will be content with the same fare.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 89,
+      "id": 107
+    },
+    {
+      "text": "If he had but been able to look to a distance, and see how what they call the spirit of the age was tending!",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 108,
+      "id": 108
+    },
+    {
+      "text": "We shall both swear to leave you at home if you drink too deep to a certain pair of eyes.",
+      "source": "Bram Stoker, Dracula",
+      "length": 89,
+      "id": 109
+    },
+    {
+      "text": "Whenever he had a touch of his old colicky gout, he said it did him more good than any thing else in the world.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 111,
+      "id": 110
+    },
+    {
+      "text": "Of course all the students in the crammer's biology class, to which my brother went that day, were intensely interested, but there were no signs of any unusual excitement in the streets.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 186,
+      "id": 111
+    },
+    {
+      "text": "Their eyes were immediately wandering up the street in quest of the officers, and nothing less than a very smart bonnet, indeed, or a really new muslin in a shop window, could recall them.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 188,
+      "id": 112
+    },
+    {
+      "text": "For as for that which is either past or to come, a man cannot be said properly to part with it.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 95,
+      "id": 113
+    },
+    {
+      "text": "It was very curious to see the contrast of expressions of the white men and of the black fellows of our crew, who were as much strangers to that part of the river as we, though their homes were only eight hundred miles away.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 224,
+      "id": 114
+    },
+    {
+      "text": "In short, the things he did were done because it was easier to do them than not to do them.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 91,
+      "id": 115
+    },
+    {
+      "text": "I'm not aware that he could have done it to any purpose, had he been ever so willing.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 85,
+      "id": 116
+    },
+    {
+      "text": "In the repose of the pasture, the curled brow of the bull has a touch of the grand in it.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 89,
+      "id": 117
+    },
+    {
+      "text": "Jane never puts any because she says it makes her feel so silly when she had to read it out loud.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 97,
+      "id": 118
+    },
+    {
+      "text": "I can quite understand that your friend is not very anxious to expose herself to the chance of rubbing shoulders with me; and I quite understand, too, whom I have to thank for being turned off.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 193,
+      "id": 119
+    },
+    {
+      "text": "It was at his express wish that the announcement had been made, and yet it was not thus that he would have wished to have his happiness known.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 142,
+      "id": 120
+    },
+    {
+      "text": "It was exactly as if they had both had at heart to gloss over any recent little friction.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 89,
+      "id": 121
+    },
+    {
+      "text": "Did this drop fall patiently during five thousand years to be ready for this flitting human insect's need? and has it another important object to accomplish ten thousand years to come?",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 184,
+      "id": 122
+    },
+    {
+      "text": "For some months past she had felt ill at ease when she was alone with this rough stern son of hers.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 99,
+      "id": 123
+    },
+    {
+      "text": "I was scarce a quarter of a mile to seaward, and it was my first thought to paddle in and land.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 95,
+      "id": 124
+    },
+    {
+      "text": "The monkeys never fight unless they are a hundred to one, and few in the jungle care for those odds.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 100,
+      "id": 125
+    },
+    {
+      "text": "As she drew nigh, the arch-fiend whispered him to condense into small compass and drop into her tender bosom a germ of evil that would be sure to blossom darkly soon, and bear black fruit betimes.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 196,
+      "id": 126
+    },
+    {
+      "text": "How funny it'll seem to come out among the people that walk with their heads downward!",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 86,
+      "id": 127
+    },
+    {
+      "text": "She thought it in reality a sad exchange for herself, to have him with his grave looks and reluctant conversation opposed to her instead of his brother.",
+      "source": "Jane Austen, Emma",
+      "length": 152,
+      "id": 128
+    },
+    {
+      "text": "Now can we be right in praising and admiring another who is doing that which any one of us would abominate and be ashamed of in his own person?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 143,
+      "id": 129
+    },
+    {
+      "text": "Once were ye apes, and even yet man is more of an ape than any of the apes.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 75,
+      "id": 130
+    },
+    {
+      "text": "He abandoned that attempt on the first day, and resolved merely to keep himself always before him, as a silent protest against the delusion into which he had fallen, or was falling.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 181,
+      "id": 131
+    },
+    {
+      "text": "In this stupid world most people never consider that a thing is good to be done unless it is done by their own set.",
+      "source": "George Eliot, Middlemarch",
+      "length": 115,
+      "id": 132
+    },
+    {
+      "text": "The thunder was loud and metallic, like the rattle of sheet iron, and the lightning broke in great zigzags across the heavens, making everything stand out and come close to us for a moment.",
+      "source": "Willa Cather, My Antonia",
+      "length": 189,
+      "id": 133
+    },
+    {
+      "text": "She even sent her off in search of some added delicacy which she had not thought of for herself.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 96,
+      "id": 134
+    },
+    {
+      "text": "He is as brave as a bulldog and as tenacious as a lobster if he gets his claws upon anyone.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 91,
+      "id": 135
+    },
+    {
+      "text": "His linen and his long scarf-like neck-tie were all such as are worn by people who aim at being stylish, but on closer inspection his linen was not over-clean and his wide scarf was very threadbare.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 198,
+      "id": 136
+    },
+    {
+      "text": "On an occasion of this kind it becomes more than a moral duty to speak one's mind.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 82,
+      "id": 137
+    },
+    {
+      "text": "To jump out of the window would be admirable exercise, but the bars are too strong even to try.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 95,
+      "id": 138
+    },
+    {
+      "text": "I made a kind of a tent out of my blankets to put my things under so the rain couldn't get at them.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 99,
+      "id": 139
+    },
+    {
+      "text": "Now what does this remarkable law of the succession of the same types within the same areas mean?",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 97,
+      "id": 140
+    },
+    {
+      "text": "She very soon discovered that there is a charm about fine clothes which attracts a certain class of people and secures their respect.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 133,
+      "id": 141
+    },
+    {
+      "text": "It would require a great effort of memory to recall my explorations in at all the proper order.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 95,
+      "id": 142
+    },
+    {
+      "text": "He took my chin in his large hand and turned up my face to have a look at me by the light of the candle.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 104,
+      "id": 143
+    },
+    {
+      "text": "He is said to have about seven lawsuits upon his hands at present, which will probably swallow up the remainder of his fortune and so draw his sting and leave him harmless for the future.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 187,
+      "id": 144
+    },
+    {
+      "text": "I am too gratified to get such a mark of your friendship at any price to cavil at the tone.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 91,
+      "id": 145
+    },
+    {
+      "text": "It came to his hands, luckily for me, a few days before the battle, and he return'd me immediately an order on the paymaster for the round sum of one thousand pounds, leaving the remainder to the next account.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 209,
+      "id": 146
+    },
+    {
+      "text": "Every man is not so much a workman in the world as he is a suggestion of that he should be.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 91,
+      "id": 147
+    },
+    {
+      "text": "The busy and sagacious bees fixed their republic in the clefts of the rocks and hollows of the trees, offering without usance the plenteous produce of their fragrant toil to every hand.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 185,
+      "id": 148
+    },
+    {
+      "text": "He thought how pleasant it would be to have a warm fire to sit by and a good dinner to sit down to.",
+      "source": "James Joyce, Dubliners",
+      "length": 99,
+      "id": 149
+    },
+    {
+      "text": "Indeed, it is not uncommon for slaves even to fall out and quarrel among themselves about the relative goodness of their masters, each contending for the superior goodness of his own over that of the others.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 207,
+      "id": 150
+    },
+    {
+      "text": "We got them fixed at last, and then all that was to be done was to arrange the covering over them.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 98,
+      "id": 151
+    },
+    {
+      "text": "You only need sit still long enough in some attractive spot in the woods that all its inhabitants may exhibit themselves to you by turns.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 137,
+      "id": 152
+    },
+    {
+      "text": "Nothing is more painful to the human mind than, after the feelings have been worked up by a quick succession of events, the dead calmness of inaction and certainty which follows and deprives the soul both of hope and fear.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 222,
+      "id": 153
+    },
+    {
+      "text": "I'll tell you how to manage so as to avoid the embarrassment of making a formal entrance, which is the most disagreeable part of the business.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 142,
+      "id": 154
+    },
+    {
+      "text": "We seem at last to be on the track, and our work of to-morrow may be the beginning of the end.",
+      "source": "Bram Stoker, Dracula",
+      "length": 94,
+      "id": 155
+    },
+    {
+      "text": "She would have been ashamed to look her family in the face the next morning, had she not risen from her bed in more need of repose than when she lay down in it.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 160,
+      "id": 156
+    },
+    {
+      "text": "An enormous hole had been made by the impact of the projectile, and the sand and gravel had been flung violently in every direction over the heath, forming heaps visible a mile and a half away.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 193,
+      "id": 157
+    },
+    {
+      "text": "She could only imagine, however, at last, that she drew his notice because there was something about her more wrong and reprehensible, according to his ideas of right, than in any other person present.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 201,
+      "id": 158
+    },
+    {
+      "text": "Remember, that as it is a shame for any man to wonder that a fig tree should bear figs, so also to wonder that the world should bear anything, whatsoever it is which in the ordinary course of nature it may bear.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 211,
+      "id": 159
+    },
+    {
+      "text": "To tear treasure out of the bowels of the land was their desire, with no more moral purpose at the back of it than there is in burglars breaking into a safe.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 157,
+      "id": 160
+    },
+    {
+      "text": "He ran him into a blind channel, in the bed of the creek where a timber jam barred the way.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 91,
+      "id": 161
+    },
+    {
+      "text": "Not one in a hundred would weep at losing a relation they had just seen twice, for two afternoons.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 98,
+      "id": 162
+    },
+    {
+      "text": "Reckoning ten barrels to the ton, you have ten tons for the net weight of only three quarters of the stuff of the whale's skin.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 127,
+      "id": 163
+    },
+    {
+      "text": "She never tells you it's your own fault and she hopes you'll be a better girl on account of it.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 95,
+      "id": 164
+    },
+    {
+      "text": "Do you ask me to believe that you were brave enough to run a risk to save your wife's life?",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 91,
+      "id": 165
+    },
+    {
+      "text": "What was left of the little world he had grown up in, and whose standards had bent and bound him?",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 97,
+      "id": 166
+    },
+    {
+      "text": "I felt myself redden to the roots of my hair as well as wonder if it were more strange to put to a gentleman such a question or to see him take it with allowances that gave the very distance of his fall in the world.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 216,
+      "id": 167
+    },
+    {
+      "text": "When they were well exhausted, they would run out and sprawl on the dry, hot sand, and lie there and cover themselves up with it, and by and by break for the water again and go through the original performance once more.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 220,
+      "id": 168
+    },
+    {
+      "text": "Nay, without thought or conscious desire, might not things external to ourselves vibrate in unison with our moods and passions, atom calling to atom in secret love or strange affinity?",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 184,
+      "id": 169
+    },
+    {
+      "text": "The latter stood in several places as much as a foot or a foot and a half above the surface of the sand.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 104,
+      "id": 170
+    },
+    {
+      "text": "They boast and chatter and pretend that they are a great people about to do great affairs in the jungle, but the falling of a nut turns their minds to laughter and all is forgotten.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 181,
+      "id": 171
+    },
+    {
+      "text": "This long connection of a family with one spot, as its place of birth and burial, creates a kindred between the human being and the locality, quite independent of any charm in the scenery or moral circumstances that surround him.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 229,
+      "id": 172
+    },
+    {
+      "text": "Alice tried to fancy to herself what such an extraordinary way of living would be like, but it puzzled her too much, so she went on: \"But why did they live at the bottom of a well?\"",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 181,
+      "id": 173
+    },
+    {
+      "text": "Anxious to separate herself from them as far as she could, she soon afterwards took possession of a narrow footpath, a little raised on one side of the lane, leaving them together in the main road.",
+      "source": "Jane Austen, Emma",
+      "length": 197,
+      "id": 174
+    },
+    {
+      "text": "Then now let us consider what will be their way of life, if they are to realize our idea of them.",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 97,
+      "id": 175
+    },
+    {
+      "text": "One virtue is more of a virtue than two, because it is more of a knot for one's destiny to cling to.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 100,
+      "id": 176
+    },
+    {
+      "text": "He came to her relief with a fixed despair of himself which made the interview unlike any other that could have been holden.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 124,
+      "id": 177
+    },
+    {
+      "text": "This expression was peculiarly noticeable in him at the sale, and those who had only seen him in his moods of gentle oddity or of bright enjoyment would have been struck with a contrast.",
+      "source": "George Eliot, Middlemarch",
+      "length": 186,
+      "id": 178
+    },
+    {
+      "text": "I can't wait till my little girl's old enough to tell her about all the things we used to do.",
+      "source": "Willa Cather, My Antonia",
+      "length": 93,
+      "id": 179
+    },
+    {
+      "text": "It did not occur to her to think he might have grown tired of being with her the livelong day.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 94,
+      "id": 180
+    },
+    {
+      "text": "An important addition has been made during the last week to the list of the prizes which have been borne away by these charming invaders.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 137,
+      "id": 181
+    },
+    {
+      "text": "He saw from his face that he really did know and at once made up his mind how to take it.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 89,
+      "id": 182
+    },
+    {
+      "text": "It is my last reception, and one wants something that will encourage conversation, particularly at the end of the season when every one has practically said whatever they had to say, which, in most cases, was probably not much.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 227,
+      "id": 183
+    },
+    {
+      "text": "I suppose when this was used as a playroom they had to take the nursery things out, and no wonder!",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 98,
+      "id": 184
+    },
+    {
+      "text": "Anybody that don't believe yet that it's foolishness to handle a snake-skin, after all that that snake-skin done for us, will believe it now if they read on and see what more it done for us.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 190,
+      "id": 185
+    },
+    {
+      "text": "I can answer these questions and grave objections only on the supposition that the geological record is far more imperfect than most geologists believe.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 152,
+      "id": 186
+    },
+    {
+      "text": "She didn't care to be a queen of society now half so much as she did to be a lovable woman.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 91,
+      "id": 187
+    },
+    {
+      "text": "We see some beginnings of this even in our own time, and in this future age it was complete.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 92,
+      "id": 188
+    },
+    {
+      "text": "She drew an arm round my neck, and drew my head close down to hers as she sat in the chair.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 91,
+      "id": 189
+    },
+    {
+      "text": "It was a long chamber with a step separating the dais where the family sat from the lower portion reserved for their dependents.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 128,
+      "id": 190
+    },
+    {
+      "text": "A coral reef which just comes short of the ocean surface is no more to the horizon than if it had never been begun, and the mere finishing stroke is what often appears to create an event which has long been potentially an accomplished thing.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 241,
+      "id": 191
+    },
+    {
+      "text": "No man now has so strong a hold on the habits and manners of the people.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 72,
+      "id": 192
+    },
+    {
+      "text": "Let him regard no good as solid but that which is in his nature and which must grow out of him as long as he exists.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 116,
+      "id": 193
+    },
+    {
+      "text": "By this time the duke and duchess had taken their places in a gallery commanding the enclosure, which was filled to overflowing with a multitude of people eager to see this perilous and unparalleled encounter.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 209,
+      "id": 194
+    },
+    {
+      "text": "I hid my books in the long grass near the ashpit at the end of the garden where nobody ever came and hurried along the canal bank.",
+      "source": "James Joyce, Dubliners",
+      "length": 130,
+      "id": 195
+    },
+    {
+      "text": "He who is the religious advocate of marriage robs whole millions of its sacred influence, and leaves them to the ravages of wholesale pollution.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 144,
+      "id": 196
+    },
+    {
+      "text": "The landlady met us on the doorstep with the greeting that we were the fourteenth party she had turned away within the last hour and a half.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 140,
+      "id": 197
+    },
+    {
+      "text": "I would rather sit on a pumpkin and have it all to myself than be crowded on a velvet cushion.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 94,
+      "id": 198
+    },
+    {
+      "text": "I had sagacity enough to discover that the unnatural hideousness of my person was the chief object of horror with those who had formerly beheld me.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 147,
+      "id": 199
+    },
+    {
+      "text": "Inquiry was made into the origin of the scourge, and by degrees various facts came out which excited public indignation in a high degree.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 137,
+      "id": 200
+    },
+    {
+      "text": "Things remain as they were except that he has parted with some of his pets and got a new one.",
+      "source": "Bram Stoker, Dracula",
+      "length": 93,
+      "id": 201
+    },
+    {
+      "text": "I could not be happy with a man whose taste did not in every point coincide with my own.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 88,
+      "id": 202
+    },
+    {
+      "text": "Another steely tentacle directed the powder from the basin along a ribbed channel towards some receiver that was hidden from me by the mound of bluish dust.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 156,
+      "id": 203
+    },
+    {
+      "text": "Never in her life had she seen his manners so little dignified, never had he spoken with such gentleness as on this unexpected meeting.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 135,
+      "id": 204
+    },
+    {
+      "text": "How easy a thing is it for a man to put off from him all turbulent adventitious imaginations, and presently to be in perfect rest and tranquillity!",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 147,
+      "id": 205
+    },
+    {
+      "text": "There was an old hippo that had the bad habit of getting out on the bank and roaming at night over the station grounds.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 119,
+      "id": 206
+    },
+    {
+      "text": "Other men saw to the welfare of their dogs from a sense of duty and business expediency; he saw to the welfare of his as if they were his own children, because he could not help it.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 181,
+      "id": 207
+    },
+    {
+      "text": "We knew she was really better, and, therefore, decided that long confinement to a single place produced much of this despondency, and it might be partially removed by a change of scene.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 185,
+      "id": 208
+    },
+    {
+      "text": "It may be worth while, therefore, previously to advert to those curious imaginary portraits of him which even down to the present day confidently challenge the faith of the landsman.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 182,
+      "id": 209
+    },
+    {
+      "text": "Her method of teaching was to ask the printed questions from the quarterly and look sternly over its edge at the particular little girl she thought ought to answer the question.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 177,
+      "id": 210
+    },
+    {
+      "text": "For a full three weeks beforehand you shut yourself up every evening until long after midnight, making ornaments for the Christmas Tree, and all the other fine things that were to be a surprise to us.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 200,
+      "id": 211
+    },
+    {
+      "text": "He felt as though he had been struggling for hours up the face of a steep precipice, and now, just as he had fought his way to the top, his hold had given way and he was pitching down headlong into darkness.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 207,
+      "id": 212
+    },
+    {
+      "text": "We were too far apart to call to each other, but there was a moment at which, at shorter range, some challenge between us, breaking the hush, would have been the right result of our straight mutual stare.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 204,
+      "id": 213
+    },
+    {
+      "text": "A vagrant current or a slight rise in the river had carried off their raft, but this only gratified them, since its going was something like burning the bridge between them and civilization.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 190,
+      "id": 214
+    },
+    {
+      "text": "There are many things that we would throw away if we were not afraid that others might pick them up.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 100,
+      "id": 215
+    },
+    {
+      "text": "He had still a foot in either camp, and there was no doubt he would prefer wealth and freedom with the pirates to a bare escape from hanging, which was the best he had to hope on our side.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 188,
+      "id": 216
+    },
+    {
+      "text": "The fighting strength of a python is in the driving blow of his head backed by all the strength and weight of his body.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 119,
+      "id": 217
+    },
+    {
+      "text": "The only surgeon was one who combined the occasional exercise of that noble art with the daily and habitual flourish of a razor.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 128,
+      "id": 218
+    },
+    {
+      "text": "Run home this moment, and fetch me a pair of gloves and a fan!",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 62,
+      "id": 219
+    },
+    {
+      "text": "Do not let any reflection fall on the principles or the care of the friends who brought me up.",
+      "source": "Jane Austen, Emma",
+      "length": 94,
+      "id": 220
+    },
+    {
+      "text": "Then we may assume that our athletes will be able to fight with two or three times their own number?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 100,
+      "id": 221
+    },
+    {
+      "text": "Elsewhere he says a man should be a hard bed to his friend, thus alone can he be of use to him.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 95,
+      "id": 222
+    },
+    {
+      "text": "The barrister was keen enough to divine that the banker would not have gone so far in his expression of opinion on any less solid ground than moral certainty.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 158,
+      "id": 223
+    },
+    {
+      "text": "Perhaps it was his fondness for another person also that made him particularly anxious to take some security against his own liability to spend the hundred pounds.",
+      "source": "George Eliot, Middlemarch",
+      "length": 163,
+      "id": 224
+    },
+    {
+      "text": "We were so deep in the grass that we could see nothing but the blue sky over us and the gold tree in front of us.",
+      "source": "Willa Cather, My Antonia",
+      "length": 113,
+      "id": 225
+    },
+    {
+      "text": "The passion that awoke in him that day, when he saw her at the gate, swept along like an avalanche, or like a prairie fire, or like anything that drives headlong over all obstacles.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 181,
+      "id": 226
+    },
+    {
+      "text": "It was indeed our visitor of the afternoon who came bustling in, dangling his glasses more vigorously than ever, and with a very perturbed expression upon his aristocratic features.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 181,
+      "id": 227
+    },
+    {
+      "text": "I would only beg the reader not to be in too great a hurry to laugh at my young hero's pure heart.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 98,
+      "id": 228
+    },
+    {
+      "text": "Gwendolen, it is a terrible thing for a man to find out suddenly that all his life he has been speaking nothing but the truth.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 126,
+      "id": 229
+    },
+    {
+      "text": "Now we have had a week of fog and rain, and whether the windows are open or not, the smell is here.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 99,
+      "id": 230
+    },
+    {
+      "text": "He had got the dream fixed so strong in his head that he couldn't seem to shake it loose and get the facts back into its place again right away.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 144,
+      "id": 231
+    },
+    {
+      "text": "The foregoing remarks lead me to say a few words on the protest lately made by some naturalists, against the utilitarian doctrine that every detail of structure has been produced for the good of its possessor.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 209,
+      "id": 232
+    },
+    {
+      "text": "Jo drew a long breath and unclasped her hands as she watched the poor fellow trying to outstrip the trouble which he carried in his heart.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 138,
+      "id": 233
+    },
+    {
+      "text": "Then he turned to the two others who were following him and spoke to them in a strange and very sweet and liquid tongue.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 120,
+      "id": 234
+    },
+    {
+      "text": "I am confident that it took no distinctness of shape, and that it was the revival for a few minutes of the terror of childhood.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 127,
+      "id": 235
+    },
+    {
+      "text": "I had raised my hat and was about to make some explanatory remark when her own words turned all my thoughts into a new channel.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 127,
+      "id": 236
+    },
+    {
+      "text": "Then as if at that instant to prove that her fortitude had been more of will than of spontaneity, she silently sank down between them and was a shapeless heap of drapery on the floor.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 183,
+      "id": 237
+    },
+    {
+      "text": "A man being sometimes more generous when he has but a little money than when he has plenty, perhaps thro' fear of being thought to have but little.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 147,
+      "id": 238
+    },
+    {
+      "text": "They are symbols of value to him as they can interpret parts of his consciousness which he would vainly seek words for in the conventional images of books and other minds.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 171,
+      "id": 239
+    },
+    {
+      "text": "They quartered him in a room on the ground floor, where in place of leather hangings there were pieces of painted serge such as they commonly use in villages.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 158,
+      "id": 240
+    },
+    {
+      "text": "The deceased had been in the habit of crossing the lines late at night from platform to platform and, in view of certain other circumstances of the case, he did not think the railway officials were to blame.",
+      "source": "James Joyce, Dubliners",
+      "length": 207,
+      "id": 241
+    },
+    {
+      "text": "Had he been a man of pure morals himself, he might have been thought interested in protecting the innocence of my aunt; but those who knew him will not suspect him of any such virtue.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 183,
+      "id": 242
+    },
+    {
+      "text": "You have to go away and begin your meal, as if you were not going to have any tea at all.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 89,
+      "id": 243
+    },
+    {
+      "text": "Such an exuberance of animal spirits had he that he sometimes tumbled down and rolled on the ground with laughter at any thing which made him think and tickled him.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 164,
+      "id": 244
+    },
+    {
+      "text": "The pines are not tall or luxuriant, but they are sombre and add an air of severity to the scene.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 97,
+      "id": 245
+    },
+    {
+      "text": "Georgiana sat on a high stool, dressing her hair at the glass, and interweaving her curls with artificial flowers and faded feathers, of which she had found a store in a drawer in the attic.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 190,
+      "id": 246
+    },
+    {
+      "text": "The wounds seem such as might be made by a rat or a small dog, and although of not much importance individually, would tend to show that whatever animal inflicts them has a system or method of its own.",
+      "source": "Bram Stoker, Dracula",
+      "length": 201,
+      "id": 247
+    },
+    {
+      "text": "They speedily discovered that their enjoyment of dancing and music was mutual, and that it arose from a general conformity of judgment in all that related to either.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 165,
+      "id": 248
+    },
+    {
+      "text": "It seems to me that they have lost a vast advantage in the failure of their first surprise.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 91,
+      "id": 249
+    },
+    {
+      "text": "It was consoling that he should know she had some relations for whom there was no need to blush.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 96,
+      "id": 250
+    },
+    {
+      "text": "Casting therefore all other things aside, keep thyself to these few, and remember withal that no man properly can be said to live more than that which is now present, which is but a moment of time.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 197,
+      "id": 251
+    },
+    {
+      "text": "At night sometimes the roll of drums behind the curtain of trees would run up the river and remain sustained faintly, as if hovering in the air high over our heads, till the first break of day.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 193,
+      "id": 252
+    },
+    {
+      "text": "It was no task for him to learn to fight with cut and slash and the quick wolf snap.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 84,
+      "id": 253
+    },
+    {
+      "text": "We were left at peace in our beds as long as the summer moon shone, but the moment a blast of winter returns, you must run for shelter!",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 135,
+      "id": 254
+    },
+    {
+      "text": "For the height of this sort of deliciousness is to have nothing but the blanket between you and your snugness and the cold of the outer air.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 140,
+      "id": 255
+    },
+    {
+      "text": "Here and there the lane was splashed with it, but for the most part it was already quite shadowy beneath the maples, and the spaces under the firs were filled with a clear violet dusk like airy wine.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 199,
+      "id": 256
+    },
+    {
+      "text": "We two have kept bravely on the straight road so far, and we will go on the same way for the short time longer that there need be any struggle.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 143,
+      "id": 257
+    },
+    {
+      "text": "The sensation of standing there, in that warm familiar room, and looking at her, and wishing her dead, was so strange, so fascinating and overmastering, that its enormity did not immediately strike him.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 202,
+      "id": 258
+    },
+    {
+      "text": "It was as if, when we were face to face in the dining room, he had literally shown me the way.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 94,
+      "id": 259
+    },
+    {
+      "text": "While one boy was worrying the tick with absorbing interest, the other would look on with interest as strong, the two heads bowed together over the slate, and the two souls dead to all things else.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 197,
+      "id": 260
+    },
+    {
+      "text": "It should have the dignity of a ceremony, as well as its unreality, and should combine the insincere character of a romantic play with the wit and beauty that make such plays delightful to us.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 192,
+      "id": 261
+    },
+    {
+      "text": "To me he was cordial and kind, saying nothing of my escapade either in the way of blame or praise.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 98,
+      "id": 262
+    },
+    {
+      "text": "Kaa was everything that the monkeys feared in the jungle, for none of them knew the limits of his power, none of them could look him in the face, and none had ever come alive out of his hug.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 190,
+      "id": 263
+    },
+    {
+      "text": "It was his genuine impulse to adore the truth, and to reckon all things shadow-like, and utterly devoid of weight or value, that had not its divine essence as the life within their life.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 186,
+      "id": 264
+    },
+    {
+      "text": "She was a good deal frightened by this very sudden change, but she felt that there was no time to be lost, as she was shrinking rapidly; so she set to work at once to eat some of the other bit.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 193,
+      "id": 265
+    },
+    {
+      "text": "Your resolution, or rather your expectation of never marrying, results from an idea that the person whom you might prefer, would be too greatly your superior in situation to think of you.",
+      "source": "Jane Austen, Emma",
+      "length": 187,
+      "id": 266
+    },
+    {
+      "text": "Do you not know that all this is but the prelude to the actual strain which we have to learn?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 93,
+      "id": 267
+    },
+    {
+      "text": "Zarathustra abjures all those who would fain turn an IMPERSONAL eye upon nature and contemplate her phenomena with that pure objectivity to which the scientific idealists of to-day would so much like to attain.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 210,
+      "id": 268
+    },
+    {
+      "text": "I see him winning it so well, that my name is made illustrious there by the light of his.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 89,
+      "id": 269
+    },
+    {
+      "text": "It was an unwonted sign of emotion in her that she should put her work out of her hands.",
+      "source": "George Eliot, Middlemarch",
+      "length": 88,
+      "id": 270
+    },
+    {
+      "text": "The burrow sloped into the ground at a gentle angle, so that we could see where the two corridors united, and the floor was dusty from use, like a little highway over which much travel went.",
+      "source": "Willa Cather, My Antonia",
+      "length": 190,
+      "id": 271
+    },
+    {
+      "text": "It was as if the spirit of life and the awakening spring had given back the soul to her youth and bade her rejoice.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 115,
+      "id": 272
+    },
+    {
+      "text": "He curled himself up in his chair, with his thin knees drawn up to his hawk-like nose, and there he sat with his eyes closed and his black clay pipe thrusting out like the bill of some strange bird.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 198,
+      "id": 273
+    },
+    {
+      "text": "It was his habit to send the servants away to the lodge for the night and to lock himself up alone.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 99,
+      "id": 274
+    },
+    {
+      "text": "Worn out by your entire ignorance of my existence, I determined to end the matter one way or the other, and after a long struggle with myself I accepted you under this dear old tree here.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 187,
+      "id": 275
+    },
+    {
+      "text": "There is one place where two breadths didn't match, and the eyes go all up and down the line, one a little higher than the other.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 129,
+      "id": 276
+    },
+    {
+      "text": "That all comes of my being such a fool as to not remember that wherever you leave a dead snake its mate always comes there and curls around it.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 143,
+      "id": 277
+    },
+    {
+      "text": "Can we suppose that the formation of rudimentary teeth which are subsequently absorbed, can be of any service to the rapidly growing embryonic calf by the excretion of precious phosphate of lime?",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 195,
+      "id": 278
+    },
+    {
+      "text": "Well, we have tried not to waste our holiday, but each has had a task and worked at it with a will.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 99,
+      "id": 279
+    },
+    {
+      "text": "I have no doubt they found my second appearance strange enough, coming suddenly out of the quiet darkness with inarticulate noises and the splutter and flare of a match.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 169,
+      "id": 280
+    },
+    {
+      "text": "It will presently be seen that the question was not before me in a distinct shape until it was put before me by a wiser head than my own.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 137,
+      "id": 281
+    },
+    {
+      "text": "If on that forbidding moor a difficult and dangerous quest should lie before us, this was at least a comrade for whom one might venture to take a risk with the certainty that he would bravely share it.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 201,
+      "id": 282
+    },
+    {
+      "text": "It may be said that married men of forty are usually ready and generous enough to fling passing glances at any specimen of moderate beauty they may discern by the way.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 167,
+      "id": 283
+    },
+    {
+      "text": "He had not then the least intimation of my intention to set up there or anywhere.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 81,
+      "id": 284
+    },
+    {
+      "text": "It is easy enough for a firm man who knows the world to brook the rage of the cultivated classes.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 97,
+      "id": 285
+    },
+    {
+      "text": "The string of coral beads is very fine, and my husband's hunting suit does not fall short of it.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 96,
+      "id": 286
+    },
+    {
+      "text": "She said she would do without any tea but when it came near the time at which the shop at the corner closed she decided to go out herself for a quarter of a pound of tea and two pounds of sugar.",
+      "source": "James Joyce, Dubliners",
+      "length": 194,
+      "id": 287
+    },
+    {
+      "text": "A slave who would work during the holidays was considered by our masters as scarcely deserving them.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 100,
+      "id": 288
+    },
+    {
+      "text": "Splendid cheeses they were, ripe and mellow, and with a two hundred horse-power scent about them that might have been warranted to carry three miles, and knock a man over at two hundred yards.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 192,
+      "id": 289
+    },
+    {
+      "text": "Shall we with pains erect a heaven of blue glass over ourselves, though when it is done we shall be sure to gaze still at the true ethereal heaven far above, as if the former were not?",
+      "source": "Henry David Thoreau, Walden",
+      "length": 184,
+      "id": 290
+    },
+    {
+      "text": "He strove to shelter her, as a fair exotic is sheltered by the gardener, from every rougher wind and to surround her with all that could tend to excite pleasurable emotion in her soft and benevolent mind.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 204,
+      "id": 291
+    },
+    {
+      "text": "She would thus descend to the kitchen once a day, eat her dinner, smoke a moderate pipe on the hearth, and go back, carrying her pot of porter with her, for her private solace, in her own gloomy, upper haunt.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 208,
+      "id": 292
+    },
+    {
+      "text": "This mood or condition begins some half hour or more before actual sunrise or sunset, and lasts till either the sun is high, or whilst the clouds are still aglow with the rays streaming above the horizon.",
+      "source": "Bram Stoker, Dracula",
+      "length": 204,
+      "id": 293
+    },
+    {
+      "text": "I saw that my own feelings had prepared my sufferings, and that my want of fortitude under them had almost led me to the grave.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 127,
+      "id": 294
+    },
+    {
+      "text": "Then round the corner of the lane, from between the villas that guarded it at its confluence with the high road, came a little cart drawn by a sweating black pony and driven by a sallow youth in a bowler hat, grey with dust.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 224,
+      "id": 295
+    },
+    {
+      "text": "There is a stubbornness about me that never can bear to be frightened at the will of others.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 92,
+      "id": 296
+    },
+    {
+      "text": "That it being so that my mother was to die young, yet she lived with me all her latter years.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 93,
+      "id": 297
+    },
+    {
+      "text": "For the rest, after his hours of work, a casual stroll or a casual spree on shore suffices to unfold for him the secret of a whole continent, and generally he finds the secret not worth knowing.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 194,
+      "id": 298
+    },
+    {
+      "text": "At such times he would shake off sleep and creep through the chill to the flap of the tent, where he would stand and listen to the sound of his master's breathing.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 163,
+      "id": 299
+    },
+    {
+      "text": "I'd as soon put that little canary into the park on a winter's day, as recommend you to bestow your heart on him!",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 113,
+      "id": 300
+    },
+    {
+      "text": "Now and then pairs of them would drop their work, and run up to the mast-head to get some fresh air.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 100,
+      "id": 301
+    },
+    {
+      "text": "There was in it thankfulness for the past and reverent petition for the future; and when she slept on her white pillow her dreams were as fair and bright and beautiful as maidenhood might desire.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 195,
+      "id": 302
+    },
+    {
+      "text": "You always find some new way of wheedling money out of me, and, as soon as you have got it, it seems to melt in your hands.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 123,
+      "id": 303
+    },
+    {
+      "text": "She had hardly ever said a word to him to produce this impression, but it was a part of her, either a projection of her mysterious and outlandish background or of something inherently dramatic, passionate and unusual in herself.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 228,
+      "id": 304
+    },
+    {
+      "text": "Someone would appear there at the turn of a path and would stand before me and smile and approve.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 97,
+      "id": 305
+    },
+    {
+      "text": "He was so brimful of exultation that he could hardly hold himself when the old lady came back and stood above the wreck discharging lightnings of wrath from over her spectacles.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 177,
+      "id": 306
+    },
+    {
+      "text": "I want to place her on a pedestal of gold and to see the world worship the woman who is mine.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 93,
+      "id": 307
+    },
+    {
+      "text": "The man at the helm was watching the luff of the sail and whistling away gently to himself, and that was the only sound excepting the swish of the sea against the bows and around the sides of the ship.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 201,
+      "id": 308
+    },
+    {
+      "text": "When he comes back wait for me in the ravine by the dhak tree in the center of the plain.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 89,
+      "id": 309
+    },
+    {
+      "text": "I knew it too, but could never quite find in my heart to act upon the knowledge.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 80,
+      "id": 310
+    },
+    {
+      "text": "This time there were two little shrieks, and more sounds of broken glass.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 73,
+      "id": 311
+    },
+    {
+      "text": "That nature had given it in feature could not be unseen by the young woman, nor could her higher powers of mind be unfelt by the parents.",
+      "source": "Jane Austen, Emma",
+      "length": 137,
+      "id": 312
+    },
+    {
+      "text": "Can sight adequately perceive them? and is no difference made by the circumstance that one of the fingers is in the middle and another at the extremity?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 152,
+      "id": 313
+    },
+    {
+      "text": "It is a discourse against all those who confound virtue with tameness and smug ease, and who regard as virtuous only that which promotes security and tends to deepen sleep.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 172,
+      "id": 314
+    },
+    {
+      "text": "It would have been of as much avail to interrogate any stone face outside the chateau as to interrogate that face of his.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 121,
+      "id": 315
+    },
+    {
+      "text": "I cannot regard wealth as a blessing to those who use it simply as a harvest for this world.",
+      "source": "George Eliot, Middlemarch",
+      "length": 92,
+      "id": 316
+    },
+    {
+      "text": "He had never been in a railway train until the morning when we set out together to try our fortunes in a new world.",
+      "source": "Willa Cather, My Antonia",
+      "length": 115,
+      "id": 317
+    },
+    {
+      "text": "That night she went and sat alone upon a bench that stood beneath a live oak tree at the edge of the gravel walk.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 113,
+      "id": 318
+    },
+    {
+      "text": "He might avert it all if he would but tell me what he had done with the three missing stones.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 93,
+      "id": 319
+    },
+    {
+      "text": "There is very little doubt that she would not on any account have married him if she had known a little more about him in time.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 127,
+      "id": 320
+    },
+    {
+      "text": "The fact that they did not follow us at once into the house, as any one else would have done, seems to me to show that they have some sense of shame left.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 154,
+      "id": 321
+    },
+    {
+      "text": "There is one marked peculiarity about this paper, a thing nobody seems to notice but myself, and that is that it changes as the light changes.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 142,
+      "id": 322
+    },
+    {
+      "text": "Sometimes a belt of land a quarter of a mile deep will start in and cave along and cave along till it all caves into the river in one summer.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 141,
+      "id": 323
+    },
+    {
+      "text": "Although naturalists very properly demand a full explanation of every difficulty from those who believe in the mutability of species, on their own side they ignore the whole subject of the first appearance of species in what they consider reverent silence.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 256,
+      "id": 324
+    },
+    {
+      "text": "It was dreadful, but she would have done it if the flock of draggle-tailed sparrows on the hedge had been human beings, for she was very far gone indeed, and quite regardless of everything but her own happiness.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 211,
+      "id": 325
+    },
+    {
+      "text": "Apparently it was considered bad form to remark these apertures; for when I pointed to this one, and tried to frame a question about it in their tongue, they were still more visibly distressed and turned away.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 209,
+      "id": 326
+    },
+    {
+      "text": "It was the sergeant who had spoken to me, and he was now looking round at the company, with his handcuffs invitingly extended towards them in his right hand, and his left on my shoulder.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 186,
+      "id": 327
+    },
+    {
+      "text": "What passion of hatred can it be which leads a man to lurk in such a place at such a time!",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 90,
+      "id": 328
+    },
+    {
+      "text": "She turned herself away from him, that he might no longer notice the mood which had set its sign so visibly upon her, and went indoors with a distressing sense of faintness and a beating brow.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 192,
+      "id": 329
+    },
+    {
+      "text": "If you wish information and improvement from the knowledge of others, and yet at the same time express yourself as firmly fix'd in your present opinions, modest, sensible men, who do not love disputation, will probably leave you undisturbed in the possession of your error.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 273,
+      "id": 330
+    },
+    {
+      "text": "The rich inventive genius of the painter must be smothered and lost for want of the power of drawing, and in our happy hours we should be inexhaustible poets if once we could break through the silence into adequate rhyme.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 221,
+      "id": 331
+    },
+    {
+      "text": "They had not gone a quarter of a league when at the meeting of two paths they saw coming towards them some six shepherds dressed in black sheepskins and with their heads crowned with garlands of cypress and bitter oleander.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 223,
+      "id": 332
+    },
+    {
+      "text": "First of all it had been an excitement for her to have a fellow and then she had begun to like him.",
+      "source": "James Joyce, Dubliners",
+      "length": 99,
+      "id": 333
+    },
+    {
+      "text": "He said to the other that it was a pity so fine a little fellow as myself should be a slave for life.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 101,
+      "id": 334
+    },
+    {
+      "text": "I remember a holiday of mine being completely ruined one late autumn by our paying attention to the weather report of the local newspaper.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 138,
+      "id": 335
+    },
+    {
+      "text": "I think that the man is at a dead set who has got through a knot hole or gateway where his sledge load of furniture cannot follow him.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 134,
+      "id": 336
+    },
+    {
+      "text": "You may render me the most miserable of men, but you shall never make me base in my own eyes.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 93,
+      "id": 337
+    },
+    {
+      "text": "I again felt rather like an individual of but average gastronomical powers sitting down to feast alone at a table spread with provisions for a hundred.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 151,
+      "id": 338
+    },
+    {
+      "text": "I used to fancy that life was a positive and perpetual entity, and that by consuming a multitude of live things, no matter how low in the scale of creation, one might indefinitely prolong life.",
+      "source": "Bram Stoker, Dracula",
+      "length": 193,
+      "id": 339
+    },
+    {
+      "text": "I do not mean to talk to you of what my feelings have been for him, but what they are now.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 90,
+      "id": 340
+    },
+    {
+      "text": "His idea was that meteorites might be falling in a heavy shower upon the planet, or that a huge volcanic explosion was in progress.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 131,
+      "id": 341
+    },
+    {
+      "text": "When the first transports of rage which had produced his activity in seeking her were over, he naturally returned to all his former indolence.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 142,
+      "id": 342
+    },
+    {
+      "text": "To comprehend the whole world together in thy mind, and the whole course of this present age to represent it unto thyself, and to fix thy thoughts upon the sudden change of every particular object.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 197,
+      "id": 343
+    },
+    {
+      "text": "The conquest of the earth, which mostly means the taking it away from those who have a different complexion or slightly flatter noses than ourselves, is not a pretty thing when you look into it too much.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 203,
+      "id": 344
+    },
+    {
+      "text": "The muscles of his whole body contracted spasmodically and instinctively, the hair on his neck and shoulders stood on end, and with a ferocious snarl he bounded straight up into the blinding day, the snow flying about him in a flashing cloud.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 242,
+      "id": 345
+    },
+    {
+      "text": "Heathcliff would as soon lift a finger at you as the king would march his army against a colony of mice.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 104,
+      "id": 346
+    },
+    {
+      "text": "Here be it said that in a whaling voyage the first fire in the try-works has to be fed for a time with wood.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 108,
+      "id": 347
+    },
+    {
+      "text": "She went up to the east gable with a very serious face and left it with a face more serious still.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 98,
+      "id": 348
+    },
+    {
+      "text": "I am not so heartless as to condemn a man altogether because of a single false step of that kind.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 97,
+      "id": 349
+    },
+    {
+      "text": "As she spoke she untied her little velvet bonnet and tossing it away with her long cloak stood looking at him with meditative eyes.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 131,
+      "id": 350
+    },
+    {
+      "text": "To gaze into the depths of blue of the child's eyes and pronounce their loveliness a trick of premature cunning was to be guilty of a cynicism in preference to which I naturally preferred to abjure my judgment and, so far as might be, my agitation.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 248,
+      "id": 351
+    },
+    {
+      "text": "Sid had better judgment than to utter the thought that was in his mind as he left the house.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 92,
+      "id": 352
+    },
+    {
+      "text": "On a heap of sacking in the far corner was lying the dead body of a man dressed in a coarse shirt and a pair of blue trousers.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 126,
+      "id": 353
+    },
+    {
+      "text": "Soon we were past the high lands and bowling beside low, sandy country, sparsely dotted with dwarf pines, and soon we were beyond that again and had turned the corner of the rocky hill that ends the island on the north.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 219,
+      "id": 354
+    },
+    {
+      "text": "Trees had grown into and out of the walls; the battlements were tumbled down and decayed, and wild creepers hung out of the windows of the towers on the walls in bushy hanging clumps.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 183,
+      "id": 355
+    },
+    {
+      "text": "It was an age when what we call talent had far less consideration than now, but the massive materials which produce stability and dignity of character a great deal more.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 169,
+      "id": 356
+    },
+    {
+      "text": "However, she did not like to be rude, so she bore it as well as she could.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 74,
+      "id": 357
+    },
+    {
+      "text": "I took him as he was sleeping on the sofa, and it is as strong a likeness of his cockade as you would wish to see.",
+      "source": "Jane Austen, Emma",
+      "length": 114,
+      "id": 358
+    },
+    {
+      "text": "He said that the repayment of a debt is just, and in saying so he appears to me to be right.",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 92,
+      "id": 359
+    },
+    {
+      "text": "Here we have a description of that courageous and wayward spirit that literally haunts the footsteps of every great thinker and every great leader; sometimes with the result that it loses all aims, all hopes, and all trust in a definite goal.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 242,
+      "id": 360
+    },
+    {
+      "text": "If any one of the three had had the hardihood to propose to another to walk on a little ahead into the mist and darkness, he would have put himself in a fair way of getting shot instantly as a highwayman.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 204,
+      "id": 361
+    },
+    {
+      "text": "There was not the shadow of a reason in her mind at the moment why she should not say so.",
+      "source": "George Eliot, Middlemarch",
+      "length": 89,
+      "id": 362
+    },
+    {
+      "text": "She told me that in her village at home there was an old beggar woman who went about selling herbs and roots she had dug up in the forest.",
+      "source": "Willa Cather, My Antonia",
+      "length": 138,
+      "id": 363
+    },
+    {
+      "text": "He was an old solitary and a wise one, yet he was not wise enough to guess what it was all about.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 97,
+      "id": 364
+    },
+    {
+      "text": "I went to the altar with him with the intention to make him just as good a wife as it was in me to be.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 102,
+      "id": 365
+    },
+    {
+      "text": "If he were so cold-hearted and calculating, why not hit the servant on the head again and again with the same pestle so as to kill him outright and relieve himself of all anxiety about the witness?",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 197,
+      "id": 366
+    },
+    {
+      "text": "Oh! it is absurd to have a hard and fast rule about what one should read and what one shouldn't.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 96,
+      "id": 367
+    },
+    {
+      "text": "If those heads were covered or taken off it would not be half so bad.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 69,
+      "id": 368
+    },
+    {
+      "text": "Now the thing for you to do is to droop your tails and go home and crawl in a hole.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 83,
+      "id": 369
+    },
+    {
+      "text": "It is not always equal in degree in a first cross and in the hybrid produced from this cross.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 93,
+      "id": 370
+    },
+    {
+      "text": "He felt as if suddenly shaken out of a pensive dream and found it impossible to go to sleep again.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 98,
+      "id": 371
+    },
+    {
+      "text": "We soon met others of the dainty ones, laughing and dancing in the sunlight as though there was no such thing in nature as the night.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 133,
+      "id": 372
+    },
+    {
+      "text": "I could feel the muscles of the thin arm round my neck swell with the vehemence that possessed her.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 99,
+      "id": 373
+    },
+    {
+      "text": "I don't wonder that my uncle got a little jumpy if he lived all alone in such a house as this.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 94,
+      "id": 374
+    },
+    {
+      "text": "When a strong woman recklessly throws away her strength she is worse than a weak woman who has never had any strength to throw away.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 132,
+      "id": 375
+    },
+    {
+      "text": "Thus far was written with the intention express'd in the beginning and therefore contains several little family anecdotes of no importance to others.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 149,
+      "id": 376
+    },
+    {
+      "text": "One might find argument for optimism in the abundant flow of this saccharine element of pleasure in every suburb and extremity of the good world.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 145,
+      "id": 377
+    },
+    {
+      "text": "Wouldn't you say she was like a walking palm tree loaded with clusters of dates? for the trinkets she has hanging from her hair and neck look just like them.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 157,
+      "id": 378
+    },
+    {
+      "text": "He thought of how she who lay beside him had locked in her heart for so many years that image of her lover's eyes when he had told her that he did not wish to live.",
+      "source": "James Joyce, Dubliners",
+      "length": 164,
+      "id": 379
+    },
+    {
+      "text": "He gave expression to his feelings by pouring out curses upon the heads of those who did the deed.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 98,
+      "id": 380
+    },
+    {
+      "text": "When he had really caught three small fish, and said he had caught six, it used to make him quite jealous to hear a man, whom he knew for a fact had only caught one, going about telling people he had landed two dozen.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 217,
+      "id": 381
+    },
+    {
+      "text": "He had not discovered that it was necessary for him to make it worth the other's while to buy them, or at least make him think that it was so, or to make something else which it would be worth his while to buy.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 210,
+      "id": 382
+    },
+    {
+      "text": "My father wished her not to go but said that he left it to her own judgment and feelings to decide.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 99,
+      "id": 383
+    },
+    {
+      "text": "To be together is for us to be at once as free as in solitude, as gay as in company.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 84,
+      "id": 384
+    },
+    {
+      "text": "The new phases of things leave my mind in a state of wonder which allows no room for active thought.",
+      "source": "Bram Stoker, Dracula",
+      "length": 100,
+      "id": 385
+    },
+    {
+      "text": "They only knew how little he had had to tempt him to be disobedient, and how small was the consolation, beyond the consciousness of doing right, that could remain to him in the loss of friends and fortune.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 205,
+      "id": 386
+    },
+    {
+      "text": "A large piece suddenly came off and fell with a sharp noise that brought his heart into his mouth.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 98,
+      "id": 387
+    },
+    {
+      "text": "She sat intently at work, striving to be composed, and without daring to lift up her eyes, till anxious curiosity carried them to the face of her sister as the servant was approaching the door.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 193,
+      "id": 388
+    },
+    {
+      "text": "They that shall oppose thee in thy right courses, as it is not in their power to divert thee from thy good action, so neither let it be to divert thee from thy good affection towards them.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 188,
+      "id": 389
+    },
+    {
+      "text": "He was great by this little thing that it was impossible to tell what could control such a man.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 95,
+      "id": 390
+    },
+    {
+      "text": "He was crying with sheer rage and eagerness as he circled back and forth for a chance to spring in.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 99,
+      "id": 391
+    },
+    {
+      "text": "Is he turning out a bit of a hypocrite, and coming into the country to work mischief under a cloak?",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 99,
+      "id": 392
+    },
+    {
+      "text": "I could only see part of the foot-board of the bed and a line of the wall, but nothing more.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 92,
+      "id": 393
+    },
+    {
+      "text": "It always kind of gives me a thrill to see them ugly white grubs that spade up in the cucumber beds.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 100,
+      "id": 394
+    },
+    {
+      "text": "Especially that they should revenge themselves on the unlucky bones of those who have not had the satisfaction of enjoying them.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 128,
+      "id": 395
+    },
+    {
+      "text": "He simply felt that chance had given him a new possibility to which his sick soul might cling.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 94,
+      "id": 396
+    },
+    {
+      "text": "There had been for the two children at first a young lady whom they had had the misfortune to lose.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 99,
+      "id": 397
+    },
+    {
+      "text": "Tom partly uncovered a dismal caricature of a house with two gable ends to it and a corkscrew of smoke issuing from the chimney.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 128,
+      "id": 398
+    },
+    {
+      "text": "In a month there will be purple stars on the clematis, and year after year the green night of its leaves will hold its purple stars.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 132,
+      "id": 399
+    },
+    {
+      "text": "Little had been left besides the framework of the house, but in one corner there was a stone slab laid down by way of hearth and an old rusty iron basket to contain the fire.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 174,
+      "id": 400
+    },
+    {
+      "text": "At other times he would pick the long thorns out of the pads of his friends, for wolves suffer terribly from thorns and burs in their coats.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 140,
+      "id": 401
+    },
+    {
+      "text": "Here, seen only by his eyes, the scarlet letter need not burn into the bosom of the fallen woman!",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 97,
+      "id": 402
+    },
+    {
+      "text": "Alice thought she might as well wait, as she had nothing else to do, and perhaps after all it might tell her something worth hearing.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 133,
+      "id": 403
+    },
+    {
+      "text": "I know he would be hurt by my failing in such a mark of respect to him on the present occasion.",
+      "source": "Jane Austen, Emma",
+      "length": 95,
+      "id": 404
+    },
+    {
+      "text": "This is the way in which the study of the one has a power of drawing and converting the mind to the contemplation of true being.",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 128,
+      "id": 405
+    },
+    {
+      "text": "Ye constrain all things to flow towards you and into you, so that they shall flow back again out of your fountain as the gifts of your love.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 140,
+      "id": 406
+    },
+    {
+      "text": "While they despise your breath, and would stop it for ever and ever, in you or in a hundred like you rather than in one of their own horses or dogs, they only know what your breath tells them.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 192,
+      "id": 407
+    },
+    {
+      "text": "Dorothea's tone and manner were not more energetic than they had been when she was at the head of her uncle's table nearly three years before, and her experience since had given her more right to express a decided opinion.",
+      "source": "George Eliot, Middlemarch",
+      "length": 222,
+      "id": 408
+    },
+    {
+      "text": "She was a woman who could not be taught, it is said, though she had a crude natural force which carried with people whose feelings were accessible and whose taste was not squeamish.",
+      "source": "Willa Cather, My Antonia",
+      "length": 181,
+      "id": 409
+    },
+    {
+      "text": "She could not believe that one of those dead was her own! with visage uplifted to the gray sky in an agony of supplication.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 123,
+      "id": 410
+    },
+    {
+      "text": "Holmes rose and sat down at the table with his pen in his hand and a bundle of paper before him.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 96,
+      "id": 411
+    },
+    {
+      "text": "He had been a celebrated ascetic, rigid in fasting and silence, and his tomb was pointed out to all visitors on their arrival with peculiar respect and mysterious hints of great hopes connected with it.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 202,
+      "id": 412
+    },
+    {
+      "text": "It is always painful to part from people whom one has known for a very brief space of time.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 91,
+      "id": 413
+    },
+    {
+      "text": "I start, we'll say, at the bottom, down in the corner over there where it has not been touched, and I determine for the thousandth time that I will follow that pointless pattern to some sort of a conclusion.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 207,
+      "id": 414
+    },
+    {
+      "text": "I make this explanation for the reason that without it many readers would suppose that all these characters were trying to talk alike and not succeeding.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 153,
+      "id": 415
+    },
+    {
+      "text": "Look at a plant in the midst of its range, why does it not double or quadruple its numbers?",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 91,
+      "id": 416
+    },
+    {
+      "text": "For the time had come when they could talk together not only as father and daughter, but as man and woman, able and glad to serve each other with mutual sympathy as well as mutual love.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 185,
+      "id": 417
+    },
+    {
+      "text": "I felt as perhaps a bird may feel in the clear air, knowing the hawk wings above and will swoop.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 96,
+      "id": 418
+    },
+    {
+      "text": "I think it would hardly serve her to establish her parentage for the information of her husband, and to drag her back to disgrace, after an escape of twenty years, pretty secure to last for life.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 195,
+      "id": 419
+    },
+    {
+      "text": "Her bulky figure in a shawl and skirt might have been comic were it not for the intensity of feeling upon her face.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 115,
+      "id": 420
+    },
+    {
+      "text": "With almost a morbid dread of being thought a gushing girl, this guileless woman too well concealed from the world under a manner of carelessness the warm depths of her strong emotions.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 185,
+      "id": 421
+    },
+    {
+      "text": "If they will have my office of clerk to dispose of to another, they shall take it from me.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 90,
+      "id": 422
+    },
+    {
+      "text": "Every man's words who speaks from that life must sound vain to those who do not dwell in the same thought on their own part.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 124,
+      "id": 423
+    },
+    {
+      "text": "One of them tried it with the tip of his tongue, the other did no more than bring it to his nose.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 97,
+      "id": 424
+    },
+    {
+      "text": "Segouin, perhaps, would not think it a great sum but Jimmy who, in spite of temporary errors, was at heart the inheritor of solid instincts knew well with what difficulty it had been got together.",
+      "source": "James Joyce, Dubliners",
+      "length": 196,
+      "id": 425
+    },
+    {
+      "text": "With that, he strove to drag me to a stick that was lying just out of the stable door.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 86,
+      "id": 426
+    },
+    {
+      "text": "They saw him go in with his key, and then they took up a position opposite and watched the house.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 97,
+      "id": 427
+    },
+    {
+      "text": "It may be that he lays up no treasures in this world which will cool his summer drink in the next.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 98,
+      "id": 428
+    },
+    {
+      "text": "He came to the university with the design of making himself complete master of the oriental languages, and thus he should open a field for the plan of life he had marked out for himself.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 186,
+      "id": 429
+    },
+    {
+      "text": "He deferred his departure a whole week, and during that time he made me feel what severe punishment a good yet stern, a conscientious yet implacable man can inflict on one who has offended him.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 193,
+      "id": 430
+    },
+    {
+      "text": "This monster has done much harm already, in the narrow scope where he find himself, and in the short time when as yet he was only as a body groping his so small measure in darkness and not knowing.",
+      "source": "Bram Stoker, Dracula",
+      "length": 197,
+      "id": 431
+    },
+    {
+      "text": "They were cheered by the joy of the servants on their arrival, and each for the sake of the others resolved to appear happy.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 124,
+      "id": 432
+    },
+    {
+      "text": "I found a little crowd of perhaps twenty people surrounding the huge hole in which the cylinder lay.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 100,
+      "id": 433
+    },
+    {
+      "text": "In the first place, he must make such an agreement for tithes as may be beneficial to himself and not offensive to his patron.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 126,
+      "id": 434
+    },
+    {
+      "text": "He raises sedition in the city, who by irrational actions withdraws his own soul from that one and common soul of all rational creatures.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 137,
+      "id": 435
+    },
+    {
+      "text": "Perhaps he was just simply a fine fellow who stuck to his work for its own sake.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 80,
+      "id": 436
+    },
+    {
+      "text": "From below came the fatal roaring where the wild current went wilder and was rent in shreds and spray by the rocks which thrust through like the teeth of an enormous comb.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 171,
+      "id": 437
+    },
+    {
+      "text": "You must let her have a maid to keep things tidy about her, and you must treat her kindly.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 90,
+      "id": 438
+    },
+    {
+      "text": "Scroll-wise coiled forwards beneath the body, and then rapidly sprung backwards, it is this which gives that singular darting, leaping motion to the monster when furiously swimming.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 181,
+      "id": 439
+    },
+    {
+      "text": "In the porch she found a crowd of little girls, all more or less gaily attired in whites and blues and pinks, and all staring with curious eyes at this stranger in their midst, with her extraordinary head adornment.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 215,
+      "id": 440
+    },
+    {
+      "text": "I have got authority from the retiring manager to undertake the necessary changes in the staff and in the rearrangement of the work; and I must make use of the Christmas week for that, so as to have everything in order for the new year.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 236,
+      "id": 441
+    },
+    {
+      "text": "To proclaim it in the heat and noise of a crowded ball-room was to rob it of the fine bloom of privacy which should belong to things nearest the heart.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 151,
+      "id": 442
+    },
+    {
+      "text": "This was a rule indeed which only added to the satiric effect of my being plied with the supposition that he might at any moment be among us.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 141,
+      "id": 443
+    },
+    {
+      "text": "The boys had been too absorbed to notice the hush that had stolen upon the school awhile before when the master came tiptoeing down the room and stood over them.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 161,
+      "id": 444
+    },
+    {
+      "text": "He was like one of those gracious figures in a pageant or a play, whose joys seem to be remote from one, but whose sorrows stir one's sense of beauty, and whose wounds are like red roses.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 187,
+      "id": 445
+    },
+    {
+      "text": "He had an alarming way now when he was drunk of drawing his cutlass and laying it bare before him on the table.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 111,
+      "id": 446
+    },
+    {
+      "text": "Mowgli went on with his work, but it was nearly twilight before he and the wolves had drawn the great gay skin clear of the body.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 129,
+      "id": 447
+    },
+    {
+      "text": "This envelope had the air of an official record of some period long past, when clerks engrossed their stiff and formal chirography on more substantial materials than at present.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 177,
+      "id": 448
+    },
+    {
+      "text": "Either the well was very deep, or she fell very slowly, for she had plenty of time as she went down to look about her and to wonder what was going to happen next.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 162,
+      "id": 449
+    },
+    {
+      "text": "We cannot give any body the disagreeable hints that we may have been very full of the hour before.",
+      "source": "Jane Austen, Emma",
+      "length": 98,
+      "id": 450
+    },
+    {
+      "text": "Is not his case utterly miserable? and does not the actual tyrant lead a worse life than he whose life you determined to be the worst?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 134,
+      "id": 451
+    },
+    {
+      "text": "Canst thou give unto thyself thy bad and thy good, and set up thy will as a law over thee?",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 90,
+      "id": 452
+    },
+    {
+      "text": "Carton's negligent recklessness of manner came powerfully in aid of his quickness and skill, in such a business as he had in his secret mind, and with such a man as he had to do with.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 183,
+      "id": 453
+    },
+    {
+      "text": "I don't see why you shouldn't like me to know that you wished to do me a service, my dear fellow.",
+      "source": "George Eliot, Middlemarch",
+      "length": 97,
+      "id": 454
+    },
+    {
+      "text": "It's no wonder their poor papa can't get rich, he has to buy so much sugar for us to preserve with.",
+      "source": "Willa Cather, My Antonia",
+      "length": 99,
+      "id": 455
+    },
+    {
+      "text": "She sat herself upon a revolving stool before a counter that was comparatively deserted, trying to gather strength and courage to charge through an eager multitude that was besieging breastworks of shirting and figured lawn.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 224,
+      "id": 456
+    },
+    {
+      "text": "Now it was clear to me that our lady of to-day had nothing in the house more precious to her than what we are in quest of.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 122,
+      "id": 457
+    },
+    {
+      "text": "Your boy might have been bitten by a mad dog and he would become mad and bite any one near him.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 95,
+      "id": 458
+    },
+    {
+      "text": "It would hardly have been a really serious engagement if it hadn't been broken off at least once.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 97,
+      "id": 459
+    },
+    {
+      "text": "Then in the very bright spots she keeps still, and in the very shady spots she just takes hold of the bars and shakes them hard.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 128,
+      "id": 460
+    },
+    {
+      "text": "He hopped around the cabin considerable, first on one leg and then on the other, holding first one shin and then the other one, and at last he let out with his left foot all of a sudden and fetched the tub a rattling kick.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 222,
+      "id": 461
+    },
+    {
+      "text": "Still less do we know of the mutual relations of the innumerable inhabitants of the world during the many past geological epochs in its history.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 144,
+      "id": 462
+    },
+    {
+      "text": "With the delightful enthusiasm of youth, they took the solitary boy into their midst and made much of him, and he found something very charming in the innocent companionship of these simple-hearted girls.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 204,
+      "id": 463
+    },
+    {
+      "text": "I was to discover the atrocious folly of this proceeding, but it came to my mind as an ingenious move for covering our retreat.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 127,
+      "id": 464
+    },
+    {
+      "text": "I think it will be conceded by my most disputatious reader, that she could hardly have directed an unfortunate boy to do anything in the wide world more difficult to be done under the circumstances.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 198,
+      "id": 465
+    },
+    {
+      "text": "They have always been together, and according to his account he has been a very lonely man with only her as a companion, so that the thought of losing her was really terrible to him.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 182,
+      "id": 466
+    },
+    {
+      "text": "Then the veil had to be tied at its lower edge round his collar and the gloves put on him.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 90,
+      "id": 467
+    },
+    {
+      "text": "An accidental occurrence had instructed me how much sweeping might be done in a little time.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 92,
+      "id": 468
+    },
+    {
+      "text": "Who does not sometimes envy the good and brave who are no more to suffer from the tumults of the natural world, and await with curious complacency the speedy term of his own conversation with finite nature?",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 206,
+      "id": 469
+    },
+    {
+      "text": "All that can be done is for me to give you plenty of money in gold from this window.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 84,
+      "id": 470
+    },
+    {
+      "text": "She knew he had a good screw for one thing and she suspected he had a bit of stuff put by.",
+      "source": "James Joyce, Dubliners",
+      "length": 90,
+      "id": 471
+    },
+    {
+      "text": "He was ambitious enough to be contented with nothing short of the highest rank of overseers, and persevering enough to reach the height of his ambition.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 152,
+      "id": 472
+    },
+    {
+      "text": "He had been getting on so well that he had grown quite cheeky over the business, and was walking up and down the punt, working his pole with a careless grace that was quite fascinating to watch.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 194,
+      "id": 473
+    },
+    {
+      "text": "Most men appear never to have considered what a house is, and are actually though needlessly poor all their lives because they think that they must have such a one as their neighbors have.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 188,
+      "id": 474
+    },
+    {
+      "text": "It was situated against the back of the cottage and surrounded on the sides which were exposed by a pig sty and a clear pool of water.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 134,
+      "id": 475
+    },
+    {
+      "text": "At the bottom of its one street there was a little shop with some cakes of bread in the window.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 95,
+      "id": 476
+    },
+    {
+      "text": "He is so abnormally clever that if he went off his head he would carry out his intent with regard to some fixed idea in a wonderful way.",
+      "source": "Bram Stoker, Dracula",
+      "length": 136,
+      "id": 477
+    },
+    {
+      "text": "She met him with a hand that would be taken, and a voice that expressed the affection of a sister.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 98,
+      "id": 478
+    },
+    {
+      "text": "This intense heat they project in a parallel beam against any object they choose, by means of a polished parabolic mirror of unknown composition, much as the parabolic mirror of a lighthouse projects a beam of light.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 216,
+      "id": 479
+    },
+    {
+      "text": "The former was divided between admiration of the brilliancy which exercise had given to her complexion and doubt as to the occasion's justifying her coming so far alone.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 169,
+      "id": 480
+    },
+    {
+      "text": "Receive temporal blessings without ostentation, when they are sent and thou shalt be able to part with them with all readiness and facility when they are taken from thee again.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 176,
+      "id": 481
+    },
+    {
+      "text": "Just at that time the manager was the only man supposed to have any right to candles.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 85,
+      "id": 482
+    },
+    {
+      "text": "To them, this was the one feature of the day, though it was good to loaf around, after the fish was eaten, for an hour or so with the other dogs, of which there were fivescore and odd.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 184,
+      "id": 483
+    },
+    {
+      "text": "He was about to enlarge further, but the two youngsters broke into a noisy fit of merriment: my giddy miss being delighted to discover that she might turn his strange talk to matter of amusement.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 195,
+      "id": 484
+    },
+    {
+      "text": "Now, to any one not fully acquainted with the ways of the leviathans, it might seem an absurdly hopeless task thus to seek out one solitary creature in the unhooped oceans of this planet.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 187,
+      "id": 485
+    },
+    {
+      "text": "She says most of the time she doesn't know what to do with the people so she kills them off to get rid of them.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 111,
+      "id": 486
+    },
+    {
+      "text": "Just think how a guilty man like that has to lie and play the hypocrite with every one, how he has to wear a mask in the presence of those near and dear to him, even before his own wife and children.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 199,
+      "id": 487
+    },
+    {
+      "text": "Convinced that no power could now turn him from his purpose he had found strength to let events shape themselves as they would.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 127,
+      "id": 488
+    },
+    {
+      "text": "The only thing indeed that in this early outlook might have made me shrink again was the clear circumstance of her being so glad to see me.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 139,
+      "id": 489
+    },
+    {
+      "text": "We will leave them to smoke and chatter and brag, since we have no further use for them at present.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 99,
+      "id": 490
+    },
+    {
+      "text": "An exclamation of horror broke from the painter's lips as he saw in the dim light the hideous face on the canvas grinning at him.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 129,
+      "id": 491
+    },
+    {
+      "text": "It would have been a poor end of my adventures to get shot down by my own party in mistake.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 91,
+      "id": 492
+    },
+    {
+      "text": "It was not for fun that he had learned while he was with the wolves to imitate the challenge of bucks in the jungle and the grunt of the little wild pig.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 153,
+      "id": 493
+    },
+    {
+      "text": "There was a remarkable intelligence in his features, as of a person who had so cultivated his mental part that it could not fail to mould the physical to itself, and become manifest by unmistakable tokens.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 205,
+      "id": 494
+    },
+    {
+      "text": "Alice did not at all like the tone of this remark, and thought it would be as well to introduce some other subject of conversation.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 131,
+      "id": 495
+    },
+    {
+      "text": "She did not mean to have her own affections entangled again, and it would be incumbent on her to avoid any encouragement of his.",
+      "source": "Jane Austen, Emma",
+      "length": 128,
+      "id": 496
+    },
+    {
+      "text": "Then let me ask you to consider further whether the world will ever be induced to believe in the existence of absolute beauty rather than of the many beautiful, or of the absolute in each kind rather than of the many in each kind?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 230,
+      "id": 497
+    },
+    {
+      "text": "Regarding good and evil as purely relative values, it stands to reason that what may be bad or evil in a given man, relative to a certain environment, may actually be good if not highly virtuous in him relative to a certain other environment.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 242,
+      "id": 498
+    },
+    {
+      "text": "As to the strength of his case, he had not a doubt about it, but clearly saw his way to the verdict.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 100,
+      "id": 499
+    },
+    {
+      "text": "You would only have made a better or worse portrait with a background which every connoisseur would give a different reason for or against.",
+      "source": "George Eliot, Middlemarch",
+      "length": 139,
+      "id": 500
+    },
+    {
+      "text": "Though we had come from such different parts of the world, in both of us there was some dusky superstition that those shining groups have their influence upon what is and what is not to be.",
+      "source": "Willa Cather, My Antonia",
+      "length": 189,
+      "id": 501
+    },
+    {
+      "text": "There was no one who could make such excellent coffee or fry a chicken so golden brown as she.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 94,
+      "id": 502
+    },
+    {
+      "text": "I could see at a glance that she was sick with fear, and the sight sent a chill to my own heart.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 96,
+      "id": 503
+    },
+    {
+      "text": "From hour to hour extending his conquest of nature infinitely by his will and his science, man will feel such lofty joy from hour to hour in doing it that it will make up for all his old dreams of the joys of heaven.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 216,
+      "id": 504
+    },
+    {
+      "text": "I'll bet you anything you like that half an hour after they have met, they will be calling each other sister.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 109,
+      "id": 505
+    },
+    {
+      "text": "He has no patience with faith, an intense horror of superstition, and he scoffs openly at any talk of things not to be felt and seen and put down in figures.",
+      "source": "Charlotte Perkins Gilman, The Yellow Wallpaper",
+      "length": 157,
+      "id": 506
+    },
+    {
+      "text": "Jim he spoke to the duke, and said he hoped it wouldn't take but a few hours, because it got mighty heavy and tiresome to him when he had to lay all day in the wigwam tied with the rope.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 186,
+      "id": 507
+    },
+    {
+      "text": "Numerous instances could be given of characters derived from parts which must be considered of very trifling physiological importance, but which are universally admitted as highly serviceable in the definition of whole groups.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 226,
+      "id": 508
+    },
+    {
+      "text": "His rusty coat had a social air, and the baggy pockets plainly proved that little hands often went in empty and came out full.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 126,
+      "id": 509
+    },
+    {
+      "text": "Our agriculture and horticulture destroy a weed just here and there and cultivate perhaps a score or so of wholesome plants, leaving the greater number to fight out a balance as they can.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 187,
+      "id": 510
+    },
+    {
+      "text": "Herbert bent forward to look at me more nearly, as if my reply had been rather more hurried or more eager than he could quite account for.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 138,
+      "id": 511
+    },
+    {
+      "text": "We cannot doubt from what we know of him that he would have found some way out of the difficulty.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 97,
+      "id": 512
+    },
+    {
+      "text": "Her statement of the fact in such quiet and simple words came with more force than a tragic declamation, and had somewhat the effect of setting the distorted images in each mind present into proper focus.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 204,
+      "id": 513
+    },
+    {
+      "text": "The voyage was otherwise not a pleasant one, as we had a great deal of bad weather.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 83,
+      "id": 514
+    },
+    {
+      "text": "In a portrait he must inscribe the character and not the features, and must esteem the man who sits to him as himself only an imperfect picture or likeness of the aspiring original within.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 188,
+      "id": 515
+    },
+    {
+      "text": "Ill betide the jade that in the flower of her youth would not sooner become a nun than a duenna!",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 96,
+      "id": 516
+    },
+    {
+      "text": "They're all right so long as he has money in his pocket to keep him out from his wife and family.",
+      "source": "James Joyce, Dubliners",
+      "length": 97,
+      "id": 517
+    },
+    {
+      "text": "I found many, who had not been seven years out of their chains, living in finer houses, and evidently enjoying more of the comforts of life, than the average of slaveholders in Maryland.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 186,
+      "id": 518
+    },
+    {
+      "text": "His anxiety to meet you, however, is proof against all your coolness, and the energetic manner in which he dodges up and down the pond so as to be on the spot to greet you when you land is really quite flattering.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 213,
+      "id": 519
+    },
+    {
+      "text": "There is some of the same fitness in a man's building his own house that there is in a bird's building its own nest.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 116,
+      "id": 520
+    },
+    {
+      "text": "I spoke of my desire of finding a friend, of my thirst for a more intimate sympathy with a fellow mind than had ever fallen to my lot, and expressed my conviction that a man could boast of little happiness who did not enjoy this blessing.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 238,
+      "id": 521
+    },
+    {
+      "text": "I saw by her look she wished no longer to talk to me, but rather to converse with her own thoughts.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 99,
+      "id": 522
+    },
+    {
+      "text": "The attitude of the two had a terrible resemblance to a child forcing a kitten's nose into a saucer of milk to compel it to drink.",
+      "source": "Bram Stoker, Dracula",
+      "length": 130,
+      "id": 523
+    },
+    {
+      "text": "I won't disturb her any longer, for she had better have her cry out at once and have done with.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 95,
+      "id": 524
+    },
+    {
+      "text": "His voice was hoarse and very loud so that my brother could hear him long after he was lost to sight in the dust.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 113,
+      "id": 525
+    },
+    {
+      "text": "The happiness which this reply produced was such as he had probably never felt before; and he expressed himself on the occasion as sensibly and as warmly as a man violently in love can be supposed to do.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 203,
+      "id": 526
+    },
+    {
+      "text": "Among them alone of all other things that are of one kind, there is not to be found a general disposition to flow together.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 123,
+      "id": 527
+    },
+    {
+      "text": "I had to make an effort to free my eyes from his gaze and attend to the steering.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 81,
+      "id": 528
+    },
+    {
+      "text": "Buck was glad to be gone, and though the work was hard he found he did not particularly despise it.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 99,
+      "id": 529
+    },
+    {
+      "text": "As he spoke he took the servant to the door, and then repeated his demand to know her reasons for such an assertion.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 116,
+      "id": 530
+    },
+    {
+      "text": "It is time to set the world right in this matter, by proving such pictures of the whale all wrong.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 98,
+      "id": 531
+    },
+    {
+      "text": "The schoolhouse was set back from the road and behind it was a dusky fir wood and a brook where all the children put their bottles of milk in the morning to keep cool and sweet until dinner hour.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 195,
+      "id": 532
+    },
+    {
+      "text": "I know quite well, Torvald, that most people would think you right, and that views of that kind are to be found in books; but I can no longer content myself with what most people say, or with what is found in books.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 215,
+      "id": 533
+    },
+    {
+      "text": "The quiet, almost passive young woman struck him as exactly the kind of person to whom things were bound to happen, no matter how much she shrank from them and went out of her way to avoid them.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 194,
+      "id": 534
+    },
+    {
+      "text": "There were plenty of people to help, but of course the young lady who should go down as governess would be in supreme authority.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 128,
+      "id": 535
+    },
+    {
+      "text": "There was a slight noise behind her and she turned just in time to seize a small boy by the slack of his roundabout and arrest his flight.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 138,
+      "id": 536
+    },
+    {
+      "text": "The young man was leaning against the mantelshelf, watching him with that strange expression that one sees on the faces of those who are absorbed in a play when some great artist is acting.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 189,
+      "id": 537
+    },
+    {
+      "text": "All the time he lived with us the captain made no change whatever in his dress but to buy some stockings from a hawker.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 119,
+      "id": 538
+    },
+    {
+      "text": "He may have that stick still, but when he comes in to bathe in the morning he will not have a stick.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 100,
+      "id": 539
+    },
+    {
+      "text": "His eloquence and religious fervor had already given the earnest of high eminence in his profession.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 100,
+      "id": 540
+    },
+    {
+      "text": "The executioner's argument was, that you couldn't cut off a head unless there was a body to cut it off from: that he had never had to do such a thing before, and he wasn't going to begin at his time of life.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 207,
+      "id": 541
+    },
+    {
+      "text": "It is very plain that he considers the good fortune of the engagement as all on my side, but that he is not without hope of my growing, in time, as worthy of your affection, as you think me already.",
+      "source": "Jane Austen, Emma",
+      "length": 198,
+      "id": 542
+    },
+    {
+      "text": "Is not such an one likely to seat the concupiscent and covetous element on the vacant throne and to suffer it to play the great king within him, girt with tiara and chain and scimitar?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 184,
+      "id": 543
+    },
+    {
+      "text": "This is doubtless a reference to a fact which is too often noticeable in the case of so many of the world's giants in art, science, or religion.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 144,
+      "id": 544
+    },
+    {
+      "text": "I hope you may be able to think so well of me, as to urge no influence against me.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 82,
+      "id": 545
+    },
+    {
+      "text": "Between him and her indeed there was that total missing of each other's mental track, which is too evidently possible even between persons who are continually thinking of each other.",
+      "source": "George Eliot, Middlemarch",
+      "length": 182,
+      "id": 546
+    },
+    {
+      "text": "He always bore down on the handles of the cultivator and drove the blades so deep into the earth that the horses were soon exhausted.",
+      "source": "Willa Cather, My Antonia",
+      "length": 133,
+      "id": 547
+    },
+    {
+      "text": "She grew fond of her husband, realizing with some unaccountable satisfaction that no trace of passion or excessive and fictitious warmth colored her affection, thereby threatening its dissolution.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 196,
+      "id": 548
+    },
+    {
+      "text": "She sits in her own little office, and the ladies who are seeking employment wait in an anteroom, and are then shown in one by one, when she consults her ledgers and sees whether she has anything which would suit them.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 218,
+      "id": 549
+    },
+    {
+      "text": "A father is jealous of his son's relations with a woman of loose behavior and intrigues with the creature to get his son into prison!",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 133,
+      "id": 550
+    },
+    {
+      "text": "I have always been of opinion that a man who desires to get married should know either everything or nothing.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 109,
+      "id": 551
+    },
+    {
+      "text": "There was a woman about forty year old in there knitting by a candle that was on a pine table.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 94,
+      "id": 552
+    },
+    {
+      "text": "No one supposes that all the individuals of the same species are cast in the very same mould.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 93,
+      "id": 553
+    },
+    {
+      "text": "The name caught her eye and the blurred look of the lines made her sure that tears had fallen on it.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 100,
+      "id": 554
+    },
+    {
+      "text": "I got up, and went down into the great hall, and so out upon the flagstones in front of the palace.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 99,
+      "id": 555
+    },
+    {
+      "text": "I would not have been the cause of that look of hers for all my expectations in a heap.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 87,
+      "id": 556
+    },
+    {
+      "text": "He is much attached to her, no doubt, and would lead a lonely life without her, but it would seem the height of selfishness if he were to stand in the way of her making so brilliant a marriage.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 193,
+      "id": 557
+    },
+    {
+      "text": "The old man who was his indoor factotum came at the same moment to the foot of the stairs.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 90,
+      "id": 558
+    },
+    {
+      "text": "We were to have six hundred pounds a year between us, if we could make that sum out of the profits of the office.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 113,
+      "id": 559
+    },
+    {
+      "text": "By surrounding ourselves with the original circumstances we invent anew the orders and the ornaments of architecture, as we see how each people merely decorated its primitive abodes.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 182,
+      "id": 560
+    },
+    {
+      "text": "Upon the catafalque was seen the dead body of a damsel so lovely that by her beauty she made death itself look beautiful.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 121,
+      "id": 561
+    },
+    {
+      "text": "Understand once for all that you get a half an hour for your lunch and not an hour and a half.",
+      "source": "James Joyce, Dubliners",
+      "length": 94,
+      "id": 562
+    },
+    {
+      "text": "He was just the man for such a place, and it was just the place for such a man.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 79,
+      "id": 563
+    },
+    {
+      "text": "Medical science was in a far less advanced state than now, and they used to put it down to laziness.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 100,
+      "id": 564
+    },
+    {
+      "text": "I am glad to know that it takes a gang of men for every five miles to keep the sleepers down and level in their beds as it is, for this is a sign that they may sometime get up again.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 182,
+      "id": 565
+    },
+    {
+      "text": "Suddenly the broad disk of the moon arose and shone full upon his ghastly and distorted shape as he fled with more than mortal speed.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 133,
+      "id": 566
+    },
+    {
+      "text": "How much of the fall of the avalanche is in their anger? of the breaking up of the frozen sea in their displeasure?",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 115,
+      "id": 567
+    },
+    {
+      "text": "The poor fellow was laid to rest quite near our seat so that we stood on it when the time came and saw everything.",
+      "source": "Bram Stoker, Dracula",
+      "length": 114,
+      "id": 568
+    },
+    {
+      "text": "Every thing that the most zealous affection, the most solicitous care could do to render her comfortable, was the office of each watchful companion, and each found their reward in her bodily ease, and her calmness of spirits.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 225,
+      "id": 569
+    },
+    {
+      "text": "In another moment he was cut down, and a great body of water and steam shot high in the air.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 92,
+      "id": 570
+    },
+    {
+      "text": "He may live in my memory as the most amiable man of my acquaintance but that is all.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 84,
+      "id": 571
+    },
+    {
+      "text": "Is any man so foolish as to fear change, to which all things that once were not owe their being?",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 96,
+      "id": 572
+    },
+    {
+      "text": "In the next breath he advised me to keep enough steam on the boiler to blow the whistle in case of any trouble.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 111,
+      "id": 573
+    },
+    {
+      "text": "For a day at a time he would lie in the underbrush where he could watch the partridges drumming and strutting up and down.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 122,
+      "id": 574
+    },
+    {
+      "text": "On the anniversary of her birth we never manifested any signs of rejoicing, because it was also the anniversary of my late mistress's death.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 140,
+      "id": 575
+    },
+    {
+      "text": "This is the reason why the decks never look so white as just after what they call an affair of oil.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 99,
+      "id": 576
+    },
+    {
+      "text": "She says it would only tire and confuse us and we are to go out walking and not think about the exams at all and go to bed early.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 129,
+      "id": 577
+    },
+    {
+      "text": "If my husband does get to know of it, of course he will at once pay you what is still owing, and we shall have nothing more to do with you.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 139,
+      "id": 578
+    },
+    {
+      "text": "Behind her was a faint light, such as might have been carried down the stairs to show her the way.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 98,
+      "id": 579
+    },
+    {
+      "text": "It seems to me indeed, in retrospect, that by the time the morrow's sun was high I had restlessly read into the facts before us almost all the meaning they were to receive from subsequent and more cruel occurrences.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 215,
+      "id": 580
+    },
+    {
+      "text": "The doctor put the lantern at the head of the grave and came and sat down with his back against one of the elm trees.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 117,
+      "id": 581
+    },
+    {
+      "text": "He becomes an echo of some one else's music, an actor of a part that has not been written for him.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 98,
+      "id": 582
+    },
+    {
+      "text": "Indeed, it was remarkable how well he bore these slights and with what unwearying politeness he kept on trying to ingratiate himself with all.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 142,
+      "id": 583
+    },
+    {
+      "text": "He whimpers and cheeps all the night, trying to make up his mind to run into the middle of the room.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 100,
+      "id": 584
+    },
+    {
+      "text": "Alas! to judge from the gloom and terror in the depths of the poor minister's eyes, the battle was a sore one and the victory anything but secure.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 146,
+      "id": 585
+    },
+    {
+      "text": "She was close behind it when she turned the corner, but the Rabbit was no longer to be seen: she found herself in a long, low hall, which was lit up by a row of lamps hanging from the roof.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 189,
+      "id": 586
+    },
+    {
+      "text": "She could now look forward to giving him that full and perfect confidence which her disposition was most ready to welcome as a duty.",
+      "source": "Jane Austen, Emma",
+      "length": 132,
+      "id": 587
+    },
+    {
+      "text": "Do you think that the possession of all other things is of any value if we do not possess the good? or the knowledge of all other things if we have no knowledge of beauty and goodness?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 184,
+      "id": 588
+    },
+    {
+      "text": "Those who, like some political economists, talk in a business-like way about the terrific waste of human life and energy, deliberately overlook the fact that the waste most to be deplored usually occurs among higher individuals.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 228,
+      "id": 589
+    },
+    {
+      "text": "A faint murmur arose about the house from the few people who were left there, and there was a saddling of a horse and riding away.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 130,
+      "id": 590
+    },
+    {
+      "text": "His marriage would be a mere piece of bitter irony if they could not go on loving each other.",
+      "source": "George Eliot, Middlemarch",
+      "length": 93,
+      "id": 591
+    },
+    {
+      "text": "When we saw a light burning in his office late at night, we knew that a game of poker was going on.",
+      "source": "Willa Cather, My Antonia",
+      "length": 99,
+      "id": 592
+    },
+    {
+      "text": "His mission was to administer the consolations of religion to any of the prostrate figures in whom there might yet linger a spark of life.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 138,
+      "id": 593
+    },
+    {
+      "text": "I had never seen my friend's face so grim or his brow so dark as it was when we turned from the scene of this investigation.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 124,
+      "id": 594
+    },
+    {
+      "text": "It is impossible to picture to oneself the shame and moral degradation to which the jealous man can descend without a qualm of conscience.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 138,
+      "id": 595
+    },
+    {
+      "text": "I would strongly advise you, Mr. Worthing, to try and acquire some relations as soon as possible, and to make a definite effort to produce at any rate one parent, of either sex, before the season is quite over.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 210,
+      "id": 596
+    },
+    {
+      "text": "Then we whirled in with the pick and shovel, and in about two hours and a half the job was done.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 96,
+      "id": 597
+    },
+    {
+      "text": "It is a rule of high generality that the inhabitants of each area are related to the inhabitants of the nearest source whence immigrants might have been derived.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 161,
+      "id": 598
+    },
+    {
+      "text": "The old gentleman knew that perfectly well, and particularly desired to prevent it, for the mood in which he found his grandson assured him that it would not be wise to leave him to his own devices.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 198,
+      "id": 599
+    },
+    {
+      "text": "I went out through the portal into the sunlit world again as soon as my hunger was satisfied.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 93,
+      "id": 600
+    },
+    {
+      "text": "It was easy to make sure that as yet he knew me no more than if he had never seen me in his life.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 97,
+      "id": 601
+    },
+    {
+      "text": "From amid a tuft of cotton grass which bore it up out of the slime some dark thing was projecting.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 98,
+      "id": 602
+    },
+    {
+      "text": "Indeed the long time and the uncertainty of the whole thing give a sort of absurdity to the scheme.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 99,
+      "id": 603
+    },
+    {
+      "text": "It will moreover present a table of the internal circumstances of your country, which will very much tend to invite to it settlers of virtuous and manly minds.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 159,
+      "id": 604
+    },
+    {
+      "text": "The hard soil and four months of snow make the inhabitant of the northern temperate zone wiser and abler than his fellow who enjoys the fixed smile of the tropics.",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 163,
+      "id": 605
+    },
+    {
+      "text": "Seeing this the general swore he would not leave one of those he found on board the vessel alive, but as he bore down furiously upon her she slipped away from him underneath the oars.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 183,
+      "id": 606
+    },
+    {
+      "text": "A man of seventy had bitten off a piece of his tongue during an epileptic fit and the tongue had filled in again so that no one could see a trace of the bite.",
+      "source": "James Joyce, Dubliners",
+      "length": 158,
+      "id": 607
+    },
+    {
+      "text": "On our arrival at the head of the bay, a distance of seventy or eighty miles from where we lived, it was our purpose to turn our canoe adrift, and follow the guidance of the north star till we got beyond the limits of Maryland.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 227,
+      "id": 608
+    },
+    {
+      "text": "Where the thousands upon thousands of bad sailors that swarm in every ship hide themselves when they are on land is a mystery.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 126,
+      "id": 609
+    },
+    {
+      "text": "The best works of art are the expression of man's struggle to free himself from this condition, but the effect of our art is merely to make this low state comfortable and that higher state to be forgotten.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 205,
+      "id": 610
+    },
+    {
+      "text": "I had no compass with me and was so slenderly acquainted with the geography of this part of the world that the sun was of little benefit to me.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 143,
+      "id": 611
+    },
+    {
+      "text": "Have you no present interest in any of the company who occupy the sofas and chairs before you?",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 94,
+      "id": 612
+    },
+    {
+      "text": "One and all we felt that the holy calm that lay like sunshine over the wasted face and form was only an earthly token and symbol of the calm that was to reign for ever.",
+      "source": "Bram Stoker, Dracula",
+      "length": 168,
+      "id": 613
+    },
+    {
+      "text": "The next morning brought a farther trial of it, in a visit from their brother, who came with a most serious aspect to talk over the dreadful affair, and bring them news of his wife.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 181,
+      "id": 614
+    },
+    {
+      "text": "Between sunset and starlight this dexterous machine must have made more than a hundred such bars out of the crude clay, and the mound of bluish dust rose steadily until it topped the side of the pit.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 199,
+      "id": 615
+    },
+    {
+      "text": "I always say that nothing is to be done in education without steady and regular instruction, and nobody but a governess can give it.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 132,
+      "id": 616
+    },
+    {
+      "text": "I say not only in right order by a series of inevitable consequences, but according to justice and as it were by way of equal distribution, according to the true worth of everything.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 182,
+      "id": 617
+    },
+    {
+      "text": "The pilgrims used to turn out in a body and empty every rifle they could lay hands on at him.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 93,
+      "id": 618
+    },
+    {
+      "text": "Three hundredweight more than half a ton he weighed; he had lived a long, strong life, full of fight and struggle, and at the end he faced death at the teeth of a creature whose head did not reach beyond his great knuckled knees.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 229,
+      "id": 619
+    },
+    {
+      "text": "Such an individual seated in his arm-chair, his mug of ale frothing on the round table before him, is to be seen in any circuit of five or six miles among these hills, if you go at the right time after dinner.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 209,
+      "id": 620
+    },
+    {
+      "text": "It had previously come to me that this ivory leg had at sea been fashioned from the polished bone of the sperm whale's jaw.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 123,
+      "id": 621
+    },
+    {
+      "text": "I'll be more than thankful if the man can give me the right kind of glasses to suit my eyes.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 92,
+      "id": 622
+    },
+    {
+      "text": "According to it a woman has no right to spare her old dying father, or to save her husband's life.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 98,
+      "id": 623
+    },
+    {
+      "text": "It was like hearing him read aloud out of his poetry books the beautiful things that could not possibly happen in real life.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 124,
+      "id": 624
+    },
+    {
+      "text": "My sternness was all for his judge, his executioner; yet it made him avert himself again, and that movement made me, with a single bound and an irrepressible cry, spring straight upon him.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 188,
+      "id": 625
+    },
+    {
+      "text": "The widow's servants kept him clean and neat, combed and brushed, and they bedded him nightly in unsympathetic sheets that had not one little spot or stain which he could press to his heart and know for a friend.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 212,
+      "id": 626
+    },
+    {
+      "text": "A feeling of pain crept over him as he thought of the desecration that was in store for the fair face on the canvas.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 116,
+      "id": 627
+    },
+    {
+      "text": "Ever since they had found the skeleton and got upon this train of thought, they had spoken lower and lower, and they had almost got to whispering by now, so that the sound of their talk hardly interrupted the silence of the wood.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 229,
+      "id": 628
+    },
+    {
+      "text": "When he got to the village he told a tale of magic and enchantment and sorcery that made the priest look very grave.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 116,
+      "id": 629
+    },
+    {
+      "text": "All this was accomplished with a subtlety so perfect, that the minister, though he had constantly a dim perception of some evil influence watching over him, could never gain a knowledge of its actual nature.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 207,
+      "id": 630
+    },
+    {
+      "text": "The only things in the kitchen that did not sneeze, were the cook, and a large cat which was sitting on the hearth and grinning from ear to ear.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 144,
+      "id": 631
+    },
+    {
+      "text": "She then broke the lace off short, and dexterously throwing it into a ditch, was presently obliged to entreat them to stop, and acknowledged her inability to put herself to rights so as to be able to walk home in tolerable comfort.",
+      "source": "Jane Austen, Emma",
+      "length": 231,
+      "id": 632
+    },
+    {
+      "text": "May it not be defined as a period of about twenty years in a woman's life, and thirty in a man's?",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 97,
+      "id": 633
+    },
+    {
+      "text": "Bless the cup that is about to overflow, that the water may flow golden out of it, and carry everywhere the reflection of thy bliss!",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 132,
+      "id": 634
+    },
+    {
+      "text": "Good could never come of such evil, a happier end was not in nature to so unhappy a beginning.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 94,
+      "id": 635
+    },
+    {
+      "text": "It was a question whether gratitude which refers to what is done for one's self ought not to give way to indignation at what is done against another.",
+      "source": "George Eliot, Middlemarch",
+      "length": 149,
+      "id": 636
+    },
+    {
+      "text": "Even when he sat opposite me in the kitchen, talking, he would turn his head a little toward the clock or the stove and look at me from the side, but with frankness and good nature.",
+      "source": "Willa Cather, My Antonia",
+      "length": 181,
+      "id": 637
+    },
+    {
+      "text": "The white light of the moon had fallen upon the world like the mystery and the softness of sleep.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 97,
+      "id": 638
+    },
+    {
+      "text": "I left the house a little after eight o'clock this morning in the character of a groom out of work.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 99,
+      "id": 639
+    },
+    {
+      "text": "There was a tradition that both of these had lain in their coffins as though alive, that they had shown no signs of decomposition when they were buried and that there had been a holy light in their faces.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 204,
+      "id": 640
+    },
+    {
+      "text": "How nice of you to like me so much after we have known each other such a comparatively short time.",
+      "source": "Oscar Wilde, The Importance of Being Earnest",
+      "length": 98,
+      "id": 641
+    },
+    {
+      "text": "There was a clock on the middle of the mantelpiece, with a picture of a town painted on the bottom half of the glass front, and a round place in the middle of it for the sun, and you could see the pendulum swinging behind it.",
+      "source": "Mark Twain, Adventures of Huckleberry Finn",
+      "length": 225,
+      "id": 642
+    },
+    {
+      "text": "The store of nutriment laid up within the seeds of many plants seems at first sight to have no sort of relation to other plants.",
+      "source": "Charles Darwin, On the Origin of Species",
+      "length": 128,
+      "id": 643
+    },
+    {
+      "text": "If you could be in my place for a month you'd see things that would astonish you a trifle.",
+      "source": "Louisa May Alcott, Little Women",
+      "length": 90,
+      "id": 644
+    },
+    {
+      "text": "She tried to follow me everywhere, and on my next journey out and about it went to my heart to tire her down, and leave her at last, exhausted and calling after me rather plaintively.",
+      "source": "H. G. Wells, The Time Machine",
+      "length": 183,
+      "id": 645
+    },
+    {
+      "text": "That discreet damsel was attired as usual, except that she was now engaged in substituting for her green kid gloves a pair of white.",
+      "source": "Charles Dickens, Great Expectations",
+      "length": 132,
+      "id": 646
+    },
+    {
+      "text": "If you have not had any report within the last few days it is because up to today there was nothing of importance to relate.",
+      "source": "Arthur Conan Doyle, The Hound of the Baskervilles",
+      "length": 124,
+      "id": 647
+    },
+    {
+      "text": "Had she been put into a low dress she would have run and thrust her head into a bush.",
+      "source": "Thomas Hardy, Far from the Madding Crowd",
+      "length": 85,
+      "id": 648
+    },
+    {
+      "text": "Considering your great age, the caution of your character, and your peculiar style of thinking, it is not likely that any one besides yourself can be sufficiently master of the facts of your life, or the intentions of your mind.",
+      "source": "Benjamin Franklin, The Autobiography of Benjamin Franklin",
+      "length": 228,
+      "id": 649
+    },
+    {
+      "text": "Who set you to cast about what you should say to the select souls, or how to say any thing to such?",
+      "source": "Ralph Waldo Emerson, Essays: First Series",
+      "length": 99,
+      "id": 650
+    },
+    {
+      "text": "Thy false promise and my sure misfortune carry me to a place whence the news of my death will reach thy ears before the words of my complaint.",
+      "source": "Miguel de Cervantes, Don Quixote (trans. John Ormsby)",
+      "length": 142,
+      "id": 651
+    },
+    {
+      "text": "He said that the happiest time of one's life was undoubtedly one's schoolboy days and that he would give anything to be young again.",
+      "source": "James Joyce, Dubliners",
+      "length": 132,
+      "id": 652
+    },
+    {
+      "text": "They suppress the truth rather than take the consequences of telling it, and in so doing prove themselves a part of the human family.",
+      "source": "Frederick Douglass, Narrative of the Life of Frederick Douglass",
+      "length": 133,
+      "id": 653
+    },
+    {
+      "text": "You lay down the mallet and start to go round and tell him what you think about the whole business, and, at the same time, he starts round in the same direction to come and explain his views to you.",
+      "source": "Jerome K. Jerome, Three Men in a Boat",
+      "length": 198,
+      "id": 654
+    },
+    {
+      "text": "They give me a new sense of the variety and capacity of that nature which is our common dwelling.",
+      "source": "Henry David Thoreau, Walden",
+      "length": 97,
+      "id": 655
+    },
+    {
+      "text": "Nothing could be more complete than the alteration that had taken place in my feelings since the night of the appearance of the daemon.",
+      "source": "Mary Shelley, Frankenstein",
+      "length": 135,
+      "id": 656
+    },
+    {
+      "text": "All in that region was fire and commotion; the soup and fish were in the last stage of projection, and the cook hung over her crucibles in a frame of mind and body threatening spontaneous combustion.",
+      "source": "Charlotte Bronte, Jane Eyre",
+      "length": 199,
+      "id": 657
+    },
+    {
+      "text": "There is throughout no statement of past things wherein memory may err, for all the records chosen are exactly contemporary, given from the standpoints and within the range of knowledge of those who made them.",
+      "source": "Bram Stoker, Dracula",
+      "length": 209,
+      "id": 658
+    },
+    {
+      "text": "Lucy made room for her with ready attention, and the two fair rivals were thus seated side by side at the same table, and, with the utmost harmony, engaged in forwarding the same work.",
+      "source": "Jane Austen, Sense and Sensibility",
+      "length": 184,
+      "id": 659
+    },
+    {
+      "text": "A sapper told me it was done by a man in a ditch with a flag on a long pole.",
+      "source": "H. G. Wells, The War of the Worlds",
+      "length": 76,
+      "id": 660
+    },
+    {
+      "text": "Such squeamish youths as cannot bear to be connected with a little absurdity are not worth a regret.",
+      "source": "Jane Austen, Pride and Prejudice",
+      "length": 100,
+      "id": 661
+    },
+    {
+      "text": "It is all one to see these things for a hundred of years together or but for three years.",
+      "source": "Marcus Aurelius, Meditations (trans. Meric Casaubon)",
+      "length": 89,
+      "id": 662
+    },
+    {
+      "text": "Some confounded fact we men have been living contentedly with ever since the day of creation would start up and knock the whole thing over.",
+      "source": "Joseph Conrad, Heart of Darkness",
+      "length": 139,
+      "id": 663
+    },
+    {
+      "text": "For to play a system requires money, while the wages of a gardener's helper do not lap over the needs of a wife and numerous progeny.",
+      "source": "Jack London, The Call of the Wild",
+      "length": 133,
+      "id": 664
+    },
+    {
+      "text": "I might just as well talk of loving the miller who comes once a year to buy our corn.",
+      "source": "Emily Bronte, Wuthering Heights",
+      "length": 85,
+      "id": 665
+    },
+    {
+      "text": "Slowly it floats more and more away, the water round it torn and splashed by the insatiate sharks, and the air above vexed with rapacious flights of screaming fowls, whose beaks are like so many insulting poniards in the whale.",
+      "source": "Herman Melville, Moby-Dick",
+      "length": 227,
+      "id": 666
+    },
+    {
+      "text": "You've got to keep your wits about you in cooking and not stop in the middle of things to let your thoughts rove all over creation.",
+      "source": "L. M. Montgomery, Anne of Green Gables",
+      "length": 131,
+      "id": 667
+    },
+    {
+      "text": "Your squirrel would run about and do all her tricks if you would be nice, and do what she wants.",
+      "source": "Henrik Ibsen, A Doll's House (trans. R. Farquharson Sharp)",
+      "length": 96,
+      "id": 668
+    },
+    {
+      "text": "One could no more do that than one could roll up one's sleeves and go down into the muck.",
+      "source": "Edith Wharton, The Age of Innocence",
+      "length": 89,
+      "id": 669
+    },
+    {
+      "text": "It will take us but ten minutes, but it's far enough to have made the child prefer not to walk.",
+      "source": "Henry James, The Turn of the Screw",
+      "length": 95,
+      "id": 670
+    },
+    {
+      "text": "It would be better to explore some of these than bear the weight of the heavy time in idleness.",
+      "source": "Mark Twain, The Adventures of Tom Sawyer",
+      "length": 95,
+      "id": 671
+    },
+    {
+      "text": "He is some brainless beautiful creature who should be always here in winter when we have no flowers to look at, and always here in summer when we want something to chill our intelligence.",
+      "source": "Oscar Wilde, The Picture of Dorian Gray",
+      "length": 187,
+      "id": 672
+    },
+    {
+      "text": "The evening breeze had sprung up, and though it was well warded off by the hill with the two peaks upon the east, the cordage had begun to sing a little softly to itself and the idle sails to rattle to and fro.",
+      "source": "Robert Louis Stevenson, Treasure Island",
+      "length": 210,
+      "id": 673
+    },
+    {
+      "text": "If you read the old books of natural history, you will find they say that when the mongoose fights the snake and happens to get bitten, he runs off and eats some herb that cures him.",
+      "source": "Rudyard Kipling, The Jungle Book",
+      "length": 182,
+      "id": 674
+    },
+    {
+      "text": "She saw that he stood on the verge of lunacy, if he had not already stepped across it.",
+      "source": "Nathaniel Hawthorne, The Scarlet Letter",
+      "length": 86,
+      "id": 675
+    },
+    {
+      "text": "Alice kept her eyes anxiously fixed on it, for she felt sure she would catch a bad cold if she did not get dry very soon.",
+      "source": "Lewis Carroll, Alice's Adventures in Wonderland",
+      "length": 121,
+      "id": 676
+    },
+    {
+      "text": "I can easily believe that letters are very little to you, much less than to me, but it is not your being ten years older than myself which makes the difference, it is not age, but situation.",
+      "source": "Jane Austen, Emma",
+      "length": 190,
+      "id": 677
+    },
+    {
+      "text": "Let us place the most just by the side of the most unjust, and when we see them we shall be able to compare the relative happiness or unhappiness of him who leads a life of pure justice or pure injustice.",
+      "source": "Plato, The Republic (trans. Benjamin Jowett)",
+      "length": 204,
+      "id": 678
+    },
+    {
+      "text": "The man who does not laugh, like the man who does not make faces, is already a buffoon at heart.",
+      "source": "Friedrich Nietzsche, Thus Spake Zarathustra (trans. Thomas Common)",
+      "length": 96,
+      "id": 679
+    },
+    {
+      "text": "Hold of it was lost in the raging fever of a nation, as it is in the fever of one patient.",
+      "source": "Charles Dickens, A Tale of Two Cities",
+      "length": 90,
+      "id": 680
+    },
+    {
+      "text": "She felt that she was beginning to know the pang of disappointed love, and that no other man could be the occasion of such delightful aerial building as she had been enjoying for the last six months.",
+      "source": "George Eliot, Middlemarch",
+      "length": 199,
+      "id": 681
+    },
+    {
+      "text": "In those days there were many serious young men among the students who had come up to the university from the farms and the little towns scattered over the thinly settled state.",
+      "source": "Willa Cather, My Antonia",
+      "length": 177,
+      "id": 682
+    },
+    {
+      "text": "She did not ask him to remain, which he was grateful for, as it permitted him to stay without the discomfort of blundering through an excuse which he had no intention of considering.",
+      "source": "Kate Chopin, The Awakening and Selected Short Stories",
+      "length": 182,
+      "id": 683
+    },
+    {
+      "text": "The thing to do was clearly to bring the business to an end in such a dramatic manner that it would leave a permanent impression upon the young lady's mind and prevent her from looking upon any other suitor for some time to come.",
+      "source": "Arthur Conan Doyle, The Adventures of Sherlock Holmes",
+      "length": 229,
+      "id": 684
+    },
+    {
+      "text": "A letter is in existence in which he practically gives up his claim to the rest and settles his conflict with his father over the inheritance on the payment of this six thousand.",
+      "source": "Fyodor Dostoyevsky, The Brothers Karamazov (trans. Constance Garnett)",
+      "length": 178,
+      "id": 685
+    }
+  ]
+}
